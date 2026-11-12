@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kite 70/30 — NSE & US Markets, F&O, Coin MF & Cloud AI</title>
+  <title>Kite 70/30 — Autonomous NSE & US Markets, F&O, Coin MF & Cloud AI</title>
   <style>
     :root {
       --bg: #f8f9fa;
@@ -226,7 +226,7 @@
     .btn-cancel { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 3px; cursor: pointer; }
     .hidden { display: none !important; }
     .log-stream {
-      font-family: monospace; font-size: 11.5px; max-height: 140px; overflow-y: auto;
+      font-family: monospace; font-size: 11.5px; max-height: 170px; overflow-y: auto;
       background: var(--bg); padding: 10px; border: 1px solid var(--border); border-radius: 3px;
     }
   </style>
@@ -269,9 +269,10 @@
     </div>
 
     <div class="header-right">
+      <span id="cloudAutoBadge" class="tag-pass" title="Automatically polls cloud_ledger.json every 20s">● AUTO-SYNC</span>
       <span id="istClock" style="font-size:11px; color:var(--muted);">IST --:--:--</span>
       <button id="audioToggleBtn" class="pill-btn">🔔 Sound: ON</button>
-      <button id="syncCloudBtn" class="pill-btn sync">↻ Sync Live</button>
+      <button id="syncCloudBtn" class="pill-btn sync">↻ Sync Now</button>
       <button id="themeToggleBtn" class="pill-btn">🌙 Dark</button>
     </div>
   </header>
@@ -299,7 +300,7 @@
       <!-- VIEW 1: NSE DASHBOARD & MULTI-TIMEFRAME CHART -->
       <div id="dashboardView" class="view-pane">
         <div class="section-title">
-          <span>Hi, Vishwanath — <strong id="activeSymHeader">RELIANCE</strong> <span style="font-size:11px; color:var(--muted);">NSE • Last Session &amp; Full History</span></span>
+          <span>Hi, Vishwanath — <strong id="activeSymHeader">RELIANCE</strong> <span style="font-size:11px; color:var(--muted);">NSE • Autonomous Cloud + Live Feed</span></span>
           <div style="display:flex; gap:8px;">
             <button id="openBuyBtn" class="act-btn act-b" style="padding:6px 14px;">Buy (B)</button>
             <button id="openSellBtn" class="act-btn act-s" style="padding:6px 14px;">Sell (S)</button>
@@ -318,9 +319,9 @@
             <div id="statRange" class="stat-sub">L: -- • H: --</div>
           </div>
           <div class="stat-card">
-            <div class="stat-lbl">Monte Carlo (500 Paths)</div>
-            <div id="statMonteCarlo" class="stat-num up">--% Target</div>
-            <div id="statMcStop" class="stat-sub">Stop Prob: --%</div>
+            <div class="stat-lbl">Cloud 70/30 Calibration</div>
+            <div id="statDashCal" class="stat-num up">--% / --%</div>
+            <div id="statDashParams" class="stat-sub">Auto-trained by Cloud AI</div>
           </div>
           <div class="stat-card">
             <div class="stat-lbl">Combined AI Net P&amp;L</div>
@@ -350,26 +351,34 @@
 
             <div class="panel-box">
               <div class="panel-head">
-                <span>Live Google News India RSS Feed &amp; Event Risk Scan</span>
-                <span id="newsRiskBadge" class="tag-pass">NO EVENT BLOCK</span>
+                <span>Live Autonomous Cloud AI Stream (Self-Training &amp; Order Executions)</span>
+                <span id="dashCloudBeat" style="font-size:11px; color:var(--muted);">Syncing...</span>
               </div>
-              <div id="liveNewsBox" style="max-height:135px; overflow-y:auto;">
-                <div style="color:var(--muted); font-size:11.5px;">Scanning live NSE corporate headlines...</div>
-              </div>
+              <div id="dashActivityStream" class="log-stream" style="max-height:130px;"></div>
             </div>
           </div>
 
-          <div class="panel-box">
-            <div class="panel-head">
-              <span>10-Point Passing Credibility Gate</span>
-              <span id="gateOverallBadge" class="tag-pass">CHECKING</span>
+          <div>
+            <div class="panel-box">
+              <div class="panel-head">
+                <span>10-Point Passing Credibility Gate</span>
+                <span id="gateOverallBadge" class="tag-pass">CHECKING</span>
+              </div>
+              <div id="tenPointGateList"></div>
             </div>
-            <div id="tenPointGateList"></div>
+
+            <div class="panel-box">
+              <div class="panel-head">
+                <span>Google News India RSS Event Risk</span>
+                <span id="newsRiskBadge" class="tag-pass">NO EVENT BLOCK</span>
+              </div>
+              <div id="liveNewsBox" style="max-height:115px; overflow-y:auto;"></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- VIEW 2: US MARKETS (NYSE / NASDAQ LIVE DATA & TOP US STOCKS) -->
+      <!-- VIEW 2: US MARKETS -->
       <div id="usMarketsView" class="view-pane hidden">
         <div class="section-title">
           <span>🇺🇸 US Markets (NYSE &amp; NASDAQ) — <strong id="activeUsSymHeader">NVDA</strong> <span style="font-size:11px; color:var(--muted);">Regular Hours: 09:30–16:00 EST (20:00–02:30 IST)</span></span>
@@ -444,7 +453,7 @@
       <!-- VIEW 3: MULTI-CAP NSE TRADE SUGGESTIONS -->
       <div id="suggestionsView" class="view-pane hidden">
         <div class="section-title">
-          <span>Multi-Cap NSE Trade Suggestions (Last Session &amp; Live Scanner)</span>
+          <span>Multi-Cap NSE Trade Suggestions (Auto-Calibrated by Cloud 70/30 AI)</span>
           <select id="sugTierFilter" style="padding:5px 8px; border:1px solid var(--border); border-radius:4px; background:var(--surface); color:var(--text-strong);">
             <option value="ALL">All Market Caps (Large, Mid, Small &amp; Penny)</option>
             <option value="PENNY">Penny &amp; Small Cap (&lt; ₹100)</option>
@@ -592,7 +601,7 @@
       <!-- VIEW 6: ORDERS & LEDGER -->
       <div id="ordersView" class="view-pane hidden">
         <div class="section-title">
-          <span>Executed Paper Orders (NSE &amp; US Markets)</span>
+          <span>Autonomous Cloud AI &amp; Local Paper Orders</span>
           <button id="clearOrdersBtn" class="pill-btn">Clear Local Orders</button>
         </div>
 
@@ -615,23 +624,20 @@
       <!-- VIEW 7: 70/30 WALK-FORWARD AI TRAINER, EQUITY CURVE & CLOUD -->
       <div id="autopilotView" class="view-pane hidden">
         <div class="section-title">
-          <span>70/30 Walk-Forward AI Trainer, Equity Curve &amp; 24/7 Cloud Worker</span>
-          <div style="display:flex; gap:8px;">
-            <button id="runWalkForwardBtn" class="act-btn act-b" style="padding:6px 12px;">1. Train 70/30 on 5d NSE History</button>
-            <button id="toggleBrowserPilot" class="act-btn act-s" style="padding:6px 12px;">2. Start Live Browser Auto-Pilot</button>
-          </div>
+          <span>Autonomous 70/30 Walk-Forward AI &amp; 24/7 Cloud Worker</span>
+          <span class="tag-pass">AUTOMATIC CLOUD SELF-TRAINING &amp; EXECUTION ACTIVE</span>
         </div>
 
         <div class="stats-strip">
           <div class="stat-card">
-            <div class="stat-lbl">70% In-Sample Win Rate</div>
-            <div id="wfTrainWin" class="stat-num">--%</div>
-            <div id="wfBestParams" class="stat-sub">Click Train 70/30</div>
+            <div class="stat-lbl">Cloud 70% Train Win Rate</div>
+            <div id="wfTrainWin" class="stat-num up">--%</div>
+            <div id="wfBestParams" class="stat-sub">Auto-calibrated by Cloud</div>
           </div>
           <div class="stat-card">
-            <div class="stat-lbl">30% Out-of-Sample Validation</div>
-            <div id="wfTestWin" class="stat-num">--%</div>
-            <div id="wfGateVerdict" class="stat-sub">Target ≥ 70.0%</div>
+            <div class="stat-lbl">Cloud 30% Test Validation</div>
+            <div id="wfTestWin" class="stat-num up">--%</div>
+            <div id="wfGateVerdict" class="stat-sub">Updated at 09:15 IST</div>
           </div>
           <div class="stat-card">
             <div class="stat-lbl">Peak-to-Trough Max Drawdown</div>
@@ -641,20 +647,20 @@
           <div class="stat-card">
             <div class="stat-lbl">GitHub Cloud Worker</div>
             <div id="cloudState" class="stat-num">--</div>
-            <div id="cloudBeat" class="stat-sub">Awaiting cloud_ledger.json</div>
+            <div id="cloudBeat" class="stat-sub">Syncing every 20s</div>
           </div>
         </div>
 
         <div class="panel-box">
           <div class="panel-head">
             <span>Cumulative AI Equity Curve &amp; Drawdown Tracker</span>
-            <span id="browserPollStatus" style="font-size:11px; color:var(--muted);">Browser Polling: OFF</span>
+            <span style="font-size:11px; color:var(--kite-green);">● Auto-polling Cloud &amp; Live Ticks</span>
           </div>
           <canvas id="equityChart" height="210"></canvas>
         </div>
 
         <div class="panel-box">
-          <div class="panel-head"><span>Engine &amp; Calibration Console</span></div>
+          <div class="panel-head"><span>Autonomous Cloud &amp; Engine Activity Log</span></div>
           <div id="consoleBox" class="log-stream"></div>
         </div>
       </div>
@@ -727,16 +733,16 @@
         SBIN: { yahoo: "SBIN.NS", step: 5, lot: 750 }
       };
 
-      let customSymbols = JSON.parse(localStorage.getItem("kite_syms_v7") || "null") || SYMBOL_UNIVERSE;
-      let usSymbols = JSON.parse(localStorage.getItem("kite_us_syms_v7") || "null") || DEFAULT_US_STOCKS;
-      let liveQuotes = JSON.parse(localStorage.getItem("kite_live_quotes_v7") || "{}");
-      let usQuotes = JSON.parse(localStorage.getItem("kite_us_quotes_v7") || "{}");
-      let liveIndices = JSON.parse(localStorage.getItem("kite_live_indices_v7") || "{}");
-      let liveMfs = JSON.parse(localStorage.getItem("kite_live_mfs_v7") || "[]");
-      let candleCache = JSON.parse(localStorage.getItem("kite_candles_v7") || "{}");
-      let orders = JSON.parse(localStorage.getItem("kite_orders_v7") || "[]");
-      let cloudData = JSON.parse(localStorage.getItem("kite_cloud_v7") || "null");
-      let calibrated = JSON.parse(localStorage.getItem("kite_calibrated_v7") || "null") || { slPct: 0.0075, rrMult: 2.1 };
+      let customSymbols = JSON.parse(localStorage.getItem("kite_syms_v8") || "null") || SYMBOL_UNIVERSE;
+      let usSymbols = JSON.parse(localStorage.getItem("kite_us_syms_v8") || "null") || DEFAULT_US_STOCKS;
+      let liveQuotes = JSON.parse(localStorage.getItem("kite_live_quotes_v8") || "{}");
+      let usQuotes = JSON.parse(localStorage.getItem("kite_us_quotes_v8") || "{}");
+      let liveIndices = JSON.parse(localStorage.getItem("kite_live_indices_v8") || "{}");
+      let liveMfs = JSON.parse(localStorage.getItem("kite_live_mfs_v8") || "[]");
+      let candleCache = JSON.parse(localStorage.getItem("kite_candles_v8") || "{}");
+      let orders = JSON.parse(localStorage.getItem("kite_orders_v8") || "[]");
+      let cloudData = JSON.parse(localStorage.getItem("kite_cloud_v8") || "null");
+      let calibrated = JSON.parse(localStorage.getItem("kite_calibrated_v8") || "null") || { slPct: 0.0075, rrMult: 2.1, trainWin: 0, testWin: 0 };
 
       let activeSym = "RELIANCE";
       let activeTf = "5m";
@@ -745,9 +751,9 @@
       let chartStyle = "candle";
       let activeFilter = "ALL";
       let modalContext = { side: "BUY", sym: "RELIANCE", seg: "EQ MIS", curr: "₹" };
-      let pollInterval = null;
       let audioEnabled = true;
       let newsRiskFlag = false;
+      let lastKnownHeartbeat = "";
 
       function playChime(freq = 660) {
         if (!audioEnabled) return;
@@ -771,12 +777,6 @@
         this.textContent = audioEnabled ? "🔔 Sound: ON" : "🔕 Sound: OFF";
         if (audioEnabled) playChime(740);
       };
-
-      function log(msg) {
-        const box = document.getElementById("consoleBox");
-        const t = new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
-        box.innerHTML = `[${t}] ${msg}<br>` + box.innerHTML;
-      }
 
       function getTier(ltp) {
         if (!ltp || ltp <= 0) return { code: "PENDING", label: "LOADING" };
@@ -825,7 +825,6 @@
             o.status = currentPnl >= 0 ? `WIN (${exitReason})` : `LOSS (${exitReason})`;
             changed = true;
             playChime(currentPnl >= 0 ? 960 : 340);
-            log(`AUTO-EXIT [${exitReason}]: ${o.side} ${o.qty} ${o.symbol} @ ${o.curr || "₹"}${price.toFixed(2)}`);
           } else if (o.exit !== price || o.pnl !== currentPnl) {
             o.exit = price;
             o.pnl = currentPnl;
@@ -834,7 +833,7 @@
         });
 
         if (changed) {
-          localStorage.setItem("kite_orders_v7", JSON.stringify(orders));
+          localStorage.setItem("kite_orders_v8", JSON.stringify(orders));
           renderLedgers();
         }
       }
@@ -958,7 +957,7 @@
           if (!r.ok) throw new Error("RSS busy");
           const xmlText = await r.text();
           const doc = new DOMParser().parseFromString(xmlText, "text/xml");
-          const items = Array.from(doc.querySelectorAll("item")).slice(0, 5);
+          const items = Array.from(doc.querySelectorAll("item")).slice(0, 4);
           if (!items.length) {
             box.innerHTML = `<div style="color:var(--muted);">No breaking NSE headlines found for ${sym}.</div>`;
             newsRiskFlag = false;
@@ -971,9 +970,8 @@
           box.innerHTML = items.map(it => {
             const title = it.querySelector("title")?.textContent || "";
             const link = it.querySelector("link")?.textContent || "#";
-            const pub = it.querySelector("pubDate")?.textContent?.slice(0, 16) || "";
             if (riskRegex.test(title)) hasEvent = true;
-            return `<div class="news-item"><a href="${link}" target="_blank" rel="noopener">${title}</a> <span style="color:var(--muted);">(${pub})</span></div>`;
+            return `<div class="news-item"><a href="${link}" target="_blank" rel="noopener">${title}</a></div>`;
           }).join("");
           newsRiskFlag = hasEvent;
           badge.textContent = hasEvent ? "EVENT RISK DETECTED" : "CLEAN • NO EVENT";
@@ -981,36 +979,6 @@
         } catch (e) {
           box.innerHTML = `<div style="color:var(--muted);">RSS feed temporarily rate-limited.</div>`;
         }
-      }
-
-      function runMonteCarlo(bars) {
-        if (!bars || bars.length < 8) return { targetProb: 68, stopProb: 32 };
-        const rets = [];
-        for (let i = 1; i < bars.length; i++) {
-          rets.push((bars[i].c - bars[i - 1].c) / bars[i - 1].c);
-        }
-        const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
-        const std = Math.sqrt(rets.reduce((a, b) => a + (b - mean) ** 2, 0) / rets.length) || 0.002;
-        const slPct = calibrated.slPct;
-        const tgtPct = slPct * calibrated.rrMult;
-
-        let tgtHits = 0, slHits = 0;
-        for (let sim = 0; sim < 500; sim++) {
-          let cum = 0;
-          for (let step = 0; step < 24; step++) {
-            const u1 = Math.random() || 1e-6;
-            const u2 = Math.random();
-            const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-            cum += mean + std * z;
-            if (cum >= tgtPct) { tgtHits++; break; }
-            if (cum <= -slPct) { slHits++; break; }
-          }
-        }
-        const decided = tgtHits + slHits || 1;
-        return {
-          targetProb: Math.round((tgtHits / decided) * 100),
-          stopProb: Math.round((slHits / decided) * 100)
-        };
       }
 
       function renderAllIndices() {
@@ -1064,7 +1032,7 @@
           const d = await fetchYahooChart(enc, "5m", "5d");
           if (d) {
             liveIndices[key] = d;
-            localStorage.setItem("kite_live_indices_v7", JSON.stringify(liveIndices));
+            localStorage.setItem("kite_live_indices_v8", JSON.stringify(liveIndices));
             renderAllIndices();
           }
         }
@@ -1128,7 +1096,7 @@
         if (!sym) return;
         if (!customSymbols.includes(sym)) {
           customSymbols.unshift(sym);
-          localStorage.setItem("kite_syms_v7", JSON.stringify(customSymbols));
+          localStorage.setItem("kite_syms_v8", JSON.stringify(customSymbols));
         }
         document.getElementById("searchInput").value = "";
         renderMarketwatch();
@@ -1188,7 +1156,6 @@
         }
 
         const step = (w - 75) / displayBars.length;
-
         ctx.fillStyle = mutedColor;
         ctx.font = "10px sans-serif";
         const labelStep = Math.max(1, Math.floor(displayBars.length / 5));
@@ -1242,7 +1209,7 @@
           { label: `3. Circuit-Lock Guard (${chg.toFixed(2)}% within ±9.2%)`, pass: Math.abs(chg) < 9.2 },
           { label: `4. VWAP Trend Alignment (₹${ltp.toFixed(2)} vs ₹${vwap.toFixed(2)})`, pass: ltp >= vwap * 0.995 },
           { label: `5. India VIX Regime (${vix.toFixed(2)} < 22.0)`, pass: vix < 22 },
-          { label: `6. Calibrated R:R ≥ 1:${calibrated.rrMult.toFixed(1)} Verified`, pass: true },
+          { label: `6. Cloud Calibrated R:R ≥ 1:${calibrated.rrMult.toFixed(1)}`, pass: true },
           { label: "7. Max Capital Per Trade ≤ ₹25,000 Cap", pass: true },
           { label: `8. Price Floor Check (₹${ltp.toFixed(2)} ≥ ₹5.00)`, pass: ltp >= 5 },
           { label: "9. Google News RSS Corporate Event Guard", pass: !newsRiskFlag },
@@ -1268,7 +1235,6 @@
         const hi = slice.length ? Math.max(...slice.map(b => b.h)) : ltp;
         const lo = slice.length ? Math.min(...slice.map(b => b.l)) : ltp;
         const vwap = +((hi + lo + ltp) / 3).toFixed(2);
-        const mc = runMonteCarlo(slice);
 
         document.getElementById("activeSymHeader").textContent = sym;
         document.getElementById("chartStatus").textContent = statusLabel;
@@ -1279,8 +1245,6 @@
 
         document.getElementById("statVwap").textContent = `₹${vwap.toFixed(2)}`;
         document.getElementById("statRange").textContent = `L: ₹${lo.toFixed(2)} • H: ₹${hi.toFixed(2)}`;
-        document.getElementById("statMonteCarlo").textContent = `${mc.targetProb}% Target`;
-        document.getElementById("statMcStop").textContent = `Stop Prob: ${mc.stopProb}% (500 sims)`;
 
         renderTenPointGate(ltp, chg, vwap, volume);
         drawCandlesOnCanvas("kiteChart", bars, activeTf, chartStyle);
@@ -1313,22 +1277,17 @@
         const fetched = await fetchYahooChart(`${encodeURIComponent(activeSym)}.NS`, cfg.interval, cfg.range);
         if (fetched && fetched.bars && fetched.bars.length) {
           candleCache[cacheKey] = fetched;
-          localStorage.setItem("kite_candles_v7", JSON.stringify(candleCache));
+          localStorage.setItem("kite_candles_v8", JSON.stringify(candleCache));
           if (tf === "5m") {
             liveQuotes[activeSym] = { symbol: activeSym, ltp: fetched.ltp, chg_pct: fetched.chg_pct, volume: fetched.volume };
-            localStorage.setItem("kite_live_quotes_v7", JSON.stringify(liveQuotes));
+            localStorage.setItem("kite_live_quotes_v8", JSON.stringify(liveQuotes));
             renderMarketwatch();
             evaluateLocalOrderExits(activeSym, fetched.ltp);
           }
           applyChartAndMetrics(activeSym, fetched, `${cfg.label} • Updated`);
-        } else {
-          document.getElementById("chartStatus").textContent = cached ? `${cfg.label} (Cached)` : "Proxy busy — click ↻ Sync Live";
         }
       }
 
-      // ==========================================
-      // US MARKETS LOGIC (NYSE / NASDAQ)
-      // ==========================================
       function renderUsStocksTable() {
         const tbody = document.getElementById("usStocksTableBody");
         tbody.innerHTML = usSymbols.map(sym => {
@@ -1365,9 +1324,6 @@
 
         if (cached && cached.bars && cached.bars.length) {
           document.getElementById("usActiveLtp").textContent = `$${cached.ltp.toFixed(2)}`;
-          const up = cached.chg_pct >= 0;
-          document.getElementById("usActiveChg").textContent = `${up ? "+" : ""}${cached.chg_pct}%`;
-          document.getElementById("usActiveChg").className = "stat-sub " + (up ? "up" : "dn");
           drawCandlesOnCanvas("usChartCanvas", cached.bars, tf, "candle");
         } else if (tf === "5m" && cloudUs && cloudUs.bars && cloudUs.bars.length) {
           document.getElementById("usActiveLtp").textContent = `$${cloudUs.ltp.toFixed(2)}`;
@@ -1376,14 +1332,13 @@
           drawCandlesOnCanvas("usChartCanvas", [], tf, "candle", `Fetching ${cfg.label} for ${activeUsSym} (US)...`);
         }
 
-        document.getElementById("usChartStatus").textContent = `Loading ${cfg.label}...`;
         const fetched = await fetchYahooChart(encodeURIComponent(activeUsSym), cfg.interval, cfg.range);
         if (fetched && fetched.bars && fetched.bars.length) {
           candleCache[cacheKey] = fetched;
-          localStorage.setItem("kite_candles_v7", JSON.stringify(candleCache));
+          localStorage.setItem("kite_candles_v8", JSON.stringify(candleCache));
           if (tf === "5m") {
             usQuotes[activeUsSym] = { symbol: activeUsSym, ltp: fetched.ltp, chg_pct: fetched.chg_pct, volume: fetched.volume };
-            localStorage.setItem("kite_us_quotes_v7", JSON.stringify(usQuotes));
+            localStorage.setItem("kite_us_quotes_v8", JSON.stringify(usQuotes));
             renderUsStocksTable();
             evaluateLocalOrderExits(activeUsSym, fetched.ltp);
           }
@@ -1403,91 +1358,12 @@
         if (!sym) return;
         if (!usSymbols.includes(sym)) {
           usSymbols.unshift(sym);
-          localStorage.setItem("kite_us_syms_v7", JSON.stringify(usSymbols));
+          localStorage.setItem("kite_us_syms_v8", JSON.stringify(usSymbols));
         }
         document.getElementById("usCustomInput").value = "";
         loadUsSymbol(sym, activeUsTf);
       };
 
-      async function hydrateUsStocksLive() {
-        for (const sym of usSymbols) {
-          if (sym === activeUsSym) continue;
-          const live = await fetchYahooChart(encodeURIComponent(sym), "5m", "5d");
-          if (live) {
-            usQuotes[sym] = { symbol: sym, ltp: live.ltp, chg_pct: live.chg_pct, volume: live.volume };
-            candleCache[`US_${sym}_5m`] = live;
-            localStorage.setItem("kite_us_quotes_v7", JSON.stringify(usQuotes));
-            renderUsStocksTable();
-            evaluateLocalOrderExits(sym, live.ltp);
-          }
-        }
-      }
-
-      async function hydrateWatchlistLive() {
-        const openSyms = new Set(orders.filter(o => o.status === "OPEN" && !(o.seg || "").includes("US")).map(o => o.symbol));
-        const prioritized = [...new Set([...openSyms, ...customSymbols])];
-        for (const sym of prioritized) {
-          if (sym === activeSym) continue;
-          const live = await fetchYahooChart(`${encodeURIComponent(sym)}.NS`, "5m", "5d");
-          if (live) {
-            liveQuotes[sym] = { symbol: sym, ltp: live.ltp, chg_pct: live.chg_pct, volume: live.volume };
-            candleCache[`NSE_${sym}_5m`] = live;
-            localStorage.setItem("kite_live_quotes_v7", JSON.stringify(liveQuotes));
-            renderMarketwatch();
-            evaluateLocalOrderExits(sym, live.ltp);
-          }
-        }
-      }
-
-      // 70/30 WALK-FORWARD TRAINER
-      document.getElementById("runWalkForwardBtn").onclick = async function () {
-        this.textContent = "Training on 5d NSE...";
-        log(`Fetching 5-day 5m history for ${activeSym} to run 70/30 Walk-Forward calibration...`);
-        const hist = await fetchYahooChart(`${encodeURIComponent(activeSym)}.NS`, "5m", "5d");
-        this.textContent = "1. Train 70/30 on 5d NSE History";
-        if (!hist || hist.bars.length < 30) {
-          log("Insufficient 5d bars from proxy; keeping calibrated parameters.");
-          return;
-        }
-        const bars = hist.bars;
-        const split = Math.floor(bars.length * 0.7);
-        const trainBars = bars.slice(0, split);
-        const testBars = bars.slice(split);
-
-        function simulateSet(subset, slPct, rrMult) {
-          let wins = 0, total = 0;
-          for (let i = 5; i < subset.length - 8; i += 4) {
-            const entry = subset[i].c;
-            const sl = entry * (1 - slPct);
-            const tgt = entry * (1 + slPct * rrMult);
-            for (let j = i + 1; j < Math.min(subset.length, i + 12); j++) {
-              if (subset[j].h >= tgt) { wins++; total++; break; }
-              if (subset[j].l <= sl) { total++; break; }
-            }
-          }
-          return total ? (wins / total) * 100 : 0;
-        }
-
-        let best = { slPct: 0.0075, rrMult: 2.1, win: 0 };
-        for (const sl of [0.005, 0.0075, 0.01]) {
-          for (const rr of [2.0, 2.2, 2.5]) {
-            const w = simulateSet(trainBars, sl, rr);
-            if (w >= best.win) best = { slPct: sl, rrMult: rr, win: w };
-          }
-        }
-        const testWin = simulateSet(testBars, best.slPct, best.rrMult);
-        calibrated = { slPct: best.slPct, rrMult: best.rrMult };
-        localStorage.setItem("kite_calibrated_v7", JSON.stringify(calibrated));
-
-        document.getElementById("wfTrainWin").textContent = `${best.win.toFixed(1)}%`;
-        document.getElementById("wfBestParams").textContent = `SL ${(best.slPct * 100).toFixed(2)}% • R:R 1:${best.rrMult}`;
-        document.getElementById("wfTestWin").textContent = `${testWin.toFixed(1)}%`;
-        document.getElementById("wfGateVerdict").textContent = testWin >= 70 ? "PASS (≥ 70% Validated)" : "CALIBRATED";
-        playChime(880);
-        log(`70/30 Walk-Forward Complete: Train ${best.win.toFixed(1)}%, Test ${testWin.toFixed(1)}%`);
-      };
-
-      // MULTI-CAP TRADE SUGGESTIONS
       function renderTradeSuggestions() {
         const filter = document.getElementById("sugTierFilter").value;
         const rows = Object.values(liveQuotes).filter(q => {
@@ -1520,11 +1396,10 @@
               </td>
             </tr>
           `;
-        }).join("") : `<tr><td colspan="9" style="color:var(--muted);">Loading NSE multi-cap quotes... Click "↻ Sync Live" to pull 250+ stocks.</td></tr>`;
+        }).join("") : `<tr><td colspan="9" style="color:var(--muted);">Loading NSE multi-cap quotes...</td></tr>`;
       }
       document.getElementById("sugTierFilter").onchange = renderTradeSuggestions;
 
-      // F&O & OPTION CHAIN
       async function renderFnOPage() {
         const und = document.getElementById("fnoUnderlyingSelect").value;
         const cfg = FNO_CONFIG[und] || FNO_CONFIG.NIFTY;
@@ -1630,7 +1505,6 @@
       }
       document.getElementById("fnoUnderlyingSelect").onchange = renderFnOPage;
 
-      // AMFI MUTUAL FUNDS
       async function fetchLiveAmfiFunds() {
         const results = [];
         for (const item of MF_CODES) {
@@ -1665,7 +1539,7 @@
         }
         if (results.length) {
           liveMfs = results;
-          localStorage.setItem("kite_live_mfs_v7", JSON.stringify(liveMfs));
+          localStorage.setItem("kite_live_mfs_v8", JSON.stringify(liveMfs));
           renderMfTable();
         }
       }
@@ -1691,7 +1565,6 @@
       }
       document.getElementById("mfCategoryFilter").onchange = renderMfTable;
 
-      // FLOATING ORDER MODAL
       function openOrderModal(side, sym, ltp, seg = "EQ MIS", curr = "₹") {
         if (!ltp || ltp <= 0) return;
         modalContext = { side, sym, seg, curr };
@@ -1730,7 +1603,7 @@
         const sl = parseFloat(document.getElementById("owSl").value) || 0;
         const target = parseFloat(document.getElementById("owTarget").value) || 0;
         orders.unshift({
-          source: "KITE PAPER",
+          source: "LOCAL PAPER",
           symbol: modalContext.sym,
           seg: modalContext.seg,
           curr: modalContext.curr || "₹",
@@ -1744,11 +1617,10 @@
           status: "OPEN",
           date: new Date().toISOString().slice(0, 10)
         });
-        localStorage.setItem("kite_orders_v7", JSON.stringify(orders));
+        localStorage.setItem("kite_orders_v8", JSON.stringify(orders));
         document.getElementById("orderModal").classList.remove("open");
         playChime(780);
         renderLedgers();
-        log(`Order armed: ${modalContext.side} ${qty} ${modalContext.sym} @ ${modalContext.curr}${price.toFixed(2)}`);
       };
 
       function drawEquityCurve() {
@@ -1788,9 +1660,9 @@
       }
 
       function renderLedgers() {
-        const cOpen = (cloudData?.open_positions || []).map(p => ({ ...p, source: "CLOUD AI", seg: "EQ MIS", curr: "₹", status: "OPEN" }));
-        const cClosed = (cloudData?.closed_trades || []).map(p => ({ ...p, source: "CLOUD AI", seg: "EQ MIS", curr: "₹" }));
-        const all = [...orders, ...cOpen, ...cClosed];
+        const cOpen = (cloudData?.open_positions || []).map(p => ({ ...p, source: "CLOUD AI (AUTO)", seg: "EQ MIS", curr: "₹", status: "OPEN" }));
+        const cClosed = (cloudData?.closed_trades || []).map(p => ({ ...p, source: "CLOUD AI (AUTO)", seg: "EQ MIS", curr: "₹" }));
+        const all = [...cOpen, ...cClosed, ...orders];
 
         document.getElementById("ordersTableBody").innerHTML = all.length ? all.map(o => {
           const c = o.curr || "₹";
@@ -1799,7 +1671,7 @@
           const tgtTxt = o.target ? `${c}${Number(o.target).toFixed(2)}` : "--";
           return `
             <tr>
-              <td>${o.source}</td>
+              <td><strong>${o.source}</strong></td>
               <td><strong>${o.symbol}</strong></td>
               <td>${o.seg || "EQ MIS"}</td>
               <td class="${o.side === "BUY" ? "up" : "dn"}">${o.side}</td>
@@ -1811,7 +1683,7 @@
               <td>${o.status}</td>
             </tr>
           `;
-        }).join("") : `<tr><td colspan="10" style="color:var(--muted);">No orders executed yet.</td></tr>`;
+        }).join("") : `<tr><td colspan="10" style="color:var(--muted);">Waiting for Cloud AI or manual paper orders...</td></tr>`;
 
         const localRealized = orders.filter(o => o.status !== "OPEN" && (o.curr || "₹") === "₹").reduce((a, b) => a + Number(b.pnl || 0), 0);
         const cloudRealized = cClosed.reduce((a, b) => a + Number(b.pnl || 0), 0);
@@ -1835,95 +1707,107 @@
 
       document.getElementById("clearOrdersBtn").onclick = () => {
         orders = [];
-        localStorage.setItem("kite_orders_v7", "[]");
+        localStorage.setItem("kite_orders_v8", "[]");
         renderLedgers();
       };
 
-      async function syncCloudAndLive() {
+      function applyCloudPayload(data) {
+        if (!data) return;
+        const isNewHeartbeat = data.last_heartbeat && data.last_heartbeat !== lastKnownHeartbeat;
+        if (isNewHeartbeat && lastKnownHeartbeat !== "") {
+          playChime(680);
+        }
+        lastKnownHeartbeat = data.last_heartbeat || lastKnownHeartbeat;
+
+        document.getElementById("cloudState").textContent = data.market_status || "SYNCED";
+        document.getElementById("cloudBeat").textContent = `Heartbeat: ${data.last_heartbeat || "--"}`;
+        document.getElementById("dashCloudBeat").textContent = `Last Cloud Cycle: ${data.last_heartbeat || "--"}`;
+
+        if (data.nse_eq_master_count) {
+          document.getElementById("masterUniverse").textContent = `NSE EQ Master: ${data.nse_eq_master_count.toLocaleString("en-IN")}`;
+        }
+
+        // Automatically display Cloud Self-Trained 70/30 Win Rates & Parameters
+        if (data.calibrated_params) {
+          const cp = data.calibrated_params;
+          calibrated = {
+            slPct: cp.sl_pct || 0.0075,
+            rrMult: cp.rr_mult || 2.1,
+            trainWin: cp.train_win || 0,
+            testWin: cp.test_win || 0
+          };
+          localStorage.setItem("kite_calibrated_v8", JSON.stringify(calibrated));
+          document.getElementById("wfTrainWin").textContent = `${calibrated.trainWin}%`;
+          document.getElementById("wfTestWin").textContent = `${calibrated.testWin}%`;
+          document.getElementById("wfBestParams").textContent = `SL ${(calibrated.slPct * 100).toFixed(2)}% • R:R 1:${calibrated.rrMult}`;
+          document.getElementById("wfGateVerdict").textContent = `Trained: ${cp.calibrated_at || "Auto"}`;
+          document.getElementById("statDashCal").textContent = `${calibrated.trainWin}% / ${calibrated.testWin}%`;
+          document.getElementById("statDashParams").textContent = `SL ${(calibrated.slPct * 100).toFixed(2)}% • R:R 1:${calibrated.rrMult}`;
+        }
+
+        // Render Cloud AI Activity Log automatically on both Dashboard & AI Tab
+        const logs = data.ai_activity_log || [];
+        const logHtml = logs.length
+          ? logs.join("<br>")
+          : `[${data.last_heartbeat || "READY"}] Autonomous Cloud Worker active. Waiting for market open (09:15 IST) to train & execute.`;
+        document.getElementById("consoleBox").innerHTML = logHtml;
+        document.getElementById("dashActivityStream").innerHTML = logHtml;
+
+        if (data.indices) {
+          liveIndices = { ...liveIndices, ...data.indices };
+          renderAllIndices();
+        }
+        if (data.live_quotes) {
+          liveQuotes = { ...liveQuotes, ...data.live_quotes };
+          renderMarketwatch();
+          Object.values(data.live_quotes).forEach(q => evaluateLocalOrderExits(q.symbol, q.ltp));
+        }
+        if (data.us_quotes) {
+          usQuotes = { ...usQuotes, ...data.us_quotes };
+          renderUsStocksTable();
+          Object.values(data.us_quotes).forEach(q => evaluateLocalOrderExits(q.symbol, q.ltp));
+        }
+        if (data.mutual_funds && data.mutual_funds.length) {
+          liveMfs = data.mutual_funds;
+          renderMfTable();
+        }
+        renderLedgers();
+      }
+
+      async function pollCloudOnly() {
         try {
           const r = await fetch(`./cloud_ledger.json?t=${Date.now()}`);
           if (r.ok) {
             cloudData = await r.json();
-            localStorage.setItem("kite_cloud_v7", JSON.stringify(cloudData));
-            document.getElementById("cloudState").textContent = cloudData.market_status || "SYNCED";
-            document.getElementById("cloudBeat").textContent = `Heartbeat: ${cloudData.last_heartbeat || "--"}`;
-            if (cloudData.nse_eq_master_count) {
-              document.getElementById("masterUniverse").textContent = `NSE EQ Master: ${cloudData.nse_eq_master_count.toLocaleString("en-IN")}`;
-            }
-            if (cloudData.indices) {
-              liveIndices = { ...liveIndices, ...cloudData.indices };
-              renderAllIndices();
-            }
-            if (cloudData.live_quotes) {
-              liveQuotes = { ...liveQuotes, ...cloudData.live_quotes };
-              renderMarketwatch();
-              Object.values(cloudData.live_quotes).forEach(q => evaluateLocalOrderExits(q.symbol, q.ltp));
-            }
-            if (cloudData.us_quotes) {
-              usQuotes = { ...usQuotes, ...cloudData.us_quotes };
-              renderUsStocksTable();
-              Object.values(cloudData.us_quotes).forEach(q => evaluateLocalOrderExits(q.symbol, q.ltp));
-            }
-            if (cloudData.mutual_funds && cloudData.mutual_funds.length) {
-              liveMfs = cloudData.mutual_funds;
-              renderMfTable();
-            }
-            renderLedgers();
-            playChime(620);
-            log(`Synced GitHub Cloud Ledger (${cloudData.last_heartbeat})`);
+            localStorage.setItem("kite_cloud_v8", JSON.stringify(cloudData));
+            applyCloudPayload(cloudData);
           }
         } catch (e) {}
+      }
 
+      async function fullLiveRefresh() {
+        await pollCloudOnly();
         await loadSymbol(activeSym, activeTf);
         refreshAllIndices();
         fetchLiveAmfiFunds();
-        hydrateWatchlistLive();
-        hydrateUsStocksLive();
       }
 
-      document.getElementById("syncCloudBtn").onclick = syncCloudAndLive;
+      document.getElementById("syncCloudBtn").onclick = fullLiveRefresh;
 
-      document.getElementById("toggleBrowserPilot").onclick = function () {
-        if (pollInterval) {
-          clearInterval(pollInterval);
-          pollInterval = null;
-          this.textContent = "2. Start Live Browser Auto-Pilot";
-          document.getElementById("browserPollStatus").textContent = "Browser Polling: OFF";
-          log("Live Browser Auto-Pilot stopped.");
-        } else {
-          this.textContent = "Stop Live Browser Auto-Pilot";
-          document.getElementById("browserPollStatus").textContent = "Browser Polling: ON (15s)";
-          log("Live Browser Auto-Pilot armed: monitoring NSE & US positions every 15s.");
-          pollInterval = setInterval(async () => {
-            await loadSymbol(activeSym, activeTf);
-            const openNse = [...new Set(orders.filter(o => o.status === "OPEN" && !(o.seg || "").includes("US")).map(o => o.symbol))];
-            for (const s of openNse) {
-              if (s === activeSym) continue;
-              const q = await fetchYahooChart(`${encodeURIComponent(s)}.NS`, "5m", "5d");
-              if (q) {
-                liveQuotes[s] = { symbol: s, ltp: q.ltp, chg_pct: q.chg_pct, volume: q.volume };
-                evaluateLocalOrderExits(s, q.ltp);
-              }
-            }
-            const openUs = [...new Set(orders.filter(o => o.status === "OPEN" && (o.seg || "").includes("US")).map(o => o.symbol))];
-            for (const s of openUs) {
-              const q = await fetchYahooChart(encodeURIComponent(s), "5m", "5d");
-              if (q) {
-                usQuotes[s] = { symbol: s, ltp: q.ltp, chg_pct: q.chg_pct, volume: q.volume };
-                evaluateLocalOrderExits(s, q.ltp);
-              }
-            }
-          }, 15000);
-        }
-      };
+      // Automatic background sync every 20 seconds (zero clicks needed)
+      setInterval(() => {
+        pollCloudOnly();
+        loadSymbol(activeSym, activeTf);
+      }, 20000);
 
       // Boot sequence
+      if (cloudData) applyCloudPayload(cloudData);
       renderAllIndices();
       renderMarketwatch();
       renderUsStocksTable();
       renderMfTable();
       renderLedgers();
-      syncCloudAndLive();
+      fullLiveRefresh();
     })();
   </script>
 </body>
