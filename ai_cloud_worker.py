@@ -3,6 +3,8 @@ import os
 import csv
 import io
 import urllib.request
+import http.cookiejar
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone, timedelta
 
 IST = timezone(timedelta(hours=5, minutes=30))
@@ -21,14 +23,13 @@ INDEX_SYMBOLS = {
     "INDIAVIX": "%5EINDIAVIX"
 }
 
-# Official AMFI Scheme Codes for Direct Growth Mutual Funds
 MF_SCHEMES = [
-    {"code": "120716", "cat": "Index / Large Cap", "ter": "0.18%", "aum": "19,450 Cr", "sharpe": "1.34"},
-    {"code": "122639", "cat": "Flexi Cap", "ter": "0.62%", "aum": "84,200 Cr", "sharpe": "1.62"},
-    {"code": "118989", "cat": "Mid Cap", "ter": "0.74%", "aum": "76,100 Cr", "sharpe": "1.58"},
-    {"code": "118778", "cat": "Small Cap", "ter": "0.68%", "aum": "61,800 Cr", "sharpe": "1.55"},
-    {"code": "120684", "cat": "Index / Large Cap", "ter": "0.31%", "aum": "6,940 Cr", "sharpe": "1.29"},
-    {"code": "119835", "cat": "Liquid / Debt", "ter": "0.19%", "aum": "68,500 Cr", "sharpe": "2.15"}
+    {"code": "120716", "cat": "Index / Large Cap", "ter": "0.18%"},
+    {"code": "122639", "cat": "Flexi Cap", "ter": "0.62%"},
+    {"code": "118989", "cat": "Mid Cap", "ter": "0.74%"},
+    {"code": "118778", "cat": "Small Cap", "ter": "0.68%"},
+    {"code": "120684", "cat": "Index / Large Cap", "ter": "0.31%"},
+    {"code": "119835", "cat": "Liquid / Debt", "ter": "0.19%"}
 ]
 
 
@@ -37,7 +38,7 @@ def fetch_yahoo_raw(encoded_ticker):
         url = f"https://{host}/v8/finance/chart/{encoded_ticker}?interval=5m&range=1d"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         try:
-            with urllib.request.urlopen(req, timeout=6) as resp:
+            with urllib.request.urlopen(req, timeout=5) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 result = data["chart"]["result"][0]
                 meta = result["meta"]
@@ -90,6 +91,86 @@ def fetch_nse_equity_master():
         return []
 
 
+def fetch_nse_option_chain(symbol="NIFTY"):
+    """Fetches real strike-by-strike Call/Put OI, PCR, and Max Pain from NSE."""
+    cj = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Referer": "https://www.nseindia.com/option-chain"
+    }
+    try:
+        req_home = urllib.request.Request("https://www.nseindia.com", headers=headers)
+        opener.open(req_home, timeout=6).read()
+        api_url = f"https://www.nseindia.com/api/option-chain-indices?symbol={symbol}"
+        req_api = urllib.request.Request(api_url, headers=headers)
+        raw = opener.open(req_api, timeout=8).read().decode("utf-8")
+        payload = json.loads(raw)
+        records = payload.get("records", {})
+        spot = float(records.get("underlyingValue") or 0)
+        data_rows = records.get("data", [])
+        if not spot or not data_rows:
+            return None
+
+        # Filter nearest expiry
+        expiries = records.get("expiryDates", [])
+        nearest_exp = expiries[0] if expiries else None
+        filtered = [r for r in data_rows if not nearest_exp or r.get("expiryDate") == nearest_exp]
+        filtered.sort(key=lambda x: x.get("strikePrice", 0))
+
+        total_ce_oi = sum((r.get("CE") or {}).get("openInterest", 0) for r in filtered)
+        total_pe_oi = sum((r.get("PE") or {}).get("openInterest", 0) for r in filtered)
+        pcr = round(total_pe_oi / total_ce_oi, 2) if total_ce_oi > 0 else 1.0
+
+        # Find ATM index and slice ATM +/- 5 strikes
+        atm_idx = min(range(len(filtered)), key=lambda i: abs(filtered[i].get("strikePrice", 0) - spot))
+        sliced = filtered[max(0, atm_idx - 5): min(len(filtered), atm_idx + 6)]
+
+        # Max Pain calculation across sliced strikes
+        strikes = [r["strikePrice"] for r in sliced]
+        min_pain = float("inf")
+        max_pain_strike = filtered[atm_idx]["strikePrice"]
+        for test_s in strikes:
+            pain = 0.0
+            for r in sliced:
+                k = r["strikePrice"]
+                ce_oi = (r.get("CE") or {}).get("openInterest", 0)
+                pe_oi = (r.get("PE") or {}).get("openInterest", 0)
+                if test_s > k:
+                    pain += (test_s - k) * ce_oi
+                if test_s < k:
+                    pain += (k - test_s) * pe_oi
+            if pain < min_pain:
+                min_pain = pain
+                max_pain_strike = test_s
+
+        chain_out = []
+        for r in sliced:
+            ce = r.get("CE") or {}
+            pe = r.get("PE") or {}
+            chain_out.append({
+                "strike": r["strikePrice"],
+                "ce_oi": round(ce.get("openInterest", 0) / 100000, 2),
+                "ce_iv": round(ce.get("impliedVolatility", 0), 1),
+                "ce_ltp": round(ce.get("lastPrice", 0), 2),
+                "pe_ltp": round(pe.get("lastPrice", 0), 2),
+                "pe_iv": round(pe.get("impliedVolatility", 0), 1),
+                "pe_oi": round(pe.get("openInterest", 0) / 100000, 2)
+            })
+
+        return {
+            "symbol": symbol,
+            "expiry": nearest_exp,
+            "spot": spot,
+            "pcr": pcr,
+            "max_pain": max_pain_strike,
+            "chain": chain_out
+        }
+    except Exception:
+        return None
+
+
 def fetch_live_mutual_funds():
     funds = []
     for item in MF_SCHEMES:
@@ -104,9 +185,7 @@ def fetch_live_mutual_funds():
                     continue
                 latest_nav = float(nav_list[0]["nav"])
                 nav_date = nav_list[0]["date"]
-                # Calculate real 1Y / 3Y CAGR from historical AMFI NAV array
-                cagr_1y = "--"
-                cagr_3y = "--"
+                cagr_1y, cagr_3y = "--", "--"
                 if len(nav_list) > 245:
                     n1 = float(nav_list[245]["nav"])
                     if n1 > 0:
@@ -121,11 +200,9 @@ def fetch_live_mutual_funds():
                     "cat": item["cat"],
                     "nav": round(latest_nav, 4),
                     "nav_date": nav_date,
-                    "aum": item["aum"],
                     "ter": item["ter"],
                     "cagr1": cagr_1y,
                     "cagr3": cagr_3y,
-                    "sharpe": item["sharpe"],
                     "score": "8/8 PASS"
                 })
         except Exception:
@@ -141,6 +218,22 @@ def classify_tier(ltp):
     return "LARGE CAP"
 
 
+def scan_single_equity(sym):
+    snap = fetch_yahoo_raw(f"{sym}.NS")
+    if not snap:
+        return None
+    return sym, {
+        "symbol": sym,
+        "ltp": snap["ltp"],
+        "prev_close": snap["prev_close"],
+        "chg_pct": snap["chg_pct"],
+        "day_high": snap["day_high"],
+        "day_low": snap["day_low"],
+        "volume": snap["volume"],
+        "tier": classify_tier(snap["ltp"])
+    }
+
+
 def load_ledger():
     if os.path.exists(LEDGER_FILE):
         try:
@@ -149,11 +242,12 @@ def load_ledger():
         except Exception:
             pass
     return {
-        "engine": "NSE 70/30 Live Multi-Cap Cloud Worker",
+        "engine": "NSE 70/30 Multi-Threaded Cloud Worker",
         "last_heartbeat": "",
         "nse_eq_master_count": 0,
         "market_status": "CLOSED",
         "indices": {},
+        "option_chains": {},
         "live_quotes": {},
         "mutual_funds": [],
         "open_positions": [],
@@ -173,7 +267,7 @@ def main():
     ledger["last_heartbeat"] = f"{today_str} {time_str}"
     ledger["market_status"] = "OPEN" if is_market_open else "CLOSED"
 
-    # 1. Live Indices (NIFTY, BANKNIFTY, FINNIFTY, INDIA VIX)
+    # 1. Live Indices
     indices = {}
     for key, encoded in INDEX_SYMBOLS.items():
         snap = fetch_yahoo_raw(encoded)
@@ -182,46 +276,55 @@ def main():
     if indices:
         ledger["indices"] = indices
 
-    # 2. Live AMFI Mutual Fund NAVs & Calculated CAGRs
+    # 2. Live Real NSE Option Chains (NIFTY & BANKNIFTY)
+    opt_chains = ledger.get("option_chains", {})
+    for idx_sym in ("NIFTY", "BANKNIFTY"):
+        oc = fetch_nse_option_chain(idx_sym)
+        if oc:
+            opt_chains[idx_sym] = oc
+    ledger["option_chains"] = opt_chains
+
+    # 3. Live AMFI Mutual Fund NAVs
     mfs = fetch_live_mutual_funds()
     if mfs:
         ledger["mutual_funds"] = mfs
 
-    # 3. Official NSE Equity Master + Live Equity Quotes
+    # 4. Concurrent 20-Thread Scan across ~300 NSE EQ Stocks (Large, Mid, Small & Penny)
     eq_master = fetch_nse_equity_master()
     if eq_master:
         ledger["nse_eq_master_count"] = len(eq_master)
 
-    scan_symbols = list(CORE_UNIVERSE)
+    scan_batch = list(CORE_UNIVERSE)
     if eq_master:
-        offset = (now_ist.minute * 10) % max(1, len(eq_master) - 10)
-        for s in eq_master[offset:offset + 10]:
-            if s not in scan_symbols:
-                scan_symbols.append(s)
+        # Rotate 270 stocks per 5-minute run -> scans entire ~2,200 NSE universe every ~40 mins
+        batch_size = 270
+        start_idx = ((now_ist.hour * 60 + now_ist.minute) // 5 * batch_size) % max(1, len(eq_master))
+        slice_syms = eq_master[start_idx:start_idx + batch_size]
+        if len(slice_syms) < batch_size:
+            slice_syms += eq_master[:batch_size - len(slice_syms)]
+        for s in slice_syms:
+            if s not in scan_batch:
+                scan_batch.append(s)
 
     live_quotes = ledger.get("live_quotes", {})
-    for sym in scan_symbols:
-        snap = fetch_yahoo_raw(f"{sym}.NS")
-        if snap:
-            live_quotes[sym] = {
-                "symbol": sym,
-                "ltp": snap["ltp"],
-                "prev_close": snap["prev_close"],
-                "chg_pct": snap["chg_pct"],
-                "day_high": snap["day_high"],
-                "day_low": snap["day_low"],
-                "volume": snap["volume"],
-                "tier": classify_tier(snap["ltp"]),
-                "updated_at": time_str
-            }
-    ledger["live_quotes"] = live_quotes
+    with ThreadPoolExecutor(max_workers=20) as pool:
+        futures = [pool.submit(scan_single_equity, sym) for sym in scan_batch]
+        for fut in as_completed(futures):
+            res = fut.result()
+            if res:
+                sym, qdata = res
+                qdata["updated_at"] = time_str
+                live_quotes[sym] = qdata
+
+    # Keep top 250 most liquid live quotes in JSON to stay compact & fast
+    sorted_quotes = sorted(live_quotes.values(), key=lambda x: x.get("volume", 0), reverse=True)[:250]
+    ledger["live_quotes"] = {q["symbol"]: q for q in sorted_quotes}
 
     if is_market_open:
-        # Manage open positions
         still_open = []
         for pos in ledger.get("open_positions", []):
             sym = pos["symbol"]
-            q = live_quotes.get(sym)
+            q = ledger["live_quotes"].get(sym)
             ltp = q["ltp"] if q else pos["entry"]
             reason = None
             if ltp >= pos["target"]:
@@ -246,13 +349,12 @@ def main():
                 still_open.append(pos)
         ledger["open_positions"] = still_open
 
-        # Open new 70/30 passing setups
-        if (9 * 60 + 20 <= hm <= 14 * 60 + 45) and len(ledger["open_positions"]) < 4:
+        if (9 * 60 + 20 <= hm <= 14 * 60 + 45) and len(ledger["open_positions"]) < 5:
             open_syms = {p["symbol"] for p in ledger["open_positions"]}
-            for sym, q in live_quotes.items():
-                if sym in open_syms or len(ledger["open_positions"]) >= 4:
+            for sym, q in ledger["live_quotes"].items():
+                if sym in open_syms or len(ledger["open_positions"]) >= 5:
                     continue
-                if q["volume"] >= 500000 and 0.4 <= q["chg_pct"] <= 5.5 and q["ltp"] >= 5.0:
+                if q["volume"] >= 500000 and 0.5 <= q["chg_pct"] <= 5.5 and q["ltp"] >= 5.0:
                     sl_dist = max(round(q["ltp"] * 0.0075, 2), 0.15)
                     ledger["open_positions"].append({
                         "id": f"CLOUD-{sym}-{int(now_ist.timestamp())}",
