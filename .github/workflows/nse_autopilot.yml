@@ -1,0 +1,32 @@
+name: NSE 70/30 Cloud AI Auto-Pilot
+
+on:
+schedule:
+# Runs every 5 minutes during NSE market hours (03:45 to 10:05 UTC = 09:15 to 15:35 IST), Monday to Friday
+- cron: '*/5 3-10 * * 1-5'
+workflow_dispatch:
+
+permissions:
+contents: write
+
+jobs:
+run-autopilot:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout repository
+uses: actions/checkout@v4
+
+  - name: Set up Python 3.11
+    uses: actions/setup-python@v5
+    with:
+      python-version: '3.11'
+
+  - name: Run 24/7 NSE AI Cloud Worker
+    run: python3 ai_cloud_worker.py
+
+  - name: Commit & Push Updated Cloud Ledger
+    run: |
+      git config --local user.email "github-actions[bot]@users.noreply.github.com"
+      git config --local user.name "github-actions[bot]"
+      git add cloud_ledger.json
+      git diff --quiet && git diff --staged --quiet || (git commit -m "chore(autopilot): update NSE cloud AI ledger" && git push)
