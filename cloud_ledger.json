@@ -1,0 +1,9 @@
+{
+  "started_since": "2026-11-13",
+  "last_heartbeat_ist": "2026-11-13 00:30:29 IST",
+  "status": "STANDBY (NSE CLOSED)",
+  "trades": [],
+  "logs": [
+    "[2026-11-13 00:30:29 IST] Heartbeat check: NSE is currently closed. Standing by for 09:15 IST."
+  ]
+}
