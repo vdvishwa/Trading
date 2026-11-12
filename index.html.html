@@ -816,6 +816,9 @@
           <button type="button" id="toggleAutopilotBtn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow transition">
             2. Start Live Forward Auto-Pilot
           </button>
+          <button type="button" id="syncCloudAiBtn" class="px-3.5 py-2.5 rounded-xl text-xs font-bold bg-sky-600/25 hover:bg-sky-600/40 text-sky-300 border border-sky-500/40 transition" title="Pull trades executed 24/7 by your GitHub Actions Cloud Worker">
+            ↻ Sync Cloud AI
+          </button>
           <div class="flex items-center gap-1.5 ml-auto text-xs bg-gray-950 px-3 py-1.5 rounded-xl border border-gray-800">
             <label for="pollIntervalSelect" class="text-gray-400">Live Tick Poll:</label>
             <select id="pollIntervalSelect" class="bg-transparent font-mono font-bold text-white focus:outline-none">
@@ -1057,39 +1060,110 @@
           h = Math.imul(h, 16777619);
         }
         return function () {
-          h += h << 13; h ^= h >>> 7; h += h << 3; h ^= h >>> 17; h += h << 5;
-          return ((h >>> 0) / 4294967296);
+          h += 0x6D2B79F5;
+          let t = Math.imul(h ^ (h >>> 15), 1 | h);
+          t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
         };
       }
       function getCurrentIstInfo() {
         try {
-          const parts = new Intl.DateTimeFormat("en-GB", {
+          const now = new Date();
+          const parts = new Intl.DateTimeFormat("en-CA", {
             timeZone: "Asia/Kolkata",
-            weekday: "short", year: "numeric", month: "2-digit", day: "2-digit",
-            hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-          }).formatToParts(new Date());
-          const get = t => parts.find(p => p.type === t)?.value || "00";
-          const hh = Number(get("hour")), mm = Number(get("minute"));
-          const mins = hh * 60 + mm;
-          const wd = get("weekday");
-          const isWeekday = !["Sat", "Sun"].includes(wd);
-          return {
-            isoDate: `${get("year")}-${get("month")}-${get("day")}`,
-            hhmm: `${get("hour")}:${get("minute")}`,
-            hhmmss: `${get("hour")}:${get("minute")}:${get("second")}`,
-            mins,
-            isMarketOpen: isWeekday && mins >= 555 && mins <= 930
-          };
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hourCycle: "h23",
+            weekday: "short"
+          }).formatToParts(now);
+          const map = {};
+          parts.forEach(p => { map[p.type] = p.value; });
+          const hour = Number(map.hour) || 0;
+          const minute = Number(map.minute) || 0;
+          const second = Number(map.second) || 0;
+          const mins = hour * 60 + minute;
+          const isoDate = `${map.year}-${map.month}-${map.day}`;
+          const hhmm = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+          const hhmmss = `${hhmm}:${String(second).padStart(2, "0")}`;
+          const isWeekday = !["Sat", "Sun"].includes(map.weekday);
+          const isMarketOpen = isWeekday && mins >= 555 && mins <= 930;
+          return { isoDate, hhmm, hhmmss, mins, isWeekday, isMarketOpen };
         } catch (e) {
-          const d = new Date(Date.now() + 5.5 * 3600000);
-          const mins = d.getUTCHours() * 60 + d.getUTCMinutes();
-          return {
-            isoDate: d.toISOString().slice(0, 10),
-            hhmm: fmtM(mins),
-            hhmmss: d.toISOString().slice(11, 19),
-            mins,
-            isMarketOpen: d.getUTCDay() >= 1 && d.getUTCDay() <= 5 && mins >= 555 && mins <= 930
-          };
+          const ist = new Date(Date.now() + 5.5 * 3600 * 1000);
+          const isoDate = ist.toISOString().slice(0, 10);
+          const hour = ist.getUTCHours();
+          const minute = ist.getUTCMinutes();
+          const second = ist.getUTCSeconds();
+          const mins = hour * 60 + minute;
+          const hhmm = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+          const hhmmss = `${hhmm}:${String(second).padStart(2, "0")}`;
+          const day = ist.getUTCDay();
+          const isWeekday = day >= 1 && day <= 5;
+          const isMarketOpen = isWeekday && mins >= 555 && mins <= 930;
+          return { isoDate, hhmm, hhmmss, mins, isWeekday, isMarketOpen };
+        }
+      }
+      function generateSyntheticSessions(symbol, days = 5) {
+        const rng = seededRng(`FALLBACK_${symbol}_${todayIsoIST()}`);
+        let px = 500 + rng() * 2000;
+        const out = [];
+        for (let d = days - 1; d >= 0; d--) {
+          const dt = new Date(Date.now() - d * 86400000);
+          const dateStr = dt.toISOString().slice(0, 10);
+          const bars = [];
+          for (let m = 555; m < 930; m += 5) {
+            const o = rtick(px);
+            const delta = (rng() - 0.49) * 0.004 * o;
+            const c = rtick(Math.max(10, o + delta));
+            const h = rtick(Math.max(o, c) * (1 + rng() * 0.002));
+            const l = rtick(Math.min(o, c) * (1 - rng() * 0.002));
+            bars.push({ m, time: fmtM(m), o, h, l, c, v: Math.floor(20000 + rng() * 120000) });
+            px = c;
+          }
+          out.push({ date: dateStr, bars });
+        }
+        return out;
+      }
+
+      async function syncFromGitHubCloudLedger(silent = false) {
+        try {
+          const resp = await fetch(`./cloud_ledger.json?t=${Date.now()}`, { cache: "no-store" });
+          if (!resp.ok) {
+            if (!silent) appendTrainerLog("Cloud Sync: cloud_ledger.json not found yet (run GitHub Actions workflow once).", "text-amber-300");
+            return;
+          }
+          const cloudData = await resp.json();
+          const cloudTrades = Array.isArray(cloudData.trades) ? cloudData.trades : [];
+          let addedOrUpdated = 0;
+
+          cloudTrades.forEach(ct => {
+            const idx = state.ledger.findIndex(local => local.id === ct.id);
+            if (idx === -1) {
+              state.ledger.unshift(ct);
+              addedOrUpdated++;
+            } else if (state.ledger[idx].status === "OPEN" && ct.status === "CLOSED") {
+              state.ledger[idx] = ct;
+              addedOrUpdated++;
+            }
+          });
+
+          if (cloudData.started_since && !safeStorageGet("nse_ai_started_since")) {
+            safeStorageSet("nse_ai_started_since", cloudData.started_since);
+          }
+
+          if (addedOrUpdated > 0) {
+            saveLedger();
+            refreshLiveForwardAccuracyMetrics();
+            appendTrainerLog(`Cloud Sync: Merged ${addedOrUpdated} trade update(s) from GitHub 24/7 Worker (Last heartbeat: ${cloudData.last_heartbeat_ist || "N/A"}).`, "text-sky-300 font-semibold");
+          } else if (!silent) {
+            appendTrainerLog(`Cloud Sync: Already up to date (Worker heartbeat: ${cloudData.last_heartbeat_ist || "Standby"}).`, "text-sky-300");
+          }
+        } catch (err) {
+          if (!silent) appendTrainerLog("Cloud Sync: Offline or running locally outside GitHub Pages.", "text-gray-400");
         }
       }
       function todayIsoIST() {
@@ -3819,6 +3893,7 @@
       document.getElementById("runPipelineBtn").addEventListener("click", () => executeActivePipeline());
       document.getElementById("runWalkForwardTrainBtn").addEventListener("click", runWalkForwardTrainer);
       document.getElementById("toggleAutopilotBtn").addEventListener("click", toggleAutopilot);
+      document.getElementById("syncCloudAiBtn").addEventListener("click", () => syncFromGitHubCloudLedger(false));
       document.getElementById("drAnalyzeBtn").addEventListener("click", runDeepResearchLookup);
       document.getElementById("drQueryInput").addEventListener("keydown", e => {
         if (e.key === "Enter") runDeepResearchLookup();
@@ -3974,6 +4049,7 @@
       updateDailyRiskKpis();
       renderAiHistorySummary();
       refreshMarketBreadthAndRegime();
+      syncFromGitHubCloudLedger(true);
       executeEquityPipeline();
     })();
   </script>
