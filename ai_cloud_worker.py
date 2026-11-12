@@ -33,34 +33,55 @@ MF_SCHEMES = [
 ]
 
 
-def fetch_yahoo_raw(encoded_ticker):
+def fetch_yahoo_raw(encoded_ticker, interval="5m", range_str="5d"):
+    """Fetches last completed trading session (range=5d) so data is never empty off-hours."""
     for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
-        url = f"https://{host}/v8/finance/chart/{encoded_ticker}?interval=5m&range=1d"
+        url = f"https://{host}/v8/finance/chart/{encoded_ticker}?interval={interval}&range={range_str}"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         try:
-            with urllib.request.urlopen(req, timeout=5) as resp:
+            with urllib.request.urlopen(req, timeout=6) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 result = data["chart"]["result"][0]
                 meta = result["meta"]
+                timestamps = result.get("timestamp") or []
                 quote = result["indicators"]["quote"][0]
-                closes = [c for c in quote.get("close", []) if c is not None]
-                highs = [h for h in quote.get("high", []) if h is not None]
-                lows = [l for l in quote.get("low", []) if l is not None]
-                vols = [v for v in quote.get("volume", []) if v is not None]
-                ltp = float(meta.get("regularMarketPrice") or (closes[-1] if closes else 0))
-                prev = float(meta.get("chartPreviousClose") or (closes[0] if closes else ltp))
+                opens = quote.get("open") or []
+                highs = quote.get("high") or []
+                lows = quote.get("low") or []
+                closes = quote.get("close") or []
+                vols = quote.get("volume") or []
+
+                bars = []
+                for i in range(len(closes)):
+                    if closes[i] is not None and opens[i] is not None:
+                        bars.append({
+                            "t": timestamps[i] if i < len(timestamps) else 0,
+                            "o": round(float(opens[i]), 2),
+                            "h": round(float(highs[i] or closes[i]), 2),
+                            "l": round(float(lows[i] or closes[i]), 2),
+                            "c": round(float(closes[i]), 2),
+                            "v": int(vols[i] or 0)
+                        })
+
+                ltp = float(meta.get("regularMarketPrice") or (bars[-1]["c"] if bars else 0))
+                prev = float(meta.get("previousClose") or meta.get("chartPreviousClose") or (bars[-2]["c"] if len(bars) > 1 else ltp))
                 if ltp <= 0:
                     continue
                 chg_pct = round(((ltp - prev) / prev) * 100.0, 2) if prev > 0 else 0.0
+                day_bars = bars[-75:] if len(bars) > 75 else bars
+                day_high = max((b["h"] for b in day_bars), default=ltp)
+                day_low = min((b["l"] for b in day_bars), default=ltp)
+                total_vol = sum(b["v"] for b in day_bars)
+
                 return {
                     "ltp": round(ltp, 2),
                     "prev_close": round(prev, 2),
                     "chg": round(ltp - prev, 2),
                     "chg_pct": chg_pct,
-                    "day_high": round(max(highs) if highs else ltp, 2),
-                    "day_low": round(min(lows) if lows else ltp, 2),
-                    "closes": closes,
-                    "volume": int(sum(vols))
+                    "day_high": round(day_high, 2),
+                    "day_low": round(day_low, 2),
+                    "volume": int(total_vol),
+                    "bars": day_bars
                 }
         except Exception:
             continue
@@ -92,7 +113,6 @@ def fetch_nse_equity_master():
 
 
 def fetch_nse_option_chain(symbol="NIFTY"):
-    """Fetches real strike-by-strike Call/Put OI, PCR, and Max Pain from NSE."""
     cj = http.cookiejar.CookieJar()
     opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
     headers = {
@@ -101,11 +121,11 @@ def fetch_nse_option_chain(symbol="NIFTY"):
         "Referer": "https://www.nseindia.com/option-chain"
     }
     try:
-        req_home = urllib.request.Request("https://www.nseindia.com", headers=headers)
-        opener.open(req_home, timeout=6).read()
-        api_url = f"https://www.nseindia.com/api/option-chain-indices?symbol={symbol}"
-        req_api = urllib.request.Request(api_url, headers=headers)
-        raw = opener.open(req_api, timeout=8).read().decode("utf-8")
+        opener.open(urllib.request.Request("https://www.nseindia.com", headers=headers), timeout=6).read()
+        raw = opener.open(
+            urllib.request.Request(f"https://www.nseindia.com/api/option-chain-indices?symbol={symbol}", headers=headers),
+            timeout=8
+        ).read().decode("utf-8")
         payload = json.loads(raw)
         records = payload.get("records", {})
         spot = float(records.get("underlyingValue") or 0)
@@ -113,7 +133,6 @@ def fetch_nse_option_chain(symbol="NIFTY"):
         if not spot or not data_rows:
             return None
 
-        # Filter nearest expiry
         expiries = records.get("expiryDates", [])
         nearest_exp = expiries[0] if expiries else None
         filtered = [r for r in data_rows if not nearest_exp or r.get("expiryDate") == nearest_exp]
@@ -123,11 +142,9 @@ def fetch_nse_option_chain(symbol="NIFTY"):
         total_pe_oi = sum((r.get("PE") or {}).get("openInterest", 0) for r in filtered)
         pcr = round(total_pe_oi / total_ce_oi, 2) if total_ce_oi > 0 else 1.0
 
-        # Find ATM index and slice ATM +/- 5 strikes
         atm_idx = min(range(len(filtered)), key=lambda i: abs(filtered[i].get("strikePrice", 0) - spot))
         sliced = filtered[max(0, atm_idx - 5): min(len(filtered), atm_idx + 6)]
 
-        # Max Pain calculation across sliced strikes
         strikes = [r["strikePrice"] for r in sliced]
         min_pain = float("inf")
         max_pain_strike = filtered[atm_idx]["strikePrice"]
@@ -219,9 +236,10 @@ def classify_tier(ltp):
 
 
 def scan_single_equity(sym):
-    snap = fetch_yahoo_raw(f"{sym}.NS")
+    snap = fetch_yahoo_raw(f"{sym}.NS", interval="5m", range_str="5d")
     if not snap:
         return None
+    include_bars = sym in CORE_UNIVERSE
     return sym, {
         "symbol": sym,
         "ltp": snap["ltp"],
@@ -230,7 +248,8 @@ def scan_single_equity(sym):
         "day_high": snap["day_high"],
         "day_low": snap["day_low"],
         "volume": snap["volume"],
-        "tier": classify_tier(snap["ltp"])
+        "tier": classify_tier(snap["ltp"]),
+        "bars": snap["bars"] if include_bars else []
     }
 
 
@@ -267,16 +286,17 @@ def main():
     ledger["last_heartbeat"] = f"{today_str} {time_str}"
     ledger["market_status"] = "OPEN" if is_market_open else "CLOSED"
 
-    # 1. Live Indices
+    # 1. Indices (5d range ensures last session prices are always present off-hours)
     indices = {}
     for key, encoded in INDEX_SYMBOLS.items():
-        snap = fetch_yahoo_raw(encoded)
+        snap = fetch_yahoo_raw(encoded, interval="5m", range_str="5d")
         if snap:
+            snap.pop("bars", None)
             indices[key] = snap
     if indices:
         ledger["indices"] = indices
 
-    # 2. Live Real NSE Option Chains (NIFTY & BANKNIFTY)
+    # 2. Real NSE Option Chains
     opt_chains = ledger.get("option_chains", {})
     for idx_sym in ("NIFTY", "BANKNIFTY"):
         oc = fetch_nse_option_chain(idx_sym)
@@ -289,14 +309,13 @@ def main():
     if mfs:
         ledger["mutual_funds"] = mfs
 
-    # 4. Concurrent 20-Thread Scan across ~300 NSE EQ Stocks (Large, Mid, Small & Penny)
+    # 4. Concurrent 20-Thread Scan across ~300 NSE EQ Stocks
     eq_master = fetch_nse_equity_master()
     if eq_master:
         ledger["nse_eq_master_count"] = len(eq_master)
 
     scan_batch = list(CORE_UNIVERSE)
     if eq_master:
-        # Rotate 270 stocks per 5-minute run -> scans entire ~2,200 NSE universe every ~40 mins
         batch_size = 270
         start_idx = ((now_ist.hour * 60 + now_ist.minute) // 5 * batch_size) % max(1, len(eq_master))
         slice_syms = eq_master[start_idx:start_idx + batch_size]
@@ -316,7 +335,6 @@ def main():
                 qdata["updated_at"] = time_str
                 live_quotes[sym] = qdata
 
-    # Keep top 250 most liquid live quotes in JSON to stay compact & fast
     sorted_quotes = sorted(live_quotes.values(), key=lambda x: x.get("volume", 0), reverse=True)[:250]
     ledger["live_quotes"] = {q["symbol"]: q for q in sorted_quotes}
 
