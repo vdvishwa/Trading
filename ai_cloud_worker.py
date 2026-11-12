@@ -16,11 +16,18 @@ CORE_UNIVERSE = [
     "IRFC", "RVNL", "SUZLON", "IDEA", "YESBANK", "NHPC", "SJVN", "HUDCO", "NBCC", "RENUKA", "UCOBANK", "MAHABANK"
 ]
 
+US_TOP_STOCKS = [
+    "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "AVGO", "AMD", "NFLX", "PLTR", "SOFI"
+]
+
 INDEX_SYMBOLS = {
     "NIFTY": "%5ENSEI",
     "BANKNIFTY": "%5ENSEBANK",
     "FINNIFTY": "NIFTY_FIN_SERVICE.NS",
-    "INDIAVIX": "%5EINDIAVIX"
+    "INDIAVIX": "%5EINDIAVIX",
+    "SP500": "%5EGSPC",
+    "NASDAQ": "%5EIXIC",
+    "DOW": "%5EDJI"
 }
 
 MF_SCHEMES = [
@@ -34,7 +41,6 @@ MF_SCHEMES = [
 
 
 def fetch_yahoo_raw(encoded_ticker, interval="5m", range_str="5d"):
-    """Fetches last completed trading session (range=5d) so data is never empty off-hours."""
     for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
         url = f"https://{host}/v8/finance/chart/{encoded_ticker}?interval={interval}&range={range_str}"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -235,11 +241,10 @@ def classify_tier(ltp):
     return "LARGE CAP"
 
 
-def scan_single_equity(sym):
+def scan_single_nse(sym):
     snap = fetch_yahoo_raw(f"{sym}.NS", interval="5m", range_str="5d")
     if not snap:
         return None
-    include_bars = sym in CORE_UNIVERSE
     return sym, {
         "symbol": sym,
         "ltp": snap["ltp"],
@@ -249,7 +254,23 @@ def scan_single_equity(sym):
         "day_low": snap["day_low"],
         "volume": snap["volume"],
         "tier": classify_tier(snap["ltp"]),
-        "bars": snap["bars"] if include_bars else []
+        "bars": snap["bars"] if sym in CORE_UNIVERSE else []
+    }
+
+
+def scan_single_us(sym):
+    snap = fetch_yahoo_raw(sym, interval="5m", range_str="5d")
+    if not snap:
+        return None
+    return sym, {
+        "symbol": sym,
+        "ltp": snap["ltp"],
+        "prev_close": snap["prev_close"],
+        "chg_pct": snap["chg_pct"],
+        "day_high": snap["day_high"],
+        "day_low": snap["day_low"],
+        "volume": snap["volume"],
+        "bars": snap["bars"]
     }
 
 
@@ -261,13 +282,14 @@ def load_ledger():
         except Exception:
             pass
     return {
-        "engine": "NSE 70/30 Multi-Threaded Cloud Worker",
+        "engine": "NSE + US Multi-Market Cloud Worker",
         "last_heartbeat": "",
         "nse_eq_master_count": 0,
         "market_status": "CLOSED",
         "indices": {},
         "option_chains": {},
         "live_quotes": {},
+        "us_quotes": {},
         "mutual_funds": [],
         "open_positions": [],
         "closed_trades": [],
@@ -286,7 +308,7 @@ def main():
     ledger["last_heartbeat"] = f"{today_str} {time_str}"
     ledger["market_status"] = "OPEN" if is_market_open else "CLOSED"
 
-    # 1. Indices (5d range ensures last session prices are always present off-hours)
+    # 1. Indices (India + US)
     indices = {}
     for key, encoded in INDEX_SYMBOLS.items():
         snap = fetch_yahoo_raw(encoded, interval="5m", range_str="5d")
@@ -309,7 +331,17 @@ def main():
     if mfs:
         ledger["mutual_funds"] = mfs
 
-    # 4. Concurrent 20-Thread Scan across ~300 NSE EQ Stocks
+    # 4. Concurrent Scan: US Top Stocks + ~300 NSE EQ Stocks
+    us_quotes = ledger.get("us_quotes", {})
+    with ThreadPoolExecutor(max_workers=12) as pool:
+        for fut in as_completed([pool.submit(scan_single_us, s) for s in US_TOP_STOCKS]):
+            res = fut.result()
+            if res:
+                sym, qdata = res
+                qdata["updated_at"] = time_str
+                us_quotes[sym] = qdata
+    ledger["us_quotes"] = us_quotes
+
     eq_master = fetch_nse_equity_master()
     if eq_master:
         ledger["nse_eq_master_count"] = len(eq_master)
@@ -327,8 +359,7 @@ def main():
 
     live_quotes = ledger.get("live_quotes", {})
     with ThreadPoolExecutor(max_workers=20) as pool:
-        futures = [pool.submit(scan_single_equity, sym) for sym in scan_batch]
-        for fut in as_completed(futures):
+        for fut in as_completed([pool.submit(scan_single_nse, s) for s in scan_batch]):
             res = fut.result()
             if res:
                 sym, qdata = res
