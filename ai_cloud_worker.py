@@ -1,105 +1,132 @@
-#!/usr/bin/env python3
-"""
-ai_cloud_worker.py - 24/7 Headless NSE 70/30 AI Auto-Pilot Worker for GitHub Actions.
-Runs on GitHub servers every 5 minutes during NSE market hours (09:15 - 15:30 IST, Mon-Fri).
-Fetches live Yahoo/NSE 5-minute candles, manages open paper positions (SL, Target, 15:15 IST square-off),
-scans Opening Range Breakouts (09:15-09:30 IST), validates risk rules, and saves results to cloud_ledger.json.
-"""
-
 import json
 import os
-import time
-import urllib.parse
+import csv
+import io
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone, timedelta
 
 IST = timezone(timedelta(hours=5, minutes=30))
 LEDGER_FILE = "cloud_ledger.json"
 
-UNIVERSE = [
-    "RELIANCE", "TCS", "HDFCBANK", "INFY", "ICICIBANK", "SBIN",
-    "BHARTIARTL", "LT", "AXISBANK", "KOTAKBANK", "BAJFINANCE", "TITAN",
-    "SUNPHARMA", "MARUTI", "TATAMOTORS", "HCLTECH", "NTPC", "TATASTEEL"
+# Multi-cap NSE basket covering Large Cap, Mid Cap, Small Cap & Liquid Penny Stocks (< Rs 100)
+CORE_MULTI_CAP_UNIVERSE = [
+    # Large Cap
+    "RELIANCE", "TCS", "HDFCBANK", "INFY", "ICICIBANK", "SBIN", "BHARTIARTL", "LT", "AXISBANK", "TATAMOTORS",
+    # Mid Cap & PSU
+    "BEL", "HAL", "TRENT", "ZOMATO", "BHEL", "BANKBARODA", "PNB", "CANBK", "IDFCFIRSTB", "SAIL",
+    # Small Cap & Liquid Penny (< Rs 100)
+    "IRFC", "RVNL", "SUZLON", "IDEA", "YESBANK", "NHPC", "SJVN", "HUDCO", "NBCC", "RENUKA", "UCOBANK", "MAHABANK"
 ]
 
-CONFIG = {
-    "budget": 100000.0,
-    "max_loss_trade": 1500.0,
-    "max_daily_loss": 4500.0,
-    "max_trades": 3,
-    "min_rr": 1.0,
-    "stop_rule": "or-low",      # Calibrated for 70/30 high win-rate
-    "target_mult": 0.75,        # 0.75R target for 70/30 consistency
-    "no_before": 9 * 60 + 30,   # 09:30 IST
-    "no_after": 14 * 60 + 15,   # 14:15 IST
-    "flat_by": 15 * 60 + 15,    # 15:15 IST mandatory intraday square-off
-    "brok_flat": 20.0,
-    "brok_pct": 0.03,
-    "stt_pct": 0.025,
-    "exch_pct": 0.00297,
-    "stamp_pct": 0.003,
-    "gst_pct": 18.0
-}
 
-
-def rtick(val, tick=0.05):
-    return round(round(val / tick) * tick, 2)
-
-
-def now_ist():
-    return datetime.now(IST)
-
-
-def compute_mis_charges(qty, entry, exit_px):
-    buy_val = qty * entry
-    sell_val = qty * exit_px
-    brok = min(CONFIG["brok_flat"], buy_val * CONFIG["brok_pct"] / 100.0) + \
-           min(CONFIG["brok_flat"], sell_val * CONFIG["brok_pct"] / 100.0)
-    stt = sell_val * CONFIG["stt_pct"] / 100.0
-    exch = (buy_val + sell_val) * CONFIG["exch_pct"] / 100.0
-    sebi = (buy_val + sell_val) * 0.0001
-    stamp = buy_val * CONFIG["stamp_pct"] / 100.0
-    gst = (brok + exch + sebi) * CONFIG["gst_pct"] / 100.0
-    return round(brok + stt + exch + sebi + stamp + gst, 2)
-
-
-def fetch_live_5m_bars(symbol):
-    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(symbol)}.NS?interval=5m&range=2d"
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (NSE-Cloud-Worker/1.0)"})
+def fetch_nse_equity_master():
+    """Fetches official NSE EQUITY_L.csv master list of all ~2,200+ listed equities."""
+    url = "https://nsearchives.nseindia.com/content/equities/EQUITY_L.csv"
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "Accept": "text/csv,*/*",
+            "Referer": "https://www.nseindia.com/"
+        }
+    )
     try:
-        with urllib.request.urlopen(req, timeout=12) as resp:
-            payload = json.load(resp)
-        res = payload["chart"]["result"][0]
-        ts_list = res["timestamp"]
-        q = res["indicators"]["quote"][0]
-        by_date = {}
-        for ts, o, h, l, c, v in zip(ts_list, q["open"], q["high"], q["low"], q["close"], q["volume"]):
-            if None in (o, h, l, c):
-                continue
-            dt = datetime.fromtimestamp(ts, IST)
-            mins = dt.hour * 60 + dt.minute
-            if mins < 555 or mins >= 930:
-                continue
-            d_str = dt.date().isoformat()
-            by_date.setdefault(d_str, []).append({
-                "m": mins,
-                "time": f"{dt.hour:02d}:{dt.minute:02d}",
-                "o": rtick(o),
-                "h": rtick(h),
-                "l": rtick(l),
-                "c": rtick(c),
-                "v": v or 10000
-            })
-        if not by_date:
-            return None, []
-        latest_date = sorted(by_date.keys())[-1]
-        return latest_date, by_date[latest_date]
-    except Exception as exc:
-        print(f"[WARN] Fetch failed for {symbol}: {exc}")
-        return None, []
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            text = resp.read().decode("utf-8", errors="ignore")
+            reader = csv.DictReader(io.StringIO(text))
+            eq_symbols = []
+            for row in reader:
+                sym = (row.get("SYMBOL") or "").strip()
+                series = (row.get(" SERIES") or row.get("SERIES") or "").strip()
+                # Only allow EQ series (intraday MIS eligible; excludes BE/T2T trade-to-trade penny traps)
+                if sym and series == "EQ":
+                    eq_symbols.append(sym)
+            return eq_symbols
+    except Exception:
+        return []
 
 
-def load_cloud_state():
+def fetch_yahoo_intraday(symbol):
+    """Fetches live 5m intraday candles from Yahoo Finance query1/query2 endpoints."""
+    for host in ("query1.finance.yahoo.com", "query2.finance.yahoo.com"):
+        url = f"https://{host}/v8/finance/chart/{symbol}.NS?interval=5m&range=1d"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        try:
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                result = data["chart"]["result"][0]
+                meta = result["meta"]
+                quote = result["indicators"]["quote"][0]
+                closes = [c for c in quote.get("close", []) if c is not None]
+                highs = [h for h in quote.get("high", []) if h is not None]
+                lows = [l for l in quote.get("low", []) if l is not None]
+                vols = [v for v in quote.get("volume", []) if v is not None]
+                if len(closes) < 5:
+                    continue
+                ltp = float(meta.get("regularMarketPrice") or closes[-1])
+                prev_close = float(meta.get("chartPreviousClose") or closes[0])
+                total_vol = int(sum(vols))
+                return {
+                    "symbol": symbol,
+                    "ltp": round(ltp, 2),
+                    "prev_close": round(prev_close, 2),
+                    "day_high": round(max(highs), 2),
+                    "day_low": round(min(lows), 2),
+                    "closes": closes,
+                    "volume": total_vol
+                }
+        except Exception:
+            continue
+    return None
+
+
+def classify_cap_tier(ltp):
+    if ltp < 100:
+        return "PENNY / SMALL (<₹100)"
+    elif ltp < 500:
+        return "SMALL / MID CAP"
+    return "LARGE / MID CAP"
+
+
+def evaluate_70_30_setup(snap):
+    """Evaluates momentum, VWAP proxy, liquidity gate (>=5L vol), and 1:2 R:R."""
+    ltp = snap["ltp"]
+    prev = snap["prev_close"]
+    closes = snap["closes"]
+    vol = snap["volume"]
+
+    # Liquidity & circuit-lock guard (critical for penny/small cap intraday safety)
+    if vol < 500000 or ltp < 5.0:
+        return None
+
+    chg_pct = ((ltp - prev) / prev) * 100.0 if prev > 0 else 0.0
+    # Avoid stocks locked near +/- 9.5% or 19.5% circuit limits
+    if abs(chg_pct) >= 9.2:
+        return None
+
+    ema_fast = sum(closes[-5:]) / 5.0
+    ema_slow = sum(closes[-12:]) / min(len(closes), 12)
+    vwap_proxy = (snap["day_high"] + snap["day_low"] + ltp) / 3.0
+
+    # High-probability 70/30 LONG breakout alignment
+    if ltp > vwap_proxy and ema_fast > ema_slow and 0.4 <= chg_pct <= 5.5:
+        sl_dist = max(round(ltp * 0.0075, 2), 0.15)
+        sl = round(ltp - sl_dist, 2)
+        target = round(ltp + (sl_dist * 2.1), 2)
+        qty = max(1, int(25000 // ltp))  # Rs 25,000 paper position sizing
+        return {
+            "side": "BUY",
+            "entry": ltp,
+            "sl": sl,
+            "target": target,
+            "qty": qty,
+            "tier": classify_cap_tier(ltp),
+            "confidence": min(92, round(72 + chg_pct * 2.5, 1))
+        }
+    return None
+
+
+def load_ledger():
     if os.path.exists(LEDGER_FILE):
         try:
             with open(LEDGER_FILE, "r", encoding="utf-8") as f:
@@ -107,158 +134,46 @@ def load_cloud_state():
         except Exception:
             pass
     return {
-        "started_since": now_ist().date().isoformat(),
-        "last_heartbeat_ist": "",
-        "status": "INITIALIZED",
-        "trades": [],
-        "logs": []
+        "engine": "NSE 70/30 Multi-Cap Cloud AI Worker",
+        "started_at": datetime.now(IST).strftime("%Y-%m-%d %H:%M:%S IST"),
+        "last_heartbeat": "",
+        "nse_eq_master_count": 0,
+        "market_status": "CLOSED",
+        "open_positions": [],
+        "closed_trades": [],
+        "live_scanner_snapshot": [],
+        "daily_pnl": {}
     }
 
 
-def save_cloud_state(state):
-    with open(LEDGER_FILE, "w", encoding="utf-8") as f:
-        json.dump(state, f, indent=2)
-
-
-def add_log(state, msg):
-    ts = now_ist().strftime("%Y-%m-%d %H:%M:%S IST")
-    print(f"[{ts}] {msg}")
-    state["logs"].insert(0, f"[{ts}] {msg}")
-    state["logs"] = state["logs"][:80]
-
-
 def main():
-    dt_ist = now_ist()
-    today_str = dt_ist.date().isoformat()
-    cur_mins = dt_ist.hour * 60 + dt_ist.minute
-    is_weekday = dt_ist.weekday() < 5
-    is_market_hours = is_weekday and (555 <= cur_mins <= 930)
+    now_ist = datetime.now(IST)
+    today_str = now_ist.strftime("%Y-%m-%d")
+    time_str = now_ist.strftime("%H:%M:%S IST")
+    hm = now_ist.hour * 60 + now_ist.minute
+    is_weekday = now_ist.weekday() < 5
+    is_market_open = is_weekday and (9 * 60 + 15 <= hm <= 15 * 60 + 30)
 
-    state = load_cloud_state()
-    state["last_heartbeat_ist"] = dt_ist.strftime("%Y-%m-%d %H:%M:%S IST")
+    ledger = load_ledger()
+    ledger["last_heartbeat"] = f"{today_str} {time_str}"
+    ledger["market_status"] = "OPEN" if is_market_open else "CLOSED"
 
-    if not is_market_hours:
-        state["status"] = "STANDBY (NSE CLOSED)"
-        add_log(state, "Heartbeat check: NSE is currently closed. Standing by for 09:15 IST.")
-        save_cloud_state(state)
-        return
+    eq_master = fetch_nse_equity_master()
+    if eq_master:
+        ledger["nse_eq_master_count"] = len(eq_master)
 
-    state["status"] = "ACTIVE (LIVE NSE POLLING)"
+    # Rotate 12 extra EQ symbols from the full ~2,200 NSE master each run alongside core multi-cap basket
+    scan_symbols = list(CORE_MULTI_CAP_UNIVERSE)
+    if eq_master:
+        offset = (now_ist.minute * 12) % max(1, len(eq_master) - 12)
+        for s in eq_master[offset:offset + 12]:
+            if s not in scan_symbols:
+                scan_symbols.append(s)
 
-    # 1. Monitor & settle OPEN trades
-    for tr in state["trades"]:
-        if tr.get("status") != "OPEN":
-            continue
-        _, bars = fetch_live_5m_bars(tr["symbol"])
-        if not bars:
-            continue
-        last_bar = bars[-1]
-        exit_px = None
-        reason = ""
-
-        if last_bar["l"] <= tr["stop"]:
-            exit_px = tr["stop"]
-            reason = "LIVE STOP LOSS HIT"
-        elif last_bar["h"] >= tr["target"]:
-            exit_px = tr["target"]
-            reason = "LIVE TARGET HIT"
-        elif cur_mins >= CONFIG["flat_by"]:
-            exit_px = last_bar["c"]
-            reason = "15:15 IST AUTO SQUARE-OFF"
-
-        if exit_px is not None:
-            charges = compute_mis_charges(tr["qty"], tr["entry"], exit_px)
-            pnl = round((exit_px - tr["entry"]) * tr["qty"] - charges, 2)
-            tr["exit"] = exit_px
-            tr["pnl"] = pnl
-            tr["status"] = "CLOSED"
-            tr["note"] = f"Cloud AI Auto-Pilot ({reason})"
-            add_log(state, f"{reason}: {tr['symbol']} closed @ {exit_px} | Net P&L: {pnl:+.2f}")
-        time.sleep(0.25)
-
-    # 2. Check daily risk limits before opening new trades
-    today_trades = [t for t in state["trades"] if t.get("date") == today_str]
-    realized_loss = -sum(
-        float(t["pnl"]) for t in today_trades
-        if t.get("status") == "CLOSED" and float(t.get("pnl", 0)) < 0
-    )
-
-    if len(today_trades) >= CONFIG["max_trades"]:
-        add_log(state, f"Daily trade cap reached ({len(today_trades)}/{CONFIG['max_trades']}). Monitoring open positions only.")
-        save_cloud_state(state)
-        return
-
-    if realized_loss >= CONFIG["max_daily_loss"]:
-        add_log(state, f"Daily loss limit reached ({realized_loss:.2f}/{CONFIG['max_daily_loss']:.2f}). Halting new entries.")
-        save_cloud_state(state)
-        return
-
-    if not (CONFIG["no_before"] <= cur_mins <= CONFIG["no_after"]):
-        add_log(state, f"Outside entry window ({dt_ist.strftime('%H:%M')} IST). Waiting for valid window.")
-        save_cloud_state(state)
-        return
-
-    # 3. Scan ORB setups across UNIVERSE
-    open_symbols = {t["symbol"] for t in state["trades"] if t.get("status") == "OPEN"}
-    for sym in UNIVERSE:
-        if sym in open_symbols:
-            continue
-        sess_date, bars = fetch_live_5m_bars(sym)
-        if sess_date != today_str or len(bars) < 4:
-            continue
-
-        orb_bars = [b for b in bars if 555 <= b["m"] < 570]
-        if len(orb_bars) < 2:
-            continue
-        or_high = max(b["h"] for b in orb_bars)
-        or_low = min(b["l"] for b in orb_bars)
-
-        latest = bars[-1]
-        if latest["c"] > or_high:
-            entry = rtick(latest["c"] * 1.0002)
-            raw_stop = or_low if CONFIG["stop_rule"] == "or-low" else (or_high + or_low) / 2.0
-            stop = rtick(min(raw_stop, entry - max(0.5, entry * 0.004)))
-            risk_per_share = max(0.05, rtick(entry - stop))
-            target = rtick(entry + CONFIG["target_mult"] * risk_per_share)
-
-            qty = min(
-                int(CONFIG["max_loss_trade"] // risk_per_share),
-                int(CONFIG["budget"] // entry)
-            )
-            if qty < 1:
-                continue
-
-            charges_tgt = compute_mis_charges(qty, entry, target)
-            charges_sl = compute_mis_charges(qty, entry, stop)
-            net_gain = (target - entry) * qty - charges_tgt
-            net_loss = (entry - stop) * qty + charges_sl
-            net_rr = net_gain / max(1.0, net_loss)
-
-            if net_rr >= CONFIG["min_rr"] and (realized_loss + net_loss) <= CONFIG["max_daily_loss"]:
-                trade_id = f"CLOUD_{int(time.time())}_{sym}"
-                state["trades"].insert(0, {
-                    "id": trade_id,
-                    "date": today_str,
-                    "segment": "MIS",
-                    "symbol": sym,
-                    "side": "BUY",
-                    "qty": qty,
-                    "entry": entry,
-                    "stop": stop,
-                    "target": target,
-                    "isShort": False,
-                    "exit": None,
-                    "pnl": None,
-                    "status": "OPEN",
-                    "source": "AI_AUTOPILOT",
-                    "note": "Cloud AI Auto-Pilot (GitHub 24/7 Worker)"
-                })
-                add_log(state, f"NEW CLOUD PAPER FILL: BUY {qty} {sym} @ {entry} | SL {stop} | Tgt {target} (Net R:R {net_rr:.2f}R)")
-                break
-        time.sleep(0.25)
-
-    save_cloud_state(state)
-
-
-if __name__ == "__main__":
-    main()
+    snapshots = {}
+    scanner_rows = []
+    for sym in scan_symbols:
+        snap = fetch_yahoo_intraday(sym)
+        if snap:
+            snapshots[sym] = snap
+            chg = round(((snap["ltp"]
