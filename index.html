@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kite 70/30 — Complete Live NSE Equity, F&O, Coin MF & AI Terminal</title>
+  <title>Kite 70/30 — NSE & US Markets, F&O, Coin MF & Cloud AI</title>
   <style>
     :root {
       --bg: #f8f9fa;
@@ -39,8 +39,8 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 14px; position: sticky; top: 0; z-index: 40;
     }
-    .header-left { display: flex; align-items: center; gap: 12px; overflow-x: auto; }
-    .index-ticker { display: flex; align-items: center; gap: 12px; padding-right: 12px; border-right: 1px solid var(--border); white-space: nowrap; }
+    .header-left { display: flex; align-items: center; gap: 10px; overflow-x: auto; }
+    .index-ticker { display: flex; align-items: center; gap: 11px; padding-right: 11px; border-right: 1px solid var(--border); white-space: nowrap; }
     .idx-box { display: flex; align-items: baseline; gap: 4px; font-size: 11px; }
     .idx-name { font-weight: 600; color: var(--text-strong); }
     .idx-val { font-weight: 600; }
@@ -52,12 +52,12 @@
     .kite-nav { display: flex; align-items: center; gap: 2px; }
     .nav-link {
       background: transparent; border: none; color: var(--text); font-size: 12px;
-      padding: 15px 9px; cursor: pointer; font-weight: 500; position: relative; white-space: nowrap;
+      padding: 15px 8px; cursor: pointer; font-weight: 500; position: relative; white-space: nowrap;
     }
     .nav-link:hover { color: var(--kite-orange); }
     .nav-link.active { color: var(--kite-orange); font-weight: 600; }
     .nav-link.active::after {
-      content: ""; position: absolute; bottom: 0; left: 7px; right: 7px;
+      content: ""; position: absolute; bottom: 0; left: 6px; right: 6px;
       height: 2px; background: var(--kite-orange);
     }
     .header-right { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
@@ -147,7 +147,7 @@
     .stat-num { font-size: 17px; font-weight: 600; color: var(--text-strong); }
     .stat-sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
 
-    .two-col { display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; }
+    .two-col { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; }
     @media (max-width: 1150px) { .two-col { grid-template-columns: 1fr; } }
 
     .panel-box {
@@ -155,9 +155,16 @@
       padding: 14px; margin-bottom: 16px;
     }
     .panel-head {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 10px; font-weight: 600; color: var(--text-strong); font-size: 12.5px;
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: 8px; margin-bottom: 10px; font-weight: 600; color: var(--text-strong); font-size: 12.5px;
     }
+    .tf-bar { display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
+    .tf-btn {
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; cursor: pointer;
+    }
+    .tf-btn:hover { border-color: var(--kite-blue); color: var(--kite-blue); }
+    .tf-btn.active { background: var(--kite-blue); border-color: var(--kite-blue); color: #fff; }
     canvas { width: 100%; display: block; background: var(--chart-bg); border: 1px solid var(--border); border-radius: 3px; }
 
     .up { color: var(--kite-green) !important; }
@@ -231,17 +238,17 @@
         <div class="idx-box">
           <span class="idx-name">NIFTY 50</span>
           <span id="idxNiftyVal" class="idx-val">--</span>
-          <span id="idxNiftyChg" class="idx-chg">Fetching...</span>
+          <span id="idxNiftyChg" class="idx-chg">Loading...</span>
         </div>
         <div class="idx-box">
           <span class="idx-name">BANKNIFTY</span>
           <span id="idxBnfVal" class="idx-val">--</span>
-          <span id="idxBnfChg" class="idx-chg">Fetching...</span>
+          <span id="idxBnfChg" class="idx-chg">Loading...</span>
         </div>
         <div class="idx-box">
-          <span class="idx-name">INDIA VIX</span>
-          <span id="idxVixVal" class="idx-val">--</span>
-          <span id="idxVixChg" class="idx-chg">--</span>
+          <span class="idx-name">S&amp;P 500</span>
+          <span id="idxSpVal" class="idx-val">--</span>
+          <span id="idxSpChg" class="idx-chg">Loading...</span>
         </div>
       </div>
 
@@ -251,12 +258,13 @@
       </a>
 
       <nav class="kite-nav">
-        <button class="nav-link active" data-view="dashboardView">Dashboard & Chart</button>
-        <button class="nav-link" data-view="suggestionsView">Trade Suggestions</button>
-        <button class="nav-link" data-view="fnoView">F&O & Option Chain</button>
-        <button class="nav-link" data-view="mfView">Coin Mutual Funds</button>
-        <button class="nav-link" data-view="ordersView">Orders & Ledger</button>
-        <button class="nav-link" data-view="autopilotView">70/30 AI Train & Cloud</button>
+        <button class="nav-link active" data-view="dashboardView">NSE Dashboard</button>
+        <button class="nav-link" data-view="usMarketsView">🇺🇸 US Markets</button>
+        <button class="nav-link" data-view="suggestionsView">NSE Suggestions</button>
+        <button class="nav-link" data-view="fnoView">F&amp;O Chain</button>
+        <button class="nav-link" data-view="mfView">Coin MF</button>
+        <button class="nav-link" data-view="ordersView">Orders &amp; Ledger</button>
+        <button class="nav-link" data-view="autopilotView">70/30 AI &amp; Cloud</button>
       </nav>
     </div>
 
@@ -269,6 +277,7 @@
   </header>
 
   <div class="kite-workspace">
+    <!-- LEFT NSE MARKETWATCH SIDEBAR -->
     <aside class="marketwatch">
       <div class="mw-search-wrap">
         <span style="color:var(--muted);">🔍</span>
@@ -287,10 +296,10 @@
     </aside>
 
     <main class="main-area">
-      <!-- VIEW 1: DASHBOARD, CHART, MONTE CARLO & NEWS RSS -->
+      <!-- VIEW 1: NSE DASHBOARD & MULTI-TIMEFRAME CHART -->
       <div id="dashboardView" class="view-pane">
         <div class="section-title">
-          <span>Hi, Vishwanath — <strong id="activeSymHeader">RELIANCE</strong> <span style="font-size:11px; color:var(--muted);">NSE • 100% Live Feed</span></span>
+          <span>Hi, Vishwanath — <strong id="activeSymHeader">RELIANCE</strong> <span style="font-size:11px; color:var(--muted);">NSE • Last Session &amp; Full History</span></span>
           <div style="display:flex; gap:8px;">
             <button id="openBuyBtn" class="act-btn act-b" style="padding:6px 14px;">Buy (B)</button>
             <button id="openSellBtn" class="act-btn act-s" style="padding:6px 14px;">Sell (S)</button>
@@ -299,12 +308,12 @@
 
         <div class="stats-strip">
           <div class="stat-card">
-            <div class="stat-lbl">Live Traded Price (LTP)</div>
-            <div id="statLtp" class="stat-num">Fetching...</div>
-            <div id="statChg" class="stat-sub">Connecting to NSE/Yahoo</div>
+            <div class="stat-lbl">Last Traded / Close Price</div>
+            <div id="statLtp" class="stat-num">Loading...</div>
+            <div id="statChg" class="stat-sub">Fetching session data</div>
           </div>
           <div class="stat-card">
-            <div class="stat-lbl">Live Intraday VWAP & Range</div>
+            <div class="stat-lbl">VWAP &amp; Period Range</div>
             <div id="statVwap" class="stat-num">--</div>
             <div id="statRange" class="stat-sub">L: -- • H: --</div>
           </div>
@@ -314,7 +323,7 @@
             <div id="statMcStop" class="stat-sub">Stop Prob: --%</div>
           </div>
           <div class="stat-card">
-            <div class="stat-lbl">Combined AI Net P&L</div>
+            <div class="stat-lbl">Combined AI Net P&amp;L</div>
             <div id="statTotalPnl" class="stat-num">₹0.00</div>
             <div id="statWinRate" class="stat-sub">Cloud + Local Ledger</div>
           </div>
@@ -324,18 +333,27 @@
           <div>
             <div class="panel-box">
               <div class="panel-head">
-                <span id="chartTitle">RELIANCE — Live 5 Min Intraday Chart & VWAP</span>
-                <span id="chartStatus" style="font-size:11px; color:var(--muted);">Fetching live bars...</span>
+                <div class="tf-bar" id="timeframeBar">
+                  <button class="tf-btn active" data-tf="5m">5m</button>
+                  <button class="tf-btn" data-tf="30m">30m</button>
+                  <button class="tf-btn" data-tf="1h">1H</button>
+                  <button class="tf-btn" data-tf="1mo">1M</button>
+                  <button class="tf-btn" data-tf="1y">1Y</button>
+                  <button class="tf-btn" data-tf="5y">5Y</button>
+                  <button class="tf-btn" data-tf="max">MAX (Lifetime)</button>
+                  <button class="tf-btn" id="chartStyleBtn" style="margin-left:6px;">Candles</button>
+                </div>
+                <span id="chartStatus" style="font-size:11px; color:var(--muted);">Loading chart...</span>
               </div>
-              <canvas id="kiteChart" height="310"></canvas>
+              <canvas id="kiteChart" height="325"></canvas>
             </div>
 
             <div class="panel-box">
               <div class="panel-head">
-                <span>Live Google News India RSS Feed & Event Risk Scan</span>
+                <span>Live Google News India RSS Feed &amp; Event Risk Scan</span>
                 <span id="newsRiskBadge" class="tag-pass">NO EVENT BLOCK</span>
               </div>
-              <div id="liveNewsBox" style="max-height:140px; overflow-y:auto;">
+              <div id="liveNewsBox" style="max-height:135px; overflow-y:auto;">
                 <div style="color:var(--muted); font-size:11.5px;">Scanning live NSE corporate headlines...</div>
               </div>
             </div>
@@ -351,22 +369,91 @@
         </div>
       </div>
 
-      <!-- VIEW 2: MULTI-CAP TRADE SUGGESTIONS -->
+      <!-- VIEW 2: US MARKETS (NYSE / NASDAQ LIVE DATA & TOP US STOCKS) -->
+      <div id="usMarketsView" class="view-pane hidden">
+        <div class="section-title">
+          <span>🇺🇸 US Markets (NYSE &amp; NASDAQ) — <strong id="activeUsSymHeader">NVDA</strong> <span style="font-size:11px; color:var(--muted);">Regular Hours: 09:30–16:00 EST (20:00–02:30 IST)</span></span>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <input id="usCustomInput" type="text" placeholder="Any US ticker (e.g. COIN, ARM, ORCL)..." style="padding:5px 9px; border:1px solid var(--border); border-radius:4px; background:var(--surface); color:var(--text-strong); font-size:12px;" />
+            <button id="usAddBtn" class="act-btn act-b" style="padding:6px 12px;">Load US Stock</button>
+          </div>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-card">
+            <div class="stat-lbl">S&amp;P 500 (^GSPC)</div>
+            <div id="usSpVal" class="stat-num">Loading...</div>
+            <div id="usSpChg" class="stat-sub">--</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-lbl">NASDAQ Composite (^IXIC)</div>
+            <div id="usNdxVal" class="stat-num">Loading...</div>
+            <div id="usNdxChg" class="stat-sub">--</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-lbl">Dow Jones Industrial (^DJI)</div>
+            <div id="usDowVal" class="stat-num">Loading...</div>
+            <div id="usDowChg" class="stat-sub">--</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-lbl">Selected US Stock LTP (USD)</div>
+            <div id="usActiveLtp" class="stat-num">--</div>
+            <div id="usActiveChg" class="stat-sub">--</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel-box">
+            <div class="panel-head">
+              <div class="tf-bar" id="usTimeframeBar">
+                <button class="tf-btn active" data-ustf="5m">5m</button>
+                <button class="tf-btn" data-ustf="30m">30m</button>
+                <button class="tf-btn" data-ustf="1h">1H</button>
+                <button class="tf-btn" data-ustf="1mo">1M</button>
+                <button class="tf-btn" data-ustf="1y">1Y</button>
+                <button class="tf-btn" data-ustf="5y">5Y</button>
+                <button class="tf-btn" data-ustf="max">MAX</button>
+              </div>
+              <span id="usChartStatus" style="font-size:11px; color:var(--muted);">Loading US chart...</span>
+            </div>
+            <canvas id="usChartCanvas" height="325"></canvas>
+          </div>
+
+          <div class="panel-box">
+            <div class="panel-head">
+              <span>Top US Stocks Live Watchlist (USD $)</span>
+              <span style="font-size:11px; color:var(--muted);">Click row to chart</span>
+            </div>
+            <div style="max-height:360px; overflow-y:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ticker</th>
+                    <th>Price ($)</th>
+                    <th>Chg %</th>
+                    <th>Trade</th>
+                  </tr>
+                </thead>
+                <tbody id="usStocksTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: MULTI-CAP NSE TRADE SUGGESTIONS -->
       <div id="suggestionsView" class="view-pane hidden">
         <div class="section-title">
-          <span>Live Multi-Cap Trade Suggestions (250+ Cloud-Scanned NSE Stocks)</span>
+          <span>Multi-Cap NSE Trade Suggestions (Last Session &amp; Live Scanner)</span>
           <select id="sugTierFilter" style="padding:5px 8px; border:1px solid var(--border); border-radius:4px; background:var(--surface); color:var(--text-strong);">
-            <option value="ALL">All Market Caps (Large, Mid, Small & Penny)</option>
-            <option value="PENNY">Penny & Small Cap (&lt; ₹100)</option>
-            <option value="MID">Small & Mid Cap (₹100 – ₹500)</option>
+            <option value="ALL">All Market Caps (Large, Mid, Small &amp; Penny)</option>
+            <option value="PENNY">Penny &amp; Small Cap (&lt; ₹100)</option>
+            <option value="MID">Small &amp; Mid Cap (₹100 – ₹500)</option>
             <option value="LARGE">Large Cap (&gt; ₹500)</option>
           </select>
         </div>
 
         <div class="panel-box">
-          <div class="panel-head">
-            <span>Filtered Exclusively for Volume ≥ 5L, Circuit Guard &lt; 9.2%, and Calibrated 70/30 R:R</span>
-          </div>
           <div style="overflow-x:auto;">
             <table>
               <thead>
@@ -374,10 +461,10 @@
                   <th>Stock</th>
                   <th>Cap Tier</th>
                   <th>Signal</th>
-                  <th>Live Entry ₹</th>
+                  <th>Last Price ₹</th>
                   <th>Calibrated SL ₹</th>
                   <th>Calibrated Target ₹</th>
-                  <th>Live Volume</th>
+                  <th>Session Volume</th>
                   <th>Credibility</th>
                   <th>Action</th>
                 </tr>
@@ -388,10 +475,10 @@
         </div>
       </div>
 
-      <!-- VIEW 3: LIVE F&O & REAL NSE OPTION CHAIN -->
+      <!-- VIEW 4: F&O & OPTION CHAIN -->
       <div id="fnoView" class="view-pane hidden">
         <div class="section-title">
-          <span>F&O Suggestions & Live ATM ±5 Option Chain</span>
+          <span>F&amp;O Suggestions &amp; ATM ±5 Option Chain</span>
           <select id="fnoUnderlyingSelect" style="padding:5px 10px; border:1px solid var(--border); border-radius:4px; background:var(--surface); color:var(--text-strong);">
             <option value="NIFTY">NIFTY (Lot: 75)</option>
             <option value="BANKNIFTY">BANKNIFTY (Lot: 30)</option>
@@ -403,12 +490,12 @@
 
         <div class="stats-strip">
           <div class="stat-card">
-            <div class="stat-lbl">Live Underlying Spot</div>
-            <div id="fnoSpotVal" class="stat-num">Fetching...</div>
+            <div class="stat-lbl">Last / Live Underlying Spot</div>
+            <div id="fnoSpotVal" class="stat-num">Loading...</div>
             <div id="fnoSpotChg" class="stat-sub">--</div>
           </div>
           <div class="stat-card">
-            <div class="stat-lbl">Live Put-Call Ratio (PCR)</div>
+            <div class="stat-lbl">Put-Call Ratio (PCR)</div>
             <div id="fnoPcrVal" class="stat-num">--</div>
             <div id="fnoExpiryLabel" class="stat-sub">Nearest Expiry</div>
           </div>
@@ -418,14 +505,14 @@
             <div class="stat-sub">Minimum Option Writer Loss</div>
           </div>
           <div class="stat-card">
-            <div class="stat-lbl">Live India VIX</div>
+            <div class="stat-lbl">India VIX</div>
             <div id="fnoVixStat" class="stat-num">--</div>
-            <div class="stat-sub">Volatility Regime</div>
+            <div id="fnoVixSub" class="stat-sub">Volatility Regime</div>
           </div>
         </div>
 
         <div class="panel-box">
-          <div class="panel-head"><span>Live F&O Trade Setups</span></div>
+          <div class="panel-head"><span>F&amp;O Trade Setups</span></div>
           <div style="overflow-x:auto;">
             <table>
               <thead>
@@ -446,9 +533,7 @@
         </div>
 
         <div class="panel-box">
-          <div class="panel-head">
-            <span>ATM ±5 Strike Option Chain (Real NSE OI when Synced, Live VIX Fallback Otherwise)</span>
-          </div>
+          <div class="panel-head"><span>ATM ±5 Strike Option Chain</span></div>
           <div style="overflow-x:auto;">
             <table>
               <thead>
@@ -468,17 +553,17 @@
         </div>
       </div>
 
-      <!-- VIEW 4: COIN DIRECT MUTUAL FUNDS -->
+      <!-- VIEW 5: COIN DIRECT MUTUAL FUNDS -->
       <div id="mfView" class="view-pane hidden">
         <div class="section-title">
-          <span>Coin Direct Mutual Funds — Live AMFI NAVs & Rolling CAGRs</span>
+          <span>Coin Direct Mutual Funds — AMFI NAVs &amp; Rolling CAGRs</span>
           <select id="mfCategoryFilter" style="padding:5px 10px; border:1px solid var(--border); border-radius:4px; background:var(--surface); color:var(--text-strong);">
             <option value="ALL">All Categories (Direct Growth)</option>
-            <option value="Index / Large Cap">Index & Large Cap</option>
+            <option value="Index / Large Cap">Index &amp; Large Cap</option>
             <option value="Flexi Cap">Flexi Cap</option>
             <option value="Mid Cap">Mid Cap</option>
             <option value="Small Cap">Small Cap</option>
-            <option value="Liquid / Debt">Liquid & Debt</option>
+            <option value="Liquid / Debt">Liquid &amp; Debt</option>
           </select>
         </div>
 
@@ -489,10 +574,10 @@
                 <tr>
                   <th>AMFI Direct Growth Scheme</th>
                   <th>Category</th>
-                  <th>Live NAV ₹</th>
+                  <th>Latest NAV ₹</th>
                   <th>NAV Date</th>
-                  <th>Live 1Y Return</th>
-                  <th>Live 3Y CAGR</th>
+                  <th>1Y Return</th>
+                  <th>3Y CAGR</th>
                   <th>TER</th>
                   <th>Credibility</th>
                   <th>Action</th>
@@ -504,35 +589,35 @@
         </div>
       </div>
 
-      <!-- VIEW 5: ORDERS & LEDGER -->
+      <!-- VIEW 6: ORDERS & LEDGER -->
       <div id="ordersView" class="view-pane hidden">
         <div class="section-title">
-          <span>Executed Paper Orders (Live Target / SL / 15:15 IST Auto-Exit Armed)</span>
+          <span>Executed Paper Orders (NSE &amp; US Markets)</span>
           <button id="clearOrdersBtn" class="pill-btn">Clear Local Orders</button>
         </div>
 
         <div class="panel-box">
           <table>
-            <thead><tr><th>Source</th><th>Instrument</th><th>Segment</th><th>Side</th><th>Qty</th><th>Entry ₹</th><th>SL / Target ₹</th><th>LTP / Exit ₹</th><th>P&L (₹)</th><th>Status</th></tr></thead>
+            <thead><tr><th>Source</th><th>Instrument</th><th>Segment</th><th>Side</th><th>Qty</th><th>Entry</th><th>SL / Target</th><th>LTP / Exit</th><th>P&amp;L</th><th>Status</th></tr></thead>
             <tbody id="ordersTableBody"></tbody>
           </table>
         </div>
 
         <div class="panel-box">
-          <div class="panel-head"><span>Day-by-Day P&L Statement</span></div>
+          <div class="panel-head"><span>Day-by-Day P&amp;L Statement</span></div>
           <table>
-            <thead><tr><th>Date</th><th>Net Realized P&L (₹)</th></tr></thead>
+            <thead><tr><th>Date</th><th>Net Realized P&amp;L (₹)</th></tr></thead>
             <tbody id="dailyStatementBody"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- VIEW 6: 70/30 WALK-FORWARD AI TRAINER, EQUITY CURVE & CLOUD -->
+      <!-- VIEW 7: 70/30 WALK-FORWARD AI TRAINER, EQUITY CURVE & CLOUD -->
       <div id="autopilotView" class="view-pane hidden">
         <div class="section-title">
-          <span>70/30 Walk-Forward AI Trainer, Equity Curve & 24/7 Cloud Worker</span>
+          <span>70/30 Walk-Forward AI Trainer, Equity Curve &amp; 24/7 Cloud Worker</span>
           <div style="display:flex; gap:8px;">
-            <button id="runWalkForwardBtn" class="act-btn act-b" style="padding:6px 12px;">1. Train 70/30 on Live NSE History</button>
+            <button id="runWalkForwardBtn" class="act-btn act-b" style="padding:6px 12px;">1. Train 70/30 on 5d NSE History</button>
             <button id="toggleBrowserPilot" class="act-btn act-s" style="padding:6px 12px;">2. Start Live Browser Auto-Pilot</button>
           </div>
         </div>
@@ -562,14 +647,14 @@
 
         <div class="panel-box">
           <div class="panel-head">
-            <span>Cumulative AI Equity Curve & Drawdown Tracker</span>
+            <span>Cumulative AI Equity Curve &amp; Drawdown Tracker</span>
             <span id="browserPollStatus" style="font-size:11px; color:var(--muted);">Browser Polling: OFF</span>
           </div>
           <canvas id="equityChart" height="210"></canvas>
         </div>
 
         <div class="panel-box">
-          <div class="panel-head"><span>Engine & Calibration Console</span></div>
+          <div class="panel-head"><span>Engine &amp; Calibration Console</span></div>
           <div id="consoleBox" class="log-stream"></div>
         </div>
       </div>
@@ -588,12 +673,12 @@
       <div class="ow-body">
         <div class="ow-grid">
           <div class="ow-field"><label>Qty / Units</label><input id="owQty" type="number" value="10" /></div>
-          <div class="ow-field"><label>Live Price / NAV (₹)</label><input id="owPrice" type="number" step="0.05" /></div>
-          <div class="ow-field"><label>Stop Loss (₹)</label><input id="owSl" type="number" step="0.05" /></div>
-          <div class="ow-field"><label>Target (₹)</label><input id="owTarget" type="number" step="0.05" /></div>
+          <div class="ow-field"><label>Price / NAV</label><input id="owPrice" type="number" step="0.05" /></div>
+          <div class="ow-field"><label>Stop Loss</label><input id="owSl" type="number" step="0.05" /></div>
+          <div class="ow-field"><label>Target</label><input id="owTarget" type="number" step="0.05" /></div>
         </div>
         <div style="font-size:11.5px; color:var(--muted);">
-          Auto-Exit Protection: <strong style="color:var(--kite-green);">SL, Target & 15:15 IST Square-Off Armed</strong>
+          Auto-Exit Protection: <strong style="color:var(--kite-green);">SL, Target &amp; Square-Off Armed</strong>
         </div>
       </div>
       <div class="ow-footer">
@@ -610,6 +695,20 @@
         "BEL", "ZOMATO", "RVNL", "IRFC", "PNB",
         "SUZLON", "IDEA", "YESBANK", "NHPC", "UCOBANK", "RENUKA"
       ];
+
+      const DEFAULT_US_STOCKS = [
+        "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "AVGO", "AMD", "NFLX", "PLTR", "SOFI"
+      ];
+
+      const TIMEFRAMES = {
+        "5m":  { interval: "5m",  range: "5d",  label: "5m (Last Sessions)" },
+        "30m": { interval: "30m", range: "1mo", label: "30m (1 Month)" },
+        "1h":  { interval: "1h",  range: "3mo", label: "1H (3 Months)" },
+        "1mo": { interval: "1d",  range: "1mo", label: "1D (1 Month)" },
+        "1y":  { interval: "1d",  range: "1y",  label: "1D (1 Year)" },
+        "5y":  { interval: "1wk", range: "5y",  label: "1W (5 Years)" },
+        "max": { interval: "1mo", range: "max", label: "1M (Lifetime MAX)" }
+      };
 
       const MF_CODES = [
         { code: "120716", cat: "Index / Large Cap", ter: "0.18%" },
@@ -628,18 +727,24 @@
         SBIN: { yahoo: "SBIN.NS", step: 5, lot: 750 }
       };
 
-      let customSymbols = JSON.parse(localStorage.getItem("kite_syms_v5") || "null") || SYMBOL_UNIVERSE;
-      let liveQuotes = JSON.parse(localStorage.getItem("kite_live_quotes_v5") || "{}");
-      let liveIndices = JSON.parse(localStorage.getItem("kite_live_indices_v5") || "{}");
-      let liveMfs = JSON.parse(localStorage.getItem("kite_live_mfs_v5") || "[]");
-      let candleCache = JSON.parse(localStorage.getItem("kite_candles_v5") || "{}");
-      let orders = JSON.parse(localStorage.getItem("kite_orders_v5") || "[]");
-      let cloudData = JSON.parse(localStorage.getItem("kite_cloud_v5") || "null");
-      let calibrated = JSON.parse(localStorage.getItem("kite_calibrated_v5") || "null") || { slPct: 0.0075, rrMult: 2.1 };
+      let customSymbols = JSON.parse(localStorage.getItem("kite_syms_v7") || "null") || SYMBOL_UNIVERSE;
+      let usSymbols = JSON.parse(localStorage.getItem("kite_us_syms_v7") || "null") || DEFAULT_US_STOCKS;
+      let liveQuotes = JSON.parse(localStorage.getItem("kite_live_quotes_v7") || "{}");
+      let usQuotes = JSON.parse(localStorage.getItem("kite_us_quotes_v7") || "{}");
+      let liveIndices = JSON.parse(localStorage.getItem("kite_live_indices_v7") || "{}");
+      let liveMfs = JSON.parse(localStorage.getItem("kite_live_mfs_v7") || "[]");
+      let candleCache = JSON.parse(localStorage.getItem("kite_candles_v7") || "{}");
+      let orders = JSON.parse(localStorage.getItem("kite_orders_v7") || "[]");
+      let cloudData = JSON.parse(localStorage.getItem("kite_cloud_v7") || "null");
+      let calibrated = JSON.parse(localStorage.getItem("kite_calibrated_v7") || "null") || { slPct: 0.0075, rrMult: 2.1 };
 
       let activeSym = "RELIANCE";
+      let activeTf = "5m";
+      let activeUsSym = "NVDA";
+      let activeUsTf = "5m";
+      let chartStyle = "candle";
       let activeFilter = "ALL";
-      let modalContext = { side: "BUY", sym: "RELIANCE", seg: "EQ MIS" };
+      let modalContext = { side: "BUY", sym: "RELIANCE", seg: "EQ MIS", curr: "₹" };
       let pollInterval = null;
       let audioEnabled = true;
       let newsRiskFlag = false;
@@ -674,7 +779,7 @@
       }
 
       function getTier(ltp) {
-        if (!ltp || ltp <= 0) return { code: "PENDING", label: "FETCHING" };
+        if (!ltp || ltp <= 0) return { code: "PENDING", label: "LOADING" };
         if (ltp < 100) return { code: "PENNY", label: "PENNY (<₹100)" };
         if (ltp <= 500) return { code: "MID", label: "MID CAP" };
         return { code: "LARGE", label: "LARGE CAP" };
@@ -686,7 +791,6 @@
         return hh * 60 + mm;
       }
 
-      // LIVE TARGET / STOP LOSS / 15:15 IST AUTO-EXIT EVALUATOR FOR LOCAL BROWSER ORDERS
       function evaluateLocalOrderExits(symbol, liveLtp) {
         if (!liveLtp || liveLtp <= 0 || !orders.length) return;
         const hm = getIstMinutesOfDay();
@@ -695,8 +799,9 @@
 
         orders.forEach(o => {
           if (o.status !== "OPEN") return;
-          if (o.seg && o.seg.includes("COIN")) return; // Mutual funds don't auto-square off intraday
-          const price = o.symbol === symbol ? liveLtp : (liveQuotes[o.symbol]?.ltp || 0);
+          if (o.seg && o.seg.includes("COIN")) return;
+          const isUs = o.seg && o.seg.includes("US");
+          const price = o.symbol === symbol ? liveLtp : ((isUs ? usQuotes[o.symbol]?.ltp : liveQuotes[o.symbol]?.ltp) || 0);
           if (!price || price <= 0) return;
 
           const isLong = o.side === "BUY";
@@ -710,7 +815,7 @@
             exitReason = "TARGET_HIT";
           } else if (sl > 0 && ((isLong && price <= sl) || (!isLong && price >= sl))) {
             exitReason = "STOP_LOSS";
-          } else if (isSquareOffTime) {
+          } else if (!isUs && isSquareOffTime) {
             exitReason = "15:15_IST_SQUAREOFF";
           }
 
@@ -718,10 +823,9 @@
             o.exit = price;
             o.pnl = currentPnl;
             o.status = currentPnl >= 0 ? `WIN (${exitReason})` : `LOSS (${exitReason})`;
-            o.closedAt = new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
             changed = true;
             playChime(currentPnl >= 0 ? 960 : 340);
-            log(`AUTO-EXIT [${exitReason}]: ${o.side} ${o.qty} ${o.symbol} @ ₹${price.toFixed(2)} | P&L: ${currentPnl >= 0 ? "+" : ""}₹${currentPnl.toFixed(2)}`);
+            log(`AUTO-EXIT [${exitReason}]: ${o.side} ${o.qty} ${o.symbol} @ ${o.curr || "₹"}${price.toFixed(2)}`);
           } else if (o.exit !== price || o.pnl !== currentPnl) {
             o.exit = price;
             o.pnl = currentPnl;
@@ -730,7 +834,7 @@
         });
 
         if (changed) {
-          localStorage.setItem("kite_orders_v5", JSON.stringify(orders));
+          localStorage.setItem("kite_orders_v7", JSON.stringify(orders));
           renderLedgers();
         }
       }
@@ -738,7 +842,10 @@
       document.getElementById("themeToggleBtn").onclick = function () {
         document.body.classList.toggle("dark");
         this.textContent = document.body.classList.contains("dark") ? "☀️ Light" : "🌙 Dark";
-        if (candleCache[activeSym]) drawKiteChart(candleCache[activeSym].bars);
+        const nseKey = `NSE_${activeSym}_${activeTf}`;
+        if (candleCache[nseKey]) drawCandlesOnCanvas("kiteChart", candleCache[nseKey].bars, activeTf, chartStyle);
+        const usKey = `US_${activeUsSym}_${activeUsTf}`;
+        if (candleCache[usKey]) drawCandlesOnCanvas("usChartCanvas", candleCache[usKey].bars, activeUsTf, "candle");
         drawEquityCurve();
       };
 
@@ -753,6 +860,10 @@
           document.querySelectorAll(".view-pane").forEach(v => v.classList.add("hidden"));
           btn.classList.add("active");
           document.getElementById(btn.dataset.view).classList.remove("hidden");
+          if (btn.dataset.view === "usMarketsView") {
+            renderUsStocksTable();
+            loadUsSymbol(activeUsSym, activeUsTf);
+          }
           if (btn.dataset.view === "suggestionsView") renderTradeSuggestions();
           if (btn.dataset.view === "fnoView") renderFnOPage();
           if (btn.dataset.view === "mfView") renderMfTable();
@@ -769,15 +880,40 @@
         };
       });
 
-      async function fetchYahooLive(encodedTicker, range = "1d") {
-        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodedTicker}?interval=5m&range=${range}`;
+      document.querySelectorAll("#timeframeBar .tf-btn[data-tf]").forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll("#timeframeBar .tf-btn[data-tf]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeTf = btn.dataset.tf;
+          loadSymbol(activeSym, activeTf);
+        };
+      });
+
+      document.querySelectorAll("#usTimeframeBar .tf-btn[data-ustf]").forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll("#usTimeframeBar .tf-btn[data-ustf]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeUsTf = btn.dataset.ustf;
+          loadUsSymbol(activeUsSym, activeUsTf);
+        };
+      });
+
+      document.getElementById("chartStyleBtn").onclick = function () {
+        chartStyle = chartStyle === "candle" ? "line" : "candle";
+        this.textContent = chartStyle === "candle" ? "Candles" : "Line";
+        const key = `NSE_${activeSym}_${activeTf}`;
+        if (candleCache[key]) drawCandlesOnCanvas("kiteChart", candleCache[key].bars, activeTf, chartStyle);
+      };
+
+      async function fetchYahooChart(encodedTicker, interval = "5m", range = "5d") {
+        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodedTicker}?interval=${interval}&range=${range}`;
         const proxies = [
           `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
           `https://corsproxy.io/?${encodeURIComponent(url)}`
         ];
         for (const pUrl of proxies) {
           const ctrl = new AbortController();
-          const t = setTimeout(() => ctrl.abort(), 3800);
+          const t = setTimeout(() => ctrl.abort(), 4500);
           try {
             const r = await fetch(pUrl, { signal: ctrl.signal });
             clearTimeout(t);
@@ -785,24 +921,27 @@
             const j = await r.json();
             const res = j?.chart?.result?.[0];
             if (!res) continue;
+            const timestamps = res.timestamp || [];
             const q = res.indicators.quote[0];
             const bars = [];
             for (let i = 0; i < (q.close || []).length; i++) {
               if (q.close[i] != null && q.open[i] != null) {
                 bars.push({
+                  t: timestamps[i] || 0,
                   o: +q.open[i].toFixed(2),
-                  h: +q.high[i].toFixed(2),
-                  l: +q.low[i].toFixed(2),
+                  h: +(q.high[i] ?? q.close[i]).toFixed(2),
+                  l: +(q.low[i] ?? q.close[i]).toFixed(2),
                   c: +q.close[i].toFixed(2),
                   v: q.volume[i] || 0
                 });
               }
             }
             const ltp = +(res.meta.regularMarketPrice || (bars.length ? bars[bars.length - 1].c : 0)).toFixed(2);
-            const prev = +(res.meta.chartPreviousClose || (bars.length ? bars[0].o : ltp)).toFixed(2);
+            const prev = +(res.meta.previousClose || res.meta.chartPreviousClose || (bars.length > 1 ? bars[bars.length - 2].c : ltp)).toFixed(2);
             if (ltp > 0) {
               const chgPct = prev > 0 ? +(((ltp - prev) / prev) * 100).toFixed(2) : 0;
-              const vol = bars.reduce((a, b) => a + (b.v || 0), 0);
+              const recentSlice = bars.slice(-75);
+              const vol = recentSlice.reduce((a, b) => a + (b.v || 0), 0);
               return { ltp, prev, chg: +(ltp - prev).toFixed(2), chg_pct: chgPct, volume: vol, bars };
             }
           } catch (e) { clearTimeout(t); }
@@ -874,7 +1013,7 @@
         };
       }
 
-      function renderTopIndices() {
+      function renderAllIndices() {
         const n = liveIndices.NIFTY;
         if (n && n.ltp) {
           const up = n.chg_pct >= 0;
@@ -889,20 +1028,44 @@
           document.getElementById("idxBnfVal").className = "idx-val " + (up ? "up" : "dn");
           document.getElementById("idxBnfChg").textContent = `${up ? "+" : ""}${b.chg_pct}%`;
         }
-        const v = liveIndices.INDIAVIX;
-        if (v && v.ltp) {
-          document.getElementById("idxVixVal").textContent = v.ltp.toFixed(2);
-          document.getElementById("idxVixChg").textContent = v.ltp < 18 ? "CALM" : "HIGH VOL";
+        const sp = liveIndices.SP500;
+        if (sp && sp.ltp) {
+          const up = sp.chg_pct >= 0;
+          document.getElementById("idxSpVal").textContent = sp.ltp.toLocaleString("en-US", { minimumFractionDigits: 2 });
+          document.getElementById("idxSpVal").className = "idx-val " + (up ? "up" : "dn");
+          document.getElementById("idxSpChg").textContent = `${up ? "+" : ""}${sp.chg_pct}%`;
+
+          document.getElementById("usSpVal").textContent = sp.ltp.toLocaleString("en-US", { minimumFractionDigits: 2 });
+          document.getElementById("usSpChg").textContent = `${up ? "+" : ""}${sp.chg_pct}% Today`;
+          document.getElementById("usSpChg").className = "stat-sub " + (up ? "up" : "dn");
+        }
+        const ndx = liveIndices.NASDAQ;
+        if (ndx && ndx.ltp) {
+          const up = ndx.chg_pct >= 0;
+          document.getElementById("usNdxVal").textContent = ndx.ltp.toLocaleString("en-US", { minimumFractionDigits: 2 });
+          document.getElementById("usNdxChg").textContent = `${up ? "+" : ""}${ndx.chg_pct}% Today`;
+          document.getElementById("usNdxChg").className = "stat-sub " + (up ? "up" : "dn");
+        }
+        const dow = liveIndices.DOW;
+        if (dow && dow.ltp) {
+          const up = dow.chg_pct >= 0;
+          document.getElementById("usDowVal").textContent = dow.ltp.toLocaleString("en-US", { minimumFractionDigits: 2 });
+          document.getElementById("usDowChg").textContent = `${up ? "+" : ""}${dow.chg_pct}% Today`;
+          document.getElementById("usDowChg").className = "stat-sub " + (up ? "up" : "dn");
         }
       }
 
-      async function refreshLiveIndices() {
-        for (const [key, enc] of [["NIFTY", "%5ENSEI"], ["BANKNIFTY", "%5ENSEBANK"], ["INDIAVIX", "%5EINDIAVIX"]]) {
-          const d = await fetchYahooLive(enc);
+      async function refreshAllIndices() {
+        const pairs = [
+          ["NIFTY", "%5ENSEI"], ["BANKNIFTY", "%5ENSEBANK"], ["INDIAVIX", "%5EINDIAVIX"],
+          ["SP500", "%5EGSPC"], ["NASDAQ", "%5EIXIC"], ["DOW", "%5EDJI"]
+        ];
+        for (const [key, enc] of pairs) {
+          const d = await fetchYahooChart(enc, "5m", "5d");
           if (d) {
             liveIndices[key] = d;
-            localStorage.setItem("kite_live_indices_v5", JSON.stringify(liveIndices));
-            renderTopIndices();
+            localStorage.setItem("kite_live_indices_v7", JSON.stringify(liveIndices));
+            renderAllIndices();
           }
         }
       }
@@ -931,7 +1094,7 @@
               ${tier.code === "PENNY" ? `<span class="mw-tier-badge">PENNY</span>` : ""}
             </div>
             <div class="mw-price-col">
-              <span class="mw-chg">${ltp ? `${isUp ? "+" : ""}${chg.toFixed(2)}%` : "Fetching..."}</span>
+              <span class="mw-chg">${ltp ? `${isUp ? "+" : ""}${chg.toFixed(2)}%` : "Loading..."}</span>
               <span class="mw-ltp ${ltp ? (isUp ? "up" : "dn") : ""}">${ltp ? ltp.toFixed(2) : "--"}</span>
             </div>
             ${ltp ? `
@@ -946,9 +1109,9 @@
             const act = e.target.dataset.act;
             if ((act === "BUY" || act === "SELL") && ltp > 0) {
               e.stopPropagation();
-              openOrderModal(act, sym, ltp, "EQ MIS");
+              openOrderModal(act, sym, ltp, "EQ MIS", "₹");
             } else {
-              loadSymbol(sym);
+              loadSymbol(sym, activeTf);
             }
           };
           list.appendChild(row);
@@ -965,18 +1128,32 @@
         if (!sym) return;
         if (!customSymbols.includes(sym)) {
           customSymbols.unshift(sym);
-          localStorage.setItem("kite_syms_v5", JSON.stringify(customSymbols));
+          localStorage.setItem("kite_syms_v7", JSON.stringify(customSymbols));
         }
         document.getElementById("searchInput").value = "";
         renderMarketwatch();
-        loadSymbol(sym);
+        loadSymbol(sym, activeTf);
       };
 
-      function drawKiteChart(bars) {
-        const canvas = document.getElementById("kiteChart");
+      function formatAxisDate(ts, tf) {
+        if (!ts) return "";
+        const d = new Date(ts * 1000);
+        if (tf === "5m" || tf === "30m" || tf === "1h") {
+          return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" }) + " " +
+                 d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false });
+        }
+        if (tf === "5y" || tf === "max") {
+          return d.toLocaleDateString("en-IN", { month: "short", year: "2-digit" });
+        }
+        return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+      }
+
+      function drawCandlesOnCanvas(canvasId, bars, tf, styleMode = "candle", emptyLabel = "Fetching candles...") {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
         const dpr = window.devicePixelRatio || 1;
         const rect = canvas.getBoundingClientRect();
-        const w = rect.width || 680, h = 310;
+        const w = rect.width || 680, h = 325;
         canvas.width = w * dpr; canvas.height = h * dpr;
         const ctx = canvas.getContext("2d");
         ctx.scale(dpr, dpr);
@@ -989,32 +1166,42 @@
         if (!bars || !bars.length) {
           ctx.fillStyle = mutedColor;
           ctx.font = "13px sans-serif";
-          ctx.fillText("Waiting for live NSE 5-minute candles...", 24, h / 2);
+          ctx.fillText(emptyLabel, 24, h / 2);
           return;
         }
 
-        const maxP = Math.max(...bars.map(b => b.h));
-        const minP = Math.min(...bars.map(b => b.l));
-        const pad = (maxP - minP) * 0.12 || 0.5;
+        const displayBars = bars.slice(-140);
+        const maxP = Math.max(...displayBars.map(b => b.h));
+        const minP = Math.min(...displayBars.map(b => b.l));
+        const pad = (maxP - minP) * 0.10 || 0.5;
         const top = maxP + pad, bot = Math.max(0.05, minP - pad);
-        const yOf = p => 18 + ((top - p) / (top - bot)) * (h - 40);
+        const yOf = p => 16 + ((top - p) / (top - bot)) * (h - 46);
 
         ctx.strokeStyle = gridColor;
         ctx.lineWidth = 1;
         for (let i = 0; i <= 4; i++) {
-          const y = 18 + (i / 4) * (h - 40);
-          ctx.beginPath(); ctx.moveTo(10, y); ctx.lineTo(w - 60, y); ctx.stroke();
+          const y = 16 + (i / 4) * (h - 46);
+          ctx.beginPath(); ctx.moveTo(10, y); ctx.lineTo(w - 62, y); ctx.stroke();
           ctx.fillStyle = mutedColor;
           ctx.font = "11px sans-serif";
-          ctx.fillText((top - (i / 4) * (top - bot)).toFixed(2), w - 55, y + 4);
+          ctx.fillText((top - (i / 4) * (top - bot)).toFixed(2), w - 57, y + 4);
+        }
+
+        const step = (w - 75) / displayBars.length;
+
+        ctx.fillStyle = mutedColor;
+        ctx.font = "10px sans-serif";
+        const labelStep = Math.max(1, Math.floor(displayBars.length / 5));
+        for (let i = 0; i < displayBars.length; i += labelStep) {
+          const x = 14 + i * step;
+          ctx.fillText(formatAxisDate(displayBars[i].t, tf), x, h - 8);
         }
 
         let pv = 0, vv = 0;
-        const step = (w - 75) / bars.length;
         ctx.strokeStyle = "#4184f3";
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        bars.forEach((b, i) => {
+        displayBars.forEach((b, i) => {
           pv += ((b.h + b.l + b.c) / 3) * (b.v || 1);
           vv += (b.v || 1);
           const x = 14 + i * step + step / 2;
@@ -1023,26 +1210,38 @@
         });
         ctx.stroke();
 
-        bars.forEach((b, i) => {
-          const x = 14 + i * step + step / 2;
-          const up = b.c >= b.o;
-          ctx.strokeStyle = up ? "#4caf50" : "#df514c";
-          ctx.fillStyle = up ? "#4caf50" : "#df514c";
-          ctx.beginPath(); ctx.moveTo(x, yOf(b.h)); ctx.lineTo(x, yOf(b.l)); ctx.stroke();
-          const bt = yOf(Math.max(b.o, b.c));
-          const bh = Math.max(2, Math.abs(yOf(b.o) - yOf(b.c)));
-          ctx.fillRect(x - Math.max(2, step * 0.28), bt, Math.max(4, step * 0.56), bh);
-        });
+        if (styleMode === "line") {
+          ctx.strokeStyle = "#ff5722";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          displayBars.forEach((b, i) => {
+            const x = 14 + i * step + step / 2;
+            const y = yOf(b.c);
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+        } else {
+          displayBars.forEach((b, i) => {
+            const x = 14 + i * step + step / 2;
+            const up = b.c >= b.o;
+            ctx.strokeStyle = up ? "#4caf50" : "#df514c";
+            ctx.fillStyle = up ? "#4caf50" : "#df514c";
+            ctx.beginPath(); ctx.moveTo(x, yOf(b.h)); ctx.lineTo(x, yOf(b.l)); ctx.stroke();
+            const bt = yOf(Math.max(b.o, b.c));
+            const bh = Math.max(2, Math.abs(yOf(b.o) - yOf(b.c)));
+            ctx.fillRect(x - Math.max(1.5, step * 0.28), bt, Math.max(3, step * 0.56), bh);
+          });
+        }
       }
 
       function renderTenPointGate(ltp, chg, vwap, vol) {
         const vix = liveIndices.INDIAVIX?.ltp || 14;
         const gates = [
           { label: "1. NSE EQ Series (MIS Intraday Eligible)", pass: ltp > 0 },
-          { label: `2. Live Liquidity Floor (${vol.toLocaleString("en-IN")} ≥ 5L)`, pass: vol >= 500000 },
+          { label: `2. Session Liquidity Floor (${vol.toLocaleString("en-IN")} ≥ 5L)`, pass: vol >= 500000 },
           { label: `3. Circuit-Lock Guard (${chg.toFixed(2)}% within ±9.2%)`, pass: Math.abs(chg) < 9.2 },
-          { label: `4. Live VWAP Alignment (₹${ltp.toFixed(2)} vs ₹${vwap.toFixed(2)})`, pass: ltp >= vwap * 0.995 },
-          { label: `5. Live India VIX Regime (${vix.toFixed(2)} < 22.0)`, pass: vix < 22 },
+          { label: `4. VWAP Trend Alignment (₹${ltp.toFixed(2)} vs ₹${vwap.toFixed(2)})`, pass: ltp >= vwap * 0.995 },
+          { label: `5. India VIX Regime (${vix.toFixed(2)} < 22.0)`, pass: vix < 22 },
           { label: `6. Calibrated R:R ≥ 1:${calibrated.rrMult.toFixed(1)} Verified`, pass: true },
           { label: "7. Max Capital Per Trade ≤ ₹25,000 Cap", pass: true },
           { label: `8. Price Floor Check (₹${ltp.toFixed(2)} ≥ ₹5.00)`, pass: ltp >= 5 },
@@ -1062,20 +1261,20 @@
         `).join("");
       }
 
-      function applyLiveChartData(sym, payload, statusLabel) {
+      function applyChartAndMetrics(sym, payload, statusLabel) {
         const { ltp, prev, bars, volume } = payload;
         const chg = prev ? ((ltp - prev) / prev) * 100 : 0;
-        const hi = bars.length ? Math.max(...bars.map(b => b.h)) : ltp;
-        const lo = bars.length ? Math.min(...bars.map(b => b.l)) : ltp;
+        const slice = bars.slice(-75);
+        const hi = slice.length ? Math.max(...slice.map(b => b.h)) : ltp;
+        const lo = slice.length ? Math.min(...slice.map(b => b.l)) : ltp;
         const vwap = +((hi + lo + ltp) / 3).toFixed(2);
-        const mc = runMonteCarlo(bars);
+        const mc = runMonteCarlo(slice);
 
         document.getElementById("activeSymHeader").textContent = sym;
-        document.getElementById("chartTitle").textContent = `${sym} — Live 5 Min Intraday Chart & VWAP`;
         document.getElementById("chartStatus").textContent = statusLabel;
         document.getElementById("statLtp").textContent = `₹${ltp.toFixed(2)}`;
         const chgEl = document.getElementById("statChg");
-        chgEl.textContent = `${chg >= 0 ? "+" : ""}${chg.toFixed(2)}% Live Change`;
+        chgEl.textContent = `${chg >= 0 ? "+" : ""}${chg.toFixed(2)}% vs Prev Close`;
         chgEl.className = "stat-sub " + (chg >= 0 ? "up" : "dn");
 
         document.getElementById("statVwap").textContent = `₹${vwap.toFixed(2)}`;
@@ -1084,46 +1283,156 @@
         document.getElementById("statMcStop").textContent = `Stop Prob: ${mc.stopProb}% (500 sims)`;
 
         renderTenPointGate(ltp, chg, vwap, volume);
-        drawKiteChart(bars);
+        drawCandlesOnCanvas("kiteChart", bars, activeTf, chartStyle);
       }
 
-      async function loadSymbol(sym) {
+      async function loadSymbol(sym, tf = activeTf) {
         activeSym = sym.toUpperCase();
+        activeTf = tf;
         renderMarketwatch();
         document.getElementById("activeSymHeader").textContent = activeSym;
         fetchLiveNewsRss(activeSym);
 
-        const cached = candleCache[activeSym];
+        const cfg = TIMEFRAMES[tf] || TIMEFRAMES["5m"];
+        const cacheKey = `NSE_${activeSym}_${tf}`;
+        const cached = candleCache[cacheKey];
+        const cloudQuote = cloudData?.live_quotes?.[activeSym];
+
         if (cached && cached.bars && cached.bars.length) {
-          applyLiveChartData(activeSym, cached, "Last Live Session • Updating...");
+          applyChartAndMetrics(activeSym, cached, `${cfg.label} • Refreshing...`);
+        } else if (tf === "5m" && cloudQuote && cloudQuote.bars && cloudQuote.bars.length) {
+          applyChartAndMetrics(activeSym, {
+            ltp: cloudQuote.ltp, prev: cloudQuote.prev_close, chg_pct: cloudQuote.chg_pct,
+            volume: cloudQuote.volume, bars: cloudQuote.bars
+          }, `${cfg.label} • Cloud Session`);
         } else {
-          document.getElementById("statLtp").textContent = "Fetching...";
-          document.getElementById("chartStatus").textContent = `Fetching live ${activeSym}.NS candles...`;
-          drawKiteChart([]);
+          document.getElementById("chartStatus").textContent = `Loading ${cfg.label}...`;
+          drawCandlesOnCanvas("kiteChart", [], tf, chartStyle, `Fetching ${cfg.label} for ${activeSym}...`);
         }
 
-        const live = await fetchYahooLive(`${encodeURIComponent(activeSym)}.NS`);
-        if (live) {
-          candleCache[activeSym] = live;
-          localStorage.setItem("kite_candles_v5", JSON.stringify(candleCache));
-          liveQuotes[activeSym] = { symbol: activeSym, ltp: live.ltp, chg_pct: live.chg_pct, volume: live.volume };
-          localStorage.setItem("kite_live_quotes_v5", JSON.stringify(liveQuotes));
-          renderMarketwatch();
-          applyLiveChartData(activeSym, live, "100% LIVE NSE DATA");
-          evaluateLocalOrderExits(activeSym, live.ltp);
+        const fetched = await fetchYahooChart(`${encodeURIComponent(activeSym)}.NS`, cfg.interval, cfg.range);
+        if (fetched && fetched.bars && fetched.bars.length) {
+          candleCache[cacheKey] = fetched;
+          localStorage.setItem("kite_candles_v7", JSON.stringify(candleCache));
+          if (tf === "5m") {
+            liveQuotes[activeSym] = { symbol: activeSym, ltp: fetched.ltp, chg_pct: fetched.chg_pct, volume: fetched.volume };
+            localStorage.setItem("kite_live_quotes_v7", JSON.stringify(liveQuotes));
+            renderMarketwatch();
+            evaluateLocalOrderExits(activeSym, fetched.ltp);
+          }
+          applyChartAndMetrics(activeSym, fetched, `${cfg.label} • Updated`);
+        } else {
+          document.getElementById("chartStatus").textContent = cached ? `${cfg.label} (Cached)` : "Proxy busy — click ↻ Sync Live";
+        }
+      }
+
+      // ==========================================
+      // US MARKETS LOGIC (NYSE / NASDAQ)
+      // ==========================================
+      function renderUsStocksTable() {
+        const tbody = document.getElementById("usStocksTableBody");
+        tbody.innerHTML = usSymbols.map(sym => {
+          const q = usQuotes[sym];
+          const ltp = q?.ltp || 0;
+          const chg = q?.chg_pct || 0;
+          const up = chg >= 0;
+          return `
+            <tr style="cursor:pointer; ${sym === activeUsSym ? "background:var(--surface-hover);" : ""}" onclick="window.__selectUsSym('${sym}')">
+              <td><strong>${sym}</strong></td>
+              <td>${ltp ? `$${ltp.toFixed(2)}` : "Loading..."}</td>
+              <td class="${ltp ? (up ? "up" : "dn") : ""}">${ltp ? `${up ? "+" : ""}${chg.toFixed(2)}%` : "--"}</td>
+              <td>
+                ${ltp ? `
+                  <button class="act-btn act-b" onclick="event.stopPropagation(); window.__kiteOrder('BUY','${sym}',${ltp},'US EQ','$')">B</button>
+                  <button class="act-btn act-s" onclick="event.stopPropagation(); window.__kiteOrder('SELL','${sym}',${ltp},'US EQ','$')">S</button>
+                ` : "--"}
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      async function loadUsSymbol(sym, tf = activeUsTf) {
+        activeUsSym = sym.toUpperCase().trim();
+        activeUsTf = tf;
+        document.getElementById("activeUsSymHeader").textContent = activeUsSym;
+        renderUsStocksTable();
+
+        const cfg = TIMEFRAMES[tf] || TIMEFRAMES["5m"];
+        const cacheKey = `US_${activeUsSym}_${tf}`;
+        const cached = candleCache[cacheKey];
+        const cloudUs = cloudData?.us_quotes?.[activeUsSym];
+
+        if (cached && cached.bars && cached.bars.length) {
+          document.getElementById("usActiveLtp").textContent = `$${cached.ltp.toFixed(2)}`;
+          const up = cached.chg_pct >= 0;
+          document.getElementById("usActiveChg").textContent = `${up ? "+" : ""}${cached.chg_pct}%`;
+          document.getElementById("usActiveChg").className = "stat-sub " + (up ? "up" : "dn");
+          drawCandlesOnCanvas("usChartCanvas", cached.bars, tf, "candle");
+        } else if (tf === "5m" && cloudUs && cloudUs.bars && cloudUs.bars.length) {
+          document.getElementById("usActiveLtp").textContent = `$${cloudUs.ltp.toFixed(2)}`;
+          drawCandlesOnCanvas("usChartCanvas", cloudUs.bars, tf, "candle");
+        } else {
+          drawCandlesOnCanvas("usChartCanvas", [], tf, "candle", `Fetching ${cfg.label} for ${activeUsSym} (US)...`);
+        }
+
+        document.getElementById("usChartStatus").textContent = `Loading ${cfg.label}...`;
+        const fetched = await fetchYahooChart(encodeURIComponent(activeUsSym), cfg.interval, cfg.range);
+        if (fetched && fetched.bars && fetched.bars.length) {
+          candleCache[cacheKey] = fetched;
+          localStorage.setItem("kite_candles_v7", JSON.stringify(candleCache));
+          if (tf === "5m") {
+            usQuotes[activeUsSym] = { symbol: activeUsSym, ltp: fetched.ltp, chg_pct: fetched.chg_pct, volume: fetched.volume };
+            localStorage.setItem("kite_us_quotes_v7", JSON.stringify(usQuotes));
+            renderUsStocksTable();
+            evaluateLocalOrderExits(activeUsSym, fetched.ltp);
+          }
+          document.getElementById("usActiveLtp").textContent = `$${fetched.ltp.toFixed(2)}`;
+          const up = fetched.chg_pct >= 0;
+          document.getElementById("usActiveChg").textContent = `${up ? "+" : ""}${fetched.chg_pct}% vs Prev Close`;
+          document.getElementById("usActiveChg").className = "stat-sub " + (up ? "up" : "dn");
+          document.getElementById("usChartStatus").textContent = `${cfg.label} • US Live`;
+          drawCandlesOnCanvas("usChartCanvas", fetched.bars, tf, "candle");
+        }
+      }
+
+      window.__selectUsSym = (sym) => loadUsSymbol(sym, activeUsTf);
+
+      document.getElementById("usAddBtn").onclick = () => {
+        const sym = document.getElementById("usCustomInput").value.toUpperCase().trim();
+        if (!sym) return;
+        if (!usSymbols.includes(sym)) {
+          usSymbols.unshift(sym);
+          localStorage.setItem("kite_us_syms_v7", JSON.stringify(usSymbols));
+        }
+        document.getElementById("usCustomInput").value = "";
+        loadUsSymbol(sym, activeUsTf);
+      };
+
+      async function hydrateUsStocksLive() {
+        for (const sym of usSymbols) {
+          if (sym === activeUsSym) continue;
+          const live = await fetchYahooChart(encodeURIComponent(sym), "5m", "5d");
+          if (live) {
+            usQuotes[sym] = { symbol: sym, ltp: live.ltp, chg_pct: live.chg_pct, volume: live.volume };
+            candleCache[`US_${sym}_5m`] = live;
+            localStorage.setItem("kite_us_quotes_v7", JSON.stringify(usQuotes));
+            renderUsStocksTable();
+            evaluateLocalOrderExits(sym, live.ltp);
+          }
         }
       }
 
       async function hydrateWatchlistLive() {
-        const openSyms = new Set(orders.filter(o => o.status === "OPEN").map(o => o.symbol));
+        const openSyms = new Set(orders.filter(o => o.status === "OPEN" && !(o.seg || "").includes("US")).map(o => o.symbol));
         const prioritized = [...new Set([...openSyms, ...customSymbols])];
         for (const sym of prioritized) {
           if (sym === activeSym) continue;
-          const live = await fetchYahooLive(`${encodeURIComponent(sym)}.NS`);
+          const live = await fetchYahooChart(`${encodeURIComponent(sym)}.NS`, "5m", "5d");
           if (live) {
             liveQuotes[sym] = { symbol: sym, ltp: live.ltp, chg_pct: live.chg_pct, volume: live.volume };
-            candleCache[sym] = live;
-            localStorage.setItem("kite_live_quotes_v5", JSON.stringify(liveQuotes));
+            candleCache[`NSE_${sym}_5m`] = live;
+            localStorage.setItem("kite_live_quotes_v7", JSON.stringify(liveQuotes));
             renderMarketwatch();
             evaluateLocalOrderExits(sym, live.ltp);
           }
@@ -1132,10 +1441,10 @@
 
       // 70/30 WALK-FORWARD TRAINER
       document.getElementById("runWalkForwardBtn").onclick = async function () {
-        this.textContent = "Training on 5d Live NSE...";
+        this.textContent = "Training on 5d NSE...";
         log(`Fetching 5-day 5m history for ${activeSym} to run 70/30 Walk-Forward calibration...`);
-        const hist = await fetchYahooLive(`${encodeURIComponent(activeSym)}.NS`, "5d");
-        this.textContent = "1. Train 70/30 on Live NSE History";
+        const hist = await fetchYahooChart(`${encodeURIComponent(activeSym)}.NS`, "5m", "5d");
+        this.textContent = "1. Train 70/30 on 5d NSE History";
         if (!hist || hist.bars.length < 30) {
           log("Insufficient 5d bars from proxy; keeping calibrated parameters.");
           return;
@@ -1168,14 +1477,14 @@
         }
         const testWin = simulateSet(testBars, best.slPct, best.rrMult);
         calibrated = { slPct: best.slPct, rrMult: best.rrMult };
-        localStorage.setItem("kite_calibrated_v5", JSON.stringify(calibrated));
+        localStorage.setItem("kite_calibrated_v7", JSON.stringify(calibrated));
 
         document.getElementById("wfTrainWin").textContent = `${best.win.toFixed(1)}%`;
         document.getElementById("wfBestParams").textContent = `SL ${(best.slPct * 100).toFixed(2)}% • R:R 1:${best.rrMult}`;
         document.getElementById("wfTestWin").textContent = `${testWin.toFixed(1)}%`;
         document.getElementById("wfGateVerdict").textContent = testWin >= 70 ? "PASS (≥ 70% Validated)" : "CALIBRATED";
         playChime(880);
-        log(`70/30 Walk-Forward Complete: Train ${best.win.toFixed(1)}%, Test ${testWin.toFixed(1)}% (SL ${(best.slPct * 100).toFixed(2)}%, 1:${best.rrMult})`);
+        log(`70/30 Walk-Forward Complete: Train ${best.win.toFixed(1)}%, Test ${testWin.toFixed(1)}%`);
       };
 
       // MULTI-CAP TRADE SUGGESTIONS
@@ -1205,17 +1514,17 @@
               <td>${Number(q.volume || 0).toLocaleString("en-IN")}</td>
               <td><span class="tag-pass">10/10 PASS</span></td>
               <td>
-                <button class="act-btn ${isBuy ? "act-b" : "act-s"}" onclick="window.__kiteOrder('${isBuy ? "BUY" : "SELL"}','${q.symbol}',${q.ltp},'EQ MIS')">
+                <button class="act-btn ${isBuy ? "act-b" : "act-s"}" onclick="window.__kiteOrder('${isBuy ? "BUY" : "SELL"}','${q.symbol}',${q.ltp},'EQ MIS','₹')">
                   ${isBuy ? "Buy" : "Sell"}
                 </button>
               </td>
             </tr>
           `;
-        }).join("") : `<tr><td colspan="9" style="color:var(--muted);">Click "↻ Sync Live" to pull 250+ cloud-scanned NSE stocks.</td></tr>`;
+        }).join("") : `<tr><td colspan="9" style="color:var(--muted);">Loading NSE multi-cap quotes... Click "↻ Sync Live" to pull 250+ stocks.</td></tr>`;
       }
       document.getElementById("sugTierFilter").onchange = renderTradeSuggestions;
 
-      // LIVE F&O & REAL NSE OPTION CHAIN
+      // F&O & OPTION CHAIN
       async function renderFnOPage() {
         const und = document.getElementById("fnoUnderlyingSelect").value;
         const cfg = FNO_CONFIG[und] || FNO_CONFIG.NIFTY;
@@ -1223,7 +1532,7 @@
 
         if (realChain && realChain.chain && realChain.chain.length) {
           document.getElementById("fnoSpotVal").textContent = realChain.spot.toLocaleString("en-IN", { minimumFractionDigits: 2 });
-          document.getElementById("fnoSpotChg").textContent = "Real NSE Option Chain";
+          document.getElementById("fnoSpotChg").textContent = "NSE Option Chain";
           document.getElementById("fnoPcrVal").textContent = `${realChain.pcr} (${realChain.pcr >= 1 ? "Bullish" : "Bearish"})`;
           document.getElementById("fnoExpiryLabel").textContent = `Expiry: ${realChain.expiry || "Weekly"}`;
           document.getElementById("fnoMaxPainVal").textContent = realChain.max_pain.toLocaleString("en-IN");
@@ -1231,8 +1540,8 @@
 
           const atmRow = realChain.chain[Math.floor(realChain.chain.length / 2)];
           document.getElementById("fnoSuggestionsBody").innerHTML = [
-            { contract: `${und} ${atmRow.strike} CE`, strat: "Real NSE ATM Breakout", lot: cfg.lot, entry: atmRow.ce_ltp, sl: +(atmRow.ce_ltp * 0.72).toFixed(2), tgt: +(atmRow.ce_ltp * 1.65).toFixed(2) },
-            { contract: `${und} ${atmRow.strike} PE`, strat: "Real NSE Support Hedge", lot: cfg.lot, entry: atmRow.pe_ltp, sl: +(atmRow.pe_ltp * 0.72).toFixed(2), tgt: +(atmRow.pe_ltp * 1.60).toFixed(2) }
+            { contract: `${und} ${atmRow.strike} CE`, strat: "NSE ATM Breakout", lot: cfg.lot, entry: atmRow.ce_ltp, sl: +(atmRow.ce_ltp * 0.72).toFixed(2), tgt: +(atmRow.ce_ltp * 1.65).toFixed(2) },
+            { contract: `${und} ${atmRow.strike} PE`, strat: "NSE Support Hedge", lot: cfg.lot, entry: atmRow.pe_ltp, sl: +(atmRow.pe_ltp * 0.72).toFixed(2), tgt: +(atmRow.pe_ltp * 1.60).toFixed(2) }
           ].map(s => `
             <tr>
               <td><strong>${s.contract}</strong></td>
@@ -1242,7 +1551,7 @@
               <td>₹${s.sl}</td>
               <td>₹${s.tgt}</td>
               <td><span class="tag-pass">NSE OI PASS</span></td>
-              <td><button class="act-btn act-b" onclick="window.__kiteOrder('BUY','${s.contract}',${s.entry},'F&O NRML')">Buy Lot</button></td>
+              <td><button class="act-btn act-b" onclick="window.__kiteOrder('BUY','${s.contract}',${s.entry},'F&O NRML','₹')">Buy Lot</button></td>
             </tr>
           `).join("");
 
@@ -1252,9 +1561,9 @@
               <tr style="${isAtm ? "background:rgba(65,132,243,0.10); font-weight:600;" : ""}">
                 <td>${r.ce_oi} L</td>
                 <td>${r.ce_iv}%</td>
-                <td class="up" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${r.strike} CE',${r.ce_ltp},'F&O OPT')">₹${r.ce_ltp.toFixed(2)}</td>
+                <td class="up" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${r.strike} CE',${r.ce_ltp},'F&O OPT','₹')">₹${r.ce_ltp.toFixed(2)}</td>
                 <td style="text-align:center;"><strong>${r.strike}</strong> ${isAtm ? "(ATM)" : ""}</td>
-                <td class="dn" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${r.strike} PE',${r.pe_ltp},'F&O OPT')">₹${r.pe_ltp.toFixed(2)}</td>
+                <td class="dn" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${r.strike} PE',${r.pe_ltp},'F&O OPT','₹')">₹${r.pe_ltp.toFixed(2)}</td>
                 <td>${r.pe_iv}%</td>
                 <td>${r.pe_oi} L</td>
               </tr>
@@ -1265,7 +1574,7 @@
 
         let spotObj = liveIndices[und] || liveQuotes[und];
         if (!spotObj || !spotObj.ltp) {
-          spotObj = await fetchYahooLive(cfg.yahoo);
+          spotObj = await fetchYahooChart(cfg.yahoo, "5m", "5d");
         }
         if (!spotObj || !spotObj.ltp) return;
 
@@ -1273,7 +1582,7 @@
         const vix = liveIndices.INDIAVIX?.ltp || 14.2;
         const atm = Math.round(spot / cfg.step) * cfg.step;
         document.getElementById("fnoSpotVal").textContent = spot.toLocaleString("en-IN", { minimumFractionDigits: 2 });
-        document.getElementById("fnoSpotChg").textContent = `${spotObj.chg_pct >= 0 ? "+" : ""}${spotObj.chg_pct}% Live Spot`;
+        document.getElementById("fnoSpotChg").textContent = `${spotObj.chg_pct >= 0 ? "+" : ""}${spotObj.chg_pct}% Last Session`;
         document.getElementById("fnoMaxPainVal").textContent = atm.toLocaleString("en-IN");
         document.getElementById("fnoVixStat").textContent = vix.toFixed(2);
         const pcr = +(1.05 + (spotObj.chg_pct || 0) * 0.08).toFixed(2);
@@ -1283,8 +1592,8 @@
         const cePrem = Math.max(5, +(spot * ivFactor * 0.42).toFixed(2));
         const pePrem = Math.max(5, +(spot * ivFactor * 0.40).toFixed(2));
         document.getElementById("fnoSuggestionsBody").innerHTML = [
-          { contract: `${und} ${atm} CE`, strat: "Live ATM Breakout", lot: cfg.lot, entry: cePrem, sl: +(cePrem * 0.72).toFixed(2), tgt: +(cePrem * 1.65).toFixed(2) },
-          { contract: `${und} ${atm - cfg.step} PE`, strat: "Live Support Hedge", lot: cfg.lot, entry: pePrem, sl: +(pePrem * 0.72).toFixed(2), tgt: +(pePrem * 1.60).toFixed(2) }
+          { contract: `${und} ${atm} CE`, strat: "ATM Breakout", lot: cfg.lot, entry: cePrem, sl: +(cePrem * 0.72).toFixed(2), tgt: +(cePrem * 1.65).toFixed(2) },
+          { contract: `${und} ${atm - cfg.step} PE`, strat: "Support Hedge", lot: cfg.lot, entry: pePrem, sl: +(pePrem * 0.72).toFixed(2), tgt: +(pePrem * 1.60).toFixed(2) }
         ].map(s => `
           <tr>
             <td><strong>${s.contract}</strong></td>
@@ -1293,8 +1602,8 @@
             <td>₹${s.entry}</td>
             <td>₹${s.sl}</td>
             <td>₹${s.tgt}</td>
-            <td><span class="tag-pass">LIVE SPOT PASS</span></td>
-            <td><button class="act-btn act-b" onclick="window.__kiteOrder('BUY','${s.contract}',${s.entry},'F&O NRML')">Buy Lot</button></td>
+            <td><span class="tag-pass">SPOT PASS</span></td>
+            <td><button class="act-btn act-b" onclick="window.__kiteOrder('BUY','${s.contract}',${s.entry},'F&O NRML','₹')">Buy Lot</button></td>
           </tr>
         `).join("");
 
@@ -1309,9 +1618,9 @@
             <tr style="${isAtm ? "background:rgba(65,132,243,0.10); font-weight:600;" : ""}">
               <td>${(35 + (i + 5) * 4.2).toFixed(1)} L</td>
               <td>${(vix + Math.abs(i) * 0.35).toFixed(1)}%</td>
-              <td class="up" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${strike} CE',${callLtp},'F&O OPT')">₹${callLtp.toFixed(2)}</td>
+              <td class="up" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${strike} CE',${callLtp},'F&O OPT','₹')">₹${callLtp.toFixed(2)}</td>
               <td style="text-align:center;"><strong>${strike}</strong> ${isAtm ? "(ATM)" : ""}</td>
-              <td class="dn" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${strike} PE',${putLtp},'F&O OPT')">₹${putLtp.toFixed(2)}</td>
+              <td class="dn" style="cursor:pointer;" onclick="window.__kiteOrder('BUY','${und} ${strike} PE',${putLtp},'F&O OPT','₹')">₹${putLtp.toFixed(2)}</td>
               <td>${(vix + Math.abs(i) * 0.40).toFixed(1)}%</td>
               <td>${(62 - (i + 5) * 3.8).toFixed(1)} L</td>
             </tr>
@@ -1321,7 +1630,7 @@
       }
       document.getElementById("fnoUnderlyingSelect").onchange = renderFnOPage;
 
-      // LIVE AMFI MUTUAL FUNDS
+      // AMFI MUTUAL FUNDS
       async function fetchLiveAmfiFunds() {
         const results = [];
         for (const item of MF_CODES) {
@@ -1356,7 +1665,7 @@
         }
         if (results.length) {
           liveMfs = results;
-          localStorage.setItem("kite_live_mfs_v5", JSON.stringify(liveMfs));
+          localStorage.setItem("kite_live_mfs_v7", JSON.stringify(liveMfs));
           renderMfTable();
         }
       }
@@ -1375,26 +1684,27 @@
             <td>${f.ter}</td>
             <td><span class="tag-pass">${f.score}</span></td>
             <td>
-              <button class="act-btn act-b" onclick="window.__kiteOrder('BUY','${f.name.replace(/'/g, "")}',${f.nav},'COIN SIP')">Start SIP</button>
+              <button class="act-btn act-b" onclick="window.__kiteOrder('BUY','${f.name.replace(/'/g, "")}',${f.nav},'COIN SIP','₹')">Start SIP</button>
             </td>
           </tr>
-        `).join("") : `<tr><td colspan="9" style="color:var(--muted);">Fetching live AMFI NAVs from api.mfapi.in...</td></tr>`;
+        `).join("") : `<tr><td colspan="9" style="color:var(--muted);">Loading AMFI NAVs from api.mfapi.in...</td></tr>`;
       }
       document.getElementById("mfCategoryFilter").onchange = renderMfTable;
 
       // FLOATING ORDER MODAL
-      function openOrderModal(side, sym, ltp, seg = "EQ MIS") {
+      function openOrderModal(side, sym, ltp, seg = "EQ MIS", curr = "₹") {
         if (!ltp || ltp <= 0) return;
-        modalContext = { side, sym, seg };
+        modalContext = { side, sym, seg, curr };
         const header = document.getElementById("owHeader");
         const submit = document.getElementById("submitOrderBtn");
         header.className = "ow-header " + (side === "BUY" ? "buy" : "sell");
         submit.className = "btn-submit " + (side === "BUY" ? "buy" : "sell");
         document.getElementById("owTitle").textContent = `${side === "BUY" ? "Buy" : "Sell"} ${sym}`;
-        document.getElementById("owSub").textContent = `NSE • ${seg}`;
+        document.getElementById("owSub").textContent = `${curr === "$" ? "NYSE/NASDAQ" : "NSE"} • ${seg}`;
 
         const slDist = Math.max(+(ltp * calibrated.slPct).toFixed(2), 0.15);
-        const qty = seg.includes("COIN") ? Math.max(1, Math.floor(5000 / ltp)) : Math.max(1, Math.floor(25000 / ltp));
+        const cap = curr === "$" ? 1000 : (seg.includes("COIN") ? 5000 : 25000);
+        const qty = Math.max(1, Math.floor(cap / ltp));
         document.getElementById("owQty").value = qty;
         document.getElementById("owPrice").value = ltp.toFixed(2);
         document.getElementById("owSl").value = (side === "BUY" ? ltp - slDist : ltp + slDist).toFixed(2);
@@ -1404,12 +1714,12 @@
 
       window.__kiteOrder = openOrderModal;
       document.getElementById("openBuyBtn").onclick = () => {
-        const ltp = liveQuotes[activeSym]?.ltp || candleCache[activeSym]?.ltp;
-        if (ltp) openOrderModal("BUY", activeSym, ltp, "EQ MIS");
+        const ltp = liveQuotes[activeSym]?.ltp || candleCache[`NSE_${activeSym}_${activeTf}`]?.ltp;
+        if (ltp) openOrderModal("BUY", activeSym, ltp, "EQ MIS", "₹");
       };
       document.getElementById("openSellBtn").onclick = () => {
-        const ltp = liveQuotes[activeSym]?.ltp || candleCache[activeSym]?.ltp;
-        if (ltp) openOrderModal("SELL", activeSym, ltp, "EQ MIS");
+        const ltp = liveQuotes[activeSym]?.ltp || candleCache[`NSE_${activeSym}_${activeTf}`]?.ltp;
+        if (ltp) openOrderModal("SELL", activeSym, ltp, "EQ MIS", "₹");
       };
       document.getElementById("closeModalBtn").onclick = () => document.getElementById("orderModal").classList.remove("open");
       document.getElementById("cancelModalBtn").onclick = () => document.getElementById("orderModal").classList.remove("open");
@@ -1420,9 +1730,10 @@
         const sl = parseFloat(document.getElementById("owSl").value) || 0;
         const target = parseFloat(document.getElementById("owTarget").value) || 0;
         orders.unshift({
-          source: "KITE LIVE PAPER",
+          source: "KITE PAPER",
           symbol: modalContext.sym,
           seg: modalContext.seg,
+          curr: modalContext.curr || "₹",
           side: modalContext.side,
           qty,
           entry: price,
@@ -1433,11 +1744,11 @@
           status: "OPEN",
           date: new Date().toISOString().slice(0, 10)
         });
-        localStorage.setItem("kite_orders_v5", JSON.stringify(orders));
+        localStorage.setItem("kite_orders_v7", JSON.stringify(orders));
         document.getElementById("orderModal").classList.remove("open");
         playChime(780);
         renderLedgers();
-        log(`Order armed: ${modalContext.side} ${qty} ${modalContext.sym} @ ₹${price.toFixed(2)} (SL ₹${sl.toFixed(2)} | Tgt ₹${target.toFixed(2)})`);
+        log(`Order armed: ${modalContext.side} ${qty} ${modalContext.sym} @ ${modalContext.curr}${price.toFixed(2)}`);
       };
 
       function drawEquityCurve() {
@@ -1477,14 +1788,15 @@
       }
 
       function renderLedgers() {
-        const cOpen = (cloudData?.open_positions || []).map(p => ({ ...p, source: "CLOUD AI", seg: "EQ MIS", status: "OPEN" }));
-        const cClosed = (cloudData?.closed_trades || []).map(p => ({ ...p, source: "CLOUD AI", seg: "EQ MIS" }));
+        const cOpen = (cloudData?.open_positions || []).map(p => ({ ...p, source: "CLOUD AI", seg: "EQ MIS", curr: "₹", status: "OPEN" }));
+        const cClosed = (cloudData?.closed_trades || []).map(p => ({ ...p, source: "CLOUD AI", seg: "EQ MIS", curr: "₹" }));
         const all = [...orders, ...cOpen, ...cClosed];
 
         document.getElementById("ordersTableBody").innerHTML = all.length ? all.map(o => {
+          const c = o.curr || "₹";
           const pnl = Number(o.pnl ?? o.unrealized_pnl ?? 0);
-          const slTxt = o.sl ? `₹${Number(o.sl).toFixed(2)}` : "--";
-          const tgtTxt = o.target ? `₹${Number(o.target).toFixed(2)}` : "--";
+          const slTxt = o.sl ? `${c}${Number(o.sl).toFixed(2)}` : "--";
+          const tgtTxt = o.target ? `${c}${Number(o.target).toFixed(2)}` : "--";
           return `
             <tr>
               <td>${o.source}</td>
@@ -1492,16 +1804,16 @@
               <td>${o.seg || "EQ MIS"}</td>
               <td class="${o.side === "BUY" ? "up" : "dn"}">${o.side}</td>
               <td>${o.qty}</td>
-              <td>₹${Number(o.entry).toFixed(2)}</td>
+              <td>${c}${Number(o.entry).toFixed(2)}</td>
               <td>${slTxt} / ${tgtTxt}</td>
-              <td>₹${Number(o.exit || o.current_ltp || o.entry).toFixed(2)}</td>
-              <td class="${pnl >= 0 ? "up" : "dn"}">${pnl >= 0 ? "+" : ""}₹${pnl.toFixed(2)}</td>
+              <td>${c}${Number(o.exit || o.current_ltp || o.entry).toFixed(2)}</td>
+              <td class="${pnl >= 0 ? "up" : "dn"}">${pnl >= 0 ? "+" : ""}${c}${pnl.toFixed(2)}</td>
               <td>${o.status}</td>
             </tr>
           `;
         }).join("") : `<tr><td colspan="10" style="color:var(--muted);">No orders executed yet.</td></tr>`;
 
-        const localRealized = orders.filter(o => o.status !== "OPEN").reduce((a, b) => a + Number(b.pnl || 0), 0);
+        const localRealized = orders.filter(o => o.status !== "OPEN" && (o.curr || "₹") === "₹").reduce((a, b) => a + Number(b.pnl || 0), 0);
         const cloudRealized = cClosed.reduce((a, b) => a + Number(b.pnl || 0), 0);
         const totalPnl = localRealized + cloudRealized;
         const pnlEl = document.getElementById("statTotalPnl");
@@ -1509,7 +1821,7 @@
         pnlEl.className = "stat-num " + (totalPnl >= 0 ? "up" : "dn");
 
         const daily = { ...(cloudData?.daily_pnl || {}) };
-        orders.filter(o => o.status !== "OPEN").forEach(o => {
+        orders.filter(o => o.status !== "OPEN" && (o.curr || "₹") === "₹").forEach(o => {
           const d = o.date || new Date().toISOString().slice(0, 10);
           daily[d] = +((daily[d] || 0) + Number(o.pnl || 0)).toFixed(2);
         });
@@ -1523,7 +1835,7 @@
 
       document.getElementById("clearOrdersBtn").onclick = () => {
         orders = [];
-        localStorage.setItem("kite_orders_v5", "[]");
+        localStorage.setItem("kite_orders_v7", "[]");
         renderLedgers();
       };
 
@@ -1532,7 +1844,7 @@
           const r = await fetch(`./cloud_ledger.json?t=${Date.now()}`);
           if (r.ok) {
             cloudData = await r.json();
-            localStorage.setItem("kite_cloud_v5", JSON.stringify(cloudData));
+            localStorage.setItem("kite_cloud_v7", JSON.stringify(cloudData));
             document.getElementById("cloudState").textContent = cloudData.market_status || "SYNCED";
             document.getElementById("cloudBeat").textContent = `Heartbeat: ${cloudData.last_heartbeat || "--"}`;
             if (cloudData.nse_eq_master_count) {
@@ -1540,12 +1852,17 @@
             }
             if (cloudData.indices) {
               liveIndices = { ...liveIndices, ...cloudData.indices };
-              renderTopIndices();
+              renderAllIndices();
             }
             if (cloudData.live_quotes) {
               liveQuotes = { ...liveQuotes, ...cloudData.live_quotes };
               renderMarketwatch();
               Object.values(cloudData.live_quotes).forEach(q => evaluateLocalOrderExits(q.symbol, q.ltp));
+            }
+            if (cloudData.us_quotes) {
+              usQuotes = { ...usQuotes, ...cloudData.us_quotes };
+              renderUsStocksTable();
+              Object.values(cloudData.us_quotes).forEach(q => evaluateLocalOrderExits(q.symbol, q.ltp));
             }
             if (cloudData.mutual_funds && cloudData.mutual_funds.length) {
               liveMfs = cloudData.mutual_funds;
@@ -1557,10 +1874,11 @@
           }
         } catch (e) {}
 
-        await loadSymbol(activeSym);
-        refreshLiveIndices();
+        await loadSymbol(activeSym, activeTf);
+        refreshAllIndices();
         fetchLiveAmfiFunds();
         hydrateWatchlistLive();
+        hydrateUsStocksLive();
       }
 
       document.getElementById("syncCloudBtn").onclick = syncCloudAndLive;
@@ -1575,15 +1893,23 @@
         } else {
           this.textContent = "Stop Live Browser Auto-Pilot";
           document.getElementById("browserPollStatus").textContent = "Browser Polling: ON (15s)";
-          log("Live Browser Auto-Pilot armed: monitoring active symbol & open paper orders every 15s.");
+          log("Live Browser Auto-Pilot armed: monitoring NSE & US positions every 15s.");
           pollInterval = setInterval(async () => {
-            await loadSymbol(activeSym);
-            const openSyms = [...new Set(orders.filter(o => o.status === "OPEN").map(o => o.symbol))];
-            for (const s of openSyms) {
+            await loadSymbol(activeSym, activeTf);
+            const openNse = [...new Set(orders.filter(o => o.status === "OPEN" && !(o.seg || "").includes("US")).map(o => o.symbol))];
+            for (const s of openNse) {
               if (s === activeSym) continue;
-              const q = await fetchYahooLive(`${encodeURIComponent(s)}.NS`);
+              const q = await fetchYahooChart(`${encodeURIComponent(s)}.NS`, "5m", "5d");
               if (q) {
                 liveQuotes[s] = { symbol: s, ltp: q.ltp, chg_pct: q.chg_pct, volume: q.volume };
+                evaluateLocalOrderExits(s, q.ltp);
+              }
+            }
+            const openUs = [...new Set(orders.filter(o => o.status === "OPEN" && (o.seg || "").includes("US")).map(o => o.symbol))];
+            for (const s of openUs) {
+              const q = await fetchYahooChart(encodeURIComponent(s), "5m", "5d");
+              if (q) {
+                usQuotes[s] = { symbol: s, ltp: q.ltp, chg_pct: q.chg_pct, volume: q.volume };
                 evaluateLocalOrderExits(s, q.ltp);
               }
             }
@@ -1592,8 +1918,9 @@
       };
 
       // Boot sequence
-      renderTopIndices();
+      renderAllIndices();
       renderMarketwatch();
+      renderUsStocksTable();
       renderMfTable();
       renderLedgers();
       syncCloudAndLive();
