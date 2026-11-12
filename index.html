@@ -507,13 +507,13 @@
       <!-- VIEW 5: ORDERS & LEDGER -->
       <div id="ordersView" class="view-pane hidden">
         <div class="section-title">
-          <span>Executed Paper Orders (Equity, F&O & Coin SIP)</span>
+          <span>Executed Paper Orders (Live Target / SL / 15:15 IST Auto-Exit Armed)</span>
           <button id="clearOrdersBtn" class="pill-btn">Clear Local Orders</button>
         </div>
 
         <div class="panel-box">
           <table>
-            <thead><tr><th>Source</th><th>Instrument</th><th>Segment</th><th>Side</th><th>Qty</th><th>Entry ₹</th><th>LTP / Exit ₹</th><th>P&L (₹)</th><th>Status</th></tr></thead>
+            <thead><tr><th>Source</th><th>Instrument</th><th>Segment</th><th>Side</th><th>Qty</th><th>Entry ₹</th><th>SL / Target ₹</th><th>LTP / Exit ₹</th><th>P&L (₹)</th><th>Status</th></tr></thead>
             <tbody id="ordersTableBody"></tbody>
           </table>
         </div>
@@ -593,7 +593,7 @@
           <div class="ow-field"><label>Target (₹)</label><input id="owTarget" type="number" step="0.05" /></div>
         </div>
         <div style="font-size:11.5px; color:var(--muted);">
-          Credibility Status: <strong style="color:var(--kite-green);">PASS (Live Feed & Calibrated R:R)</strong>
+          Auto-Exit Protection: <strong style="color:var(--kite-green);">SL, Target & 15:15 IST Square-Off Armed</strong>
         </div>
       </div>
       <div class="ow-footer">
@@ -628,14 +628,14 @@
         SBIN: { yahoo: "SBIN.NS", step: 5, lot: 750 }
       };
 
-      let customSymbols = JSON.parse(localStorage.getItem("kite_syms_v4") || "null") || SYMBOL_UNIVERSE;
-      let liveQuotes = JSON.parse(localStorage.getItem("kite_live_quotes_v4") || "{}");
-      let liveIndices = JSON.parse(localStorage.getItem("kite_live_indices_v4") || "{}");
-      let liveMfs = JSON.parse(localStorage.getItem("kite_live_mfs_v4") || "[]");
-      let candleCache = JSON.parse(localStorage.getItem("kite_candles_v4") || "{}");
-      let orders = JSON.parse(localStorage.getItem("kite_orders_v4") || "[]");
-      let cloudData = JSON.parse(localStorage.getItem("kite_cloud_v4") || "null");
-      let calibrated = JSON.parse(localStorage.getItem("kite_calibrated_v4") || "null") || { slPct: 0.0075, rrMult: 2.1 };
+      let customSymbols = JSON.parse(localStorage.getItem("kite_syms_v5") || "null") || SYMBOL_UNIVERSE;
+      let liveQuotes = JSON.parse(localStorage.getItem("kite_live_quotes_v5") || "{}");
+      let liveIndices = JSON.parse(localStorage.getItem("kite_live_indices_v5") || "{}");
+      let liveMfs = JSON.parse(localStorage.getItem("kite_live_mfs_v5") || "[]");
+      let candleCache = JSON.parse(localStorage.getItem("kite_candles_v5") || "{}");
+      let orders = JSON.parse(localStorage.getItem("kite_orders_v5") || "[]");
+      let cloudData = JSON.parse(localStorage.getItem("kite_cloud_v5") || "null");
+      let calibrated = JSON.parse(localStorage.getItem("kite_calibrated_v5") || "null") || { slPct: 0.0075, rrMult: 2.1 };
 
       let activeSym = "RELIANCE";
       let activeFilter = "ALL";
@@ -678,6 +678,61 @@
         if (ltp < 100) return { code: "PENNY", label: "PENNY (<₹100)" };
         if (ltp <= 500) return { code: "MID", label: "MID CAP" };
         return { code: "LARGE", label: "LARGE CAP" };
+      }
+
+      function getIstMinutesOfDay() {
+        const istStr = new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour12: false });
+        const [hh, mm] = istStr.split(":").map(Number);
+        return hh * 60 + mm;
+      }
+
+      // LIVE TARGET / STOP LOSS / 15:15 IST AUTO-EXIT EVALUATOR FOR LOCAL BROWSER ORDERS
+      function evaluateLocalOrderExits(symbol, liveLtp) {
+        if (!liveLtp || liveLtp <= 0 || !orders.length) return;
+        const hm = getIstMinutesOfDay();
+        const isSquareOffTime = hm >= (15 * 60 + 15) && hm <= (15 * 60 + 35);
+        let changed = false;
+
+        orders.forEach(o => {
+          if (o.status !== "OPEN") return;
+          if (o.seg && o.seg.includes("COIN")) return; // Mutual funds don't auto-square off intraday
+          const price = o.symbol === symbol ? liveLtp : (liveQuotes[o.symbol]?.ltp || 0);
+          if (!price || price <= 0) return;
+
+          const isLong = o.side === "BUY";
+          const sl = Number(o.sl || 0);
+          const tgt = Number(o.target || 0);
+          const mult = isLong ? 1 : -1;
+          const currentPnl = +((price - o.entry) * o.qty * mult).toFixed(2);
+
+          let exitReason = null;
+          if (tgt > 0 && ((isLong && price >= tgt) || (!isLong && price <= tgt))) {
+            exitReason = "TARGET_HIT";
+          } else if (sl > 0 && ((isLong && price <= sl) || (!isLong && price >= sl))) {
+            exitReason = "STOP_LOSS";
+          } else if (isSquareOffTime) {
+            exitReason = "15:15_IST_SQUAREOFF";
+          }
+
+          if (exitReason) {
+            o.exit = price;
+            o.pnl = currentPnl;
+            o.status = currentPnl >= 0 ? `WIN (${exitReason})` : `LOSS (${exitReason})`;
+            o.closedAt = new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
+            changed = true;
+            playChime(currentPnl >= 0 ? 960 : 340);
+            log(`AUTO-EXIT [${exitReason}]: ${o.side} ${o.qty} ${o.symbol} @ ₹${price.toFixed(2)} | P&L: ${currentPnl >= 0 ? "+" : ""}₹${currentPnl.toFixed(2)}`);
+          } else if (o.exit !== price || o.pnl !== currentPnl) {
+            o.exit = price;
+            o.pnl = currentPnl;
+            changed = true;
+          }
+        });
+
+        if (changed) {
+          localStorage.setItem("kite_orders_v5", JSON.stringify(orders));
+          renderLedgers();
+        }
       }
 
       document.getElementById("themeToggleBtn").onclick = function () {
@@ -755,7 +810,6 @@
         return null;
       }
 
-      // Live Google News India RSS Event Risk Scanner
       async function fetchLiveNewsRss(sym) {
         const box = document.getElementById("liveNewsBox");
         const badge = document.getElementById("newsRiskBadge");
@@ -790,7 +844,6 @@
         }
       }
 
-      // 500-Path Monte Carlo Trade Outcome Simulator
       function runMonteCarlo(bars) {
         if (!bars || bars.length < 8) return { targetProb: 68, stopProb: 32 };
         const rets = [];
@@ -848,7 +901,7 @@
           const d = await fetchYahooLive(enc);
           if (d) {
             liveIndices[key] = d;
-            localStorage.setItem("kite_live_indices_v4", JSON.stringify(liveIndices));
+            localStorage.setItem("kite_live_indices_v5", JSON.stringify(liveIndices));
             renderTopIndices();
           }
         }
@@ -912,7 +965,7 @@
         if (!sym) return;
         if (!customSymbols.includes(sym)) {
           customSymbols.unshift(sym);
-          localStorage.setItem("kite_syms_v4", JSON.stringify(customSymbols));
+          localStorage.setItem("kite_syms_v5", JSON.stringify(customSymbols));
         }
         document.getElementById("searchInput").value = "";
         renderMarketwatch();
@@ -1052,28 +1105,32 @@
         const live = await fetchYahooLive(`${encodeURIComponent(activeSym)}.NS`);
         if (live) {
           candleCache[activeSym] = live;
-          localStorage.setItem("kite_candles_v4", JSON.stringify(candleCache));
+          localStorage.setItem("kite_candles_v5", JSON.stringify(candleCache));
           liveQuotes[activeSym] = { symbol: activeSym, ltp: live.ltp, chg_pct: live.chg_pct, volume: live.volume };
-          localStorage.setItem("kite_live_quotes_v4", JSON.stringify(liveQuotes));
+          localStorage.setItem("kite_live_quotes_v5", JSON.stringify(liveQuotes));
           renderMarketwatch();
           applyLiveChartData(activeSym, live, "100% LIVE NSE DATA");
+          evaluateLocalOrderExits(activeSym, live.ltp);
         }
       }
 
       async function hydrateWatchlistLive() {
-        for (const sym of customSymbols) {
+        const openSyms = new Set(orders.filter(o => o.status === "OPEN").map(o => o.symbol));
+        const prioritized = [...new Set([...openSyms, ...customSymbols])];
+        for (const sym of prioritized) {
           if (sym === activeSym) continue;
           const live = await fetchYahooLive(`${encodeURIComponent(sym)}.NS`);
           if (live) {
             liveQuotes[sym] = { symbol: sym, ltp: live.ltp, chg_pct: live.chg_pct, volume: live.volume };
             candleCache[sym] = live;
-            localStorage.setItem("kite_live_quotes_v4", JSON.stringify(liveQuotes));
+            localStorage.setItem("kite_live_quotes_v5", JSON.stringify(liveQuotes));
             renderMarketwatch();
+            evaluateLocalOrderExits(sym, live.ltp);
           }
         }
       }
 
-      // 70/30 WALK-FORWARD TRAINER ON LIVE 5-DAY NSE HISTORY
+      // 70/30 WALK-FORWARD TRAINER
       document.getElementById("runWalkForwardBtn").onclick = async function () {
         this.textContent = "Training on 5d Live NSE...";
         log(`Fetching 5-day 5m history for ${activeSym} to run 70/30 Walk-Forward calibration...`);
@@ -1111,7 +1168,7 @@
         }
         const testWin = simulateSet(testBars, best.slPct, best.rrMult);
         calibrated = { slPct: best.slPct, rrMult: best.rrMult };
-        localStorage.setItem("kite_calibrated_v4", JSON.stringify(calibrated));
+        localStorage.setItem("kite_calibrated_v5", JSON.stringify(calibrated));
 
         document.getElementById("wfTrainWin").textContent = `${best.win.toFixed(1)}%`;
         document.getElementById("wfBestParams").textContent = `SL ${(best.slPct * 100).toFixed(2)}% • R:R 1:${best.rrMult}`;
@@ -1206,7 +1263,6 @@
           return;
         }
 
-        // Fallback to live Yahoo spot + live VIX Black-Scholes anchor
         let spotObj = liveIndices[und] || liveQuotes[und];
         if (!spotObj || !spotObj.ltp) {
           spotObj = await fetchYahooLive(cfg.yahoo);
@@ -1300,7 +1356,7 @@
         }
         if (results.length) {
           liveMfs = results;
-          localStorage.setItem("kite_live_mfs_v4", JSON.stringify(liveMfs));
+          localStorage.setItem("kite_live_mfs_v5", JSON.stringify(liveMfs));
           renderMfTable();
         }
       }
@@ -1361,6 +1417,8 @@
       document.getElementById("submitOrderBtn").onclick = () => {
         const qty = parseInt(document.getElementById("owQty").value, 10) || 1;
         const price = parseFloat(document.getElementById("owPrice").value) || 0;
+        const sl = parseFloat(document.getElementById("owSl").value) || 0;
+        const target = parseFloat(document.getElementById("owTarget").value) || 0;
         orders.unshift({
           source: "KITE LIVE PAPER",
           symbol: modalContext.sym,
@@ -1368,16 +1426,18 @@
           side: modalContext.side,
           qty,
           entry: price,
+          sl,
+          target,
           exit: price,
           pnl: 0,
           status: "OPEN",
           date: new Date().toISOString().slice(0, 10)
         });
-        localStorage.setItem("kite_orders_v4", JSON.stringify(orders));
+        localStorage.setItem("kite_orders_v5", JSON.stringify(orders));
         document.getElementById("orderModal").classList.remove("open");
         playChime(780);
         renderLedgers();
-        log(`Order executed: ${modalContext.side} ${qty} ${modalContext.sym} @ ₹${price.toFixed(2)}`);
+        log(`Order armed: ${modalContext.side} ${qty} ${modalContext.sym} @ ₹${price.toFixed(2)} (SL ₹${sl.toFixed(2)} | Tgt ₹${target.toFixed(2)})`);
       };
 
       function drawEquityCurve() {
@@ -1391,7 +1451,8 @@
         ctx.scale(dpr, dpr);
         ctx.clearRect(0, 0, w, h);
 
-        const closed = [...(cloudData?.closed_trades || []).slice().reverse(), ...orders];
+        const closedLocal = orders.filter(o => o.status !== "OPEN").slice().reverse();
+        const closed = [...(cloudData?.closed_trades || []).slice().reverse(), ...closedLocal];
         let eq = 0, peak = 0, maxDd = 0;
         const pts = [0];
         closed.forEach(t => {
@@ -1422,6 +1483,8 @@
 
         document.getElementById("ordersTableBody").innerHTML = all.length ? all.map(o => {
           const pnl = Number(o.pnl ?? o.unrealized_pnl ?? 0);
+          const slTxt = o.sl ? `₹${Number(o.sl).toFixed(2)}` : "--";
+          const tgtTxt = o.target ? `₹${Number(o.target).toFixed(2)}` : "--";
           return `
             <tr>
               <td>${o.source}</td>
@@ -1430,19 +1493,26 @@
               <td class="${o.side === "BUY" ? "up" : "dn"}">${o.side}</td>
               <td>${o.qty}</td>
               <td>₹${Number(o.entry).toFixed(2)}</td>
+              <td>${slTxt} / ${tgtTxt}</td>
               <td>₹${Number(o.exit || o.current_ltp || o.entry).toFixed(2)}</td>
               <td class="${pnl >= 0 ? "up" : "dn"}">${pnl >= 0 ? "+" : ""}₹${pnl.toFixed(2)}</td>
               <td>${o.status}</td>
             </tr>
           `;
-        }).join("") : `<tr><td colspan="9" style="color:var(--muted);">No orders executed yet.</td></tr>`;
+        }).join("") : `<tr><td colspan="10" style="color:var(--muted);">No orders executed yet.</td></tr>`;
 
-        const totalPnl = cClosed.reduce((a, b) => a + Number(b.pnl || 0), 0);
+        const localRealized = orders.filter(o => o.status !== "OPEN").reduce((a, b) => a + Number(b.pnl || 0), 0);
+        const cloudRealized = cClosed.reduce((a, b) => a + Number(b.pnl || 0), 0);
+        const totalPnl = localRealized + cloudRealized;
         const pnlEl = document.getElementById("statTotalPnl");
         pnlEl.textContent = `${totalPnl >= 0 ? "+" : ""}₹${totalPnl.toFixed(2)}`;
         pnlEl.className = "stat-num " + (totalPnl >= 0 ? "up" : "dn");
 
-        const daily = cloudData?.daily_pnl || {};
+        const daily = { ...(cloudData?.daily_pnl || {}) };
+        orders.filter(o => o.status !== "OPEN").forEach(o => {
+          const d = o.date || new Date().toISOString().slice(0, 10);
+          daily[d] = +((daily[d] || 0) + Number(o.pnl || 0)).toFixed(2);
+        });
         const dates = Object.keys(daily).sort().reverse();
         document.getElementById("dailyStatementBody").innerHTML = dates.length ? dates.map(d => `
           <tr><td>${d}</td><td class="${daily[d] >= 0 ? "up" : "dn"}">${daily[d] >= 0 ? "+" : ""}₹${Number(daily[d]).toFixed(2)}</td></tr>
@@ -1453,7 +1523,7 @@
 
       document.getElementById("clearOrdersBtn").onclick = () => {
         orders = [];
-        localStorage.setItem("kite_orders_v4", "[]");
+        localStorage.setItem("kite_orders_v5", "[]");
         renderLedgers();
       };
 
@@ -1462,7 +1532,7 @@
           const r = await fetch(`./cloud_ledger.json?t=${Date.now()}`);
           if (r.ok) {
             cloudData = await r.json();
-            localStorage.setItem("kite_cloud_v4", JSON.stringify(cloudData));
+            localStorage.setItem("kite_cloud_v5", JSON.stringify(cloudData));
             document.getElementById("cloudState").textContent = cloudData.market_status || "SYNCED";
             document.getElementById("cloudBeat").textContent = `Heartbeat: ${cloudData.last_heartbeat || "--"}`;
             if (cloudData.nse_eq_master_count) {
@@ -1475,6 +1545,7 @@
             if (cloudData.live_quotes) {
               liveQuotes = { ...liveQuotes, ...cloudData.live_quotes };
               renderMarketwatch();
+              Object.values(cloudData.live_quotes).forEach(q => evaluateLocalOrderExits(q.symbol, q.ltp));
             }
             if (cloudData.mutual_funds && cloudData.mutual_funds.length) {
               liveMfs = cloudData.mutual_funds;
@@ -1500,10 +1571,23 @@
           pollInterval = null;
           this.textContent = "2. Start Live Browser Auto-Pilot";
           document.getElementById("browserPollStatus").textContent = "Browser Polling: OFF";
+          log("Live Browser Auto-Pilot stopped.");
         } else {
           this.textContent = "Stop Live Browser Auto-Pilot";
           document.getElementById("browserPollStatus").textContent = "Browser Polling: ON (15s)";
-          pollInterval = setInterval(() => loadSymbol(activeSym), 15000);
+          log("Live Browser Auto-Pilot armed: monitoring active symbol & open paper orders every 15s.");
+          pollInterval = setInterval(async () => {
+            await loadSymbol(activeSym);
+            const openSyms = [...new Set(orders.filter(o => o.status === "OPEN").map(o => o.symbol))];
+            for (const s of openSyms) {
+              if (s === activeSym) continue;
+              const q = await fetchYahooLive(`${encodeURIComponent(s)}.NS`);
+              if (q) {
+                liveQuotes[s] = { symbol: s, ltp: q.ltp, chg_pct: q.chg_pct, volume: q.volume };
+                evaluateLocalOrderExits(s, q.ltp);
+              }
+            }
+          }, 15000);
         }
       };
 
