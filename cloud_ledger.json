@@ -6,7 +6,7 @@
   "logs": [
     "[2026-11-13 00:30:29 IST] Heartbeat check: NSE is currently closed. Standing by for 09:15 IST."
   ],
-  "last_heartbeat": "2026-11-19 16:16:44 IST",
+  "last_heartbeat": "2026-11-19 17:10:09 IST",
   "market_status": "CLOSED",
   "indices": {
     "NIFTY": {
@@ -753,7 +753,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "AAPL": {
       "symbol": "AAPL",
@@ -1365,7 +1365,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "AMZN": {
       "symbol": "AMZN",
@@ -1977,7 +1977,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "MSFT": {
       "symbol": "MSFT",
@@ -2589,7 +2589,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "AVGO": {
       "symbol": "AVGO",
@@ -3201,7 +3201,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "NFLX": {
       "symbol": "NFLX",
@@ -3813,7 +3813,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "NVDA": {
       "symbol": "NVDA",
@@ -4425,7 +4425,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "SOFI": {
       "symbol": "SOFI",
@@ -5037,7 +5037,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "TSLA": {
       "symbol": "TSLA",
@@ -5649,7 +5649,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "PLTR": {
       "symbol": "PLTR",
@@ -6261,7 +6261,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "AMD": {
       "symbol": "AMD",
@@ -6873,7 +6873,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "META": {
       "symbol": "META",
@@ -7485,7 +7485,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     }
   },
   "nse_eq_master_count": 2405,
@@ -8101,7 +8101,7 @@
           "v": 1619517
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "PCJEWELLER": {
       "symbol": "PCJEWELLER",
@@ -8126,6 +8126,18 @@
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
       "updated_at": "17:10:29 IST"
+    },
+    "BLKASHYAP": {
+      "symbol": "BLKASHYAP",
+      "ltp": 58.82,
+      "prev_close": 52.45,
+      "chg_pct": 12.14,
+      "day_high": 60.3,
+      "day_low": 51.84,
+      "volume": 99747589,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "YESBANK": {
       "symbol": "YESBANK",
@@ -8738,7 +8750,7 @@
           "v": 1909599
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "V2RETAIL": {
       "symbol": "V2RETAIL",
@@ -9363,19 +9375,7 @@
           "v": 585829
         }
       ],
-      "updated_at": "16:16:44 IST"
-    },
-    "BLKASHYAP": {
-      "symbol": "BLKASHYAP",
-      "ltp": 58.81,
-      "prev_close": 52.45,
-      "chg_pct": 12.13,
-      "day_high": 60.25,
-      "day_low": 51.84,
-      "volume": 67918063,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
+      "updated_at": "17:10:09 IST"
     },
     "SYNCOMF": {
       "symbol": "SYNCOMF",
@@ -10036,7 +10036,7 @@
           "v": 264536
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "SUZLON": {
       "symbol": "SUZLON",
@@ -10649,19 +10649,19 @@
           "v": 741277
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "BLSPOLY": {
       "symbol": "BLSPOLY",
-      "ltp": 282.69,
+      "ltp": 282.56,
       "prev_close": 279.98,
-      "chg_pct": 0.97,
-      "day_high": 302.5,
-      "day_low": 275.51,
-      "volume": 46814229,
+      "chg_pct": 0.92,
+      "day_high": 299.36,
+      "day_low": 278.29,
+      "volume": 44014582,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:29:24 IST"
+      "updated_at": "17:10:09 IST"
     },
     "OLAELEC": {
       "symbol": "OLAELEC",
@@ -10674,6 +10674,18 @@
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
       "updated_at": "15:18:25 IST"
+    },
+    "BLUECLOUDS": {
+      "symbol": "BLUECLOUDS",
+      "ltp": 15.73,
+      "prev_close": 15.75,
+      "chg_pct": -0.13,
+      "day_high": 17.68,
+      "day_low": 15.29,
+      "volume": 35021924,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "GATECH": {
       "symbol": "GATECH",
@@ -11346,7 +11358,7 @@
           "v": 664209
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "EMPOWER": {
       "symbol": "EMPOWER",
@@ -11372,6 +11384,18 @@
       "bars": [],
       "updated_at": "14:26:48 IST"
     },
+    "CENTRALBK": {
+      "symbol": "CENTRALBK",
+      "ltp": 33.61,
+      "prev_close": 32.43,
+      "chg_pct": 3.64,
+      "day_high": 33.89,
+      "day_low": 32.5,
+      "volume": 27073881,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
     "KWIL": {
       "symbol": "KWIL",
       "ltp": 44.12,
@@ -11395,18 +11419,6 @@
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
       "updated_at": "14:26:48 IST"
-    },
-    "BLUECLOUDS": {
-      "symbol": "BLUECLOUDS",
-      "ltp": 16.95,
-      "prev_close": 15.75,
-      "chg_pct": 7.62,
-      "day_high": 17.68,
-      "day_low": 15.5,
-      "volume": 24995442,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
     },
     "HDFCBANK": {
       "symbol": "HDFCBANK",
@@ -12019,7 +12031,7 @@
           "v": 1285497
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "BANKBARODA": {
       "symbol": "BANKBARODA",
@@ -12632,7 +12644,7 @@
           "v": 440720
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "GMRAIRPORT": {
       "symbol": "GMRAIRPORT",
@@ -13257,7 +13269,7 @@
           "v": 217849
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "SBIN": {
       "symbol": "SBIN",
@@ -13870,7 +13882,7 @@
           "v": 349818
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "ITC": {
       "symbol": "ITC",
@@ -13895,18 +13907,6 @@
       "tier": "MID CAP",
       "bars": [],
       "updated_at": "16:16:44 IST"
-    },
-    "CENTRALBK": {
-      "symbol": "CENTRALBK",
-      "ltp": 33.29,
-      "prev_close": 32.43,
-      "chg_pct": 2.65,
-      "day_high": 33.89,
-      "day_low": 32.27,
-      "volume": 22045470,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
     },
     "TMPV": {
       "symbol": "TMPV",
@@ -14579,7 +14579,7 @@
           "v": 104668
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "MEESHO": {
       "symbol": "MEESHO",
@@ -15288,7 +15288,7 @@
           "v": 561434
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "HCC": {
       "symbol": "HCC",
@@ -15337,18 +15337,6 @@
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
       "updated_at": "16:16:44 IST"
-    },
-    "DHANBANK": {
-      "symbol": "DHANBANK",
-      "ltp": 40.21,
-      "prev_close": 43.17,
-      "chg_pct": -6.86,
-      "day_high": 42.62,
-      "day_low": 38.39,
-      "volume": 13092240,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "17:10:29 IST"
     },
     "VEDPOWER": {
       "symbol": "VEDPOWER",
@@ -16117,7 +16105,7 @@
           "v": 533644
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "NMDC": {
       "symbol": "NMDC",
@@ -16742,7 +16730,7 @@
           "v": 562404
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "FILATFASH": {
       "symbol": "FILATFASH",
@@ -17487,7 +17475,7 @@
           "v": 319817
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "FCL": {
       "symbol": "FCL",
@@ -18148,7 +18136,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "NHPC": {
       "symbol": "NHPC",
@@ -18761,7 +18749,7 @@
           "v": 186089
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "ONGC": {
       "symbol": "ONGC",
@@ -19410,7 +19398,7 @@
           "v": 377301
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "VEDL": {
       "symbol": "VEDL",
@@ -20035,7 +20023,19 @@
           "v": 364909
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
+    },
+    "DHANBANK": {
+      "symbol": "DHANBANK",
+      "ltp": 39.4,
+      "prev_close": 40.21,
+      "chg_pct": -2.01,
+      "day_high": 40.74,
+      "day_low": 39.03,
+      "volume": 8005744,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "YATRA": {
       "symbol": "YATRA",
@@ -20672,7 +20672,7 @@
           "v": 39610
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "STLNETWORK": {
       "symbol": "STLNETWORK",
@@ -20721,6 +20721,30 @@
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
       "updated_at": "16:16:44 IST"
+    },
+    "CROMPTON": {
+      "symbol": "CROMPTON",
+      "ltp": 220.0,
+      "prev_close": 207.3,
+      "chg_pct": 6.13,
+      "day_high": 220.0,
+      "day_low": 207.3,
+      "volume": 7402939,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
+    "CGCL": {
+      "symbol": "CGCL",
+      "ltp": 239.69,
+      "prev_close": 239.88,
+      "chg_pct": -0.08,
+      "day_high": 240.78,
+      "day_low": 238.39,
+      "volume": 7392181,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "HINDALCO": {
       "symbol": "HINDALCO",
@@ -20781,6 +20805,42 @@
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
       "updated_at": "11:07:32 IST"
+    },
+    "CUPID": {
+      "symbol": "CUPID",
+      "ltp": 365.95,
+      "prev_close": 363.2,
+      "chg_pct": 0.76,
+      "day_high": 369.9,
+      "day_low": 356.7,
+      "volume": 7129956,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
+    "DELHIVERY": {
+      "symbol": "DELHIVERY",
+      "ltp": 456.7,
+      "prev_close": 449.5,
+      "chg_pct": 1.6,
+      "day_high": 458.95,
+      "day_low": 439.95,
+      "volume": 7122023,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
+    "COALINDIA": {
+      "symbol": "COALINDIA",
+      "ltp": 391.5,
+      "prev_close": 388.0,
+      "chg_pct": 0.9,
+      "day_high": 393.3,
+      "day_low": 386.65,
+      "volume": 7074975,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "ALOKINDS": {
       "symbol": "ALOKINDS",
@@ -21417,7 +21477,7 @@
           "v": 55480
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "JYOTISTRUC": {
       "symbol": "JYOTISTRUC",
@@ -21562,18 +21622,6 @@
       "tier": "LARGE CAP",
       "bars": [],
       "updated_at": "14:26:48 IST"
-    },
-    "CUPID": {
-      "symbol": "CUPID",
-      "ltp": 363.2,
-      "prev_close": 365.85,
-      "chg_pct": -0.72,
-      "day_high": 368.5,
-      "day_low": 359.5,
-      "volume": 6095795,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "17:10:29 IST"
     },
     "VOLTAS": {
       "symbol": "VOLTAS",
@@ -22198,19 +22246,7 @@
           "v": 98233
         }
       ],
-      "updated_at": "16:16:44 IST"
-    },
-    "COALINDIA": {
-      "symbol": "COALINDIA",
-      "ltp": 388.0,
-      "prev_close": 391.55,
-      "chg_pct": -0.91,
-      "day_high": 392.95,
-      "day_low": 386.7,
-      "volume": 6026071,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "17:10:29 IST"
+      "updated_at": "17:10:09 IST"
     },
     "BHARTIARTL": {
       "symbol": "BHARTIARTL",
@@ -22823,7 +22859,7 @@
           "v": 467125
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "ABFRL": {
       "symbol": "ABFRL",
@@ -23448,7 +23484,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "POLICYBZR": {
       "symbol": "POLICYBZR",
@@ -23461,18 +23497,6 @@
       "tier": "LARGE CAP",
       "bars": [],
       "updated_at": "15:23:57 IST"
-    },
-    "CGCL": {
-      "symbol": "CGCL",
-      "ltp": 239.08,
-      "prev_close": 239.88,
-      "chg_pct": -0.33,
-      "day_high": 240.5,
-      "day_low": 238.39,
-      "volume": 5095777,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
     },
     "TINNARUBR": {
       "symbol": "TINNARUBR",
@@ -23642,6 +23666,18 @@
       "bars": [],
       "updated_at": "15:18:25 IST"
     },
+    "DELTACORP": {
+      "symbol": "DELTACORP",
+      "ltp": 77.85,
+      "prev_close": 81.62,
+      "chg_pct": -4.62,
+      "day_high": 83.64,
+      "day_low": 77.32,
+      "volume": 4428420,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
     "SENCO": {
       "symbol": "SENCO",
       "ltp": 320.55,
@@ -23810,18 +23846,6 @@
       "bars": [],
       "updated_at": "10:15:55 IST"
     },
-    "BPCL": {
-      "symbol": "BPCL",
-      "ltp": 307.1,
-      "prev_close": 305.5,
-      "chg_pct": 0.52,
-      "day_high": 308.1,
-      "day_low": 302.5,
-      "volume": 3894379,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
-    },
     "LENSKART": {
       "symbol": "LENSKART",
       "ltp": 738.8,
@@ -23954,6 +23978,18 @@
       "bars": [],
       "updated_at": "16:16:44 IST"
     },
+    "CONFIPET": {
+      "symbol": "CONFIPET",
+      "ltp": 70.1,
+      "prev_close": 68.03,
+      "chg_pct": 3.04,
+      "day_high": 71.8,
+      "day_low": 67.03,
+      "volume": 3607885,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
     "RBA": {
       "symbol": "RBA",
       "ltp": 89.4,
@@ -24050,17 +24086,17 @@
       "bars": [],
       "updated_at": "10:12:20 IST"
     },
-    "DELHIVERY": {
-      "symbol": "DELHIVERY",
-      "ltp": 449.5,
-      "prev_close": 457.95,
-      "chg_pct": -1.85,
-      "day_high": 458.9,
-      "day_low": 445.5,
-      "volume": 3360361,
-      "tier": "MID CAP",
+    "COFORGE": {
+      "symbol": "COFORGE",
+      "ltp": 2041.0,
+      "prev_close": 2049.0,
+      "chg_pct": -0.39,
+      "day_high": 2054.1,
+      "day_low": 2011.2,
+      "volume": 3332676,
+      "tier": "LARGE CAP",
       "bars": [],
-      "updated_at": "17:10:29 IST"
+      "updated_at": "17:10:09 IST"
     },
     "UPL": {
       "symbol": "UPL",
@@ -24098,6 +24134,18 @@
       "bars": [],
       "updated_at": "10:12:20 IST"
     },
+    "BPCL": {
+      "symbol": "BPCL",
+      "ltp": 308.1,
+      "prev_close": 305.5,
+      "chg_pct": 0.85,
+      "day_high": 308.1,
+      "day_low": 303.4,
+      "volume": 3247208,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
     "GSPLTRANS": {
       "symbol": "GSPLTRANS",
       "ltp": 101.71,
@@ -24121,18 +24169,6 @@
       "tier": "MID CAP",
       "bars": [],
       "updated_at": "14:24:55 IST"
-    },
-    "BIOCON": {
-      "symbol": "BIOCON",
-      "ltp": 365.0,
-      "prev_close": 361.95,
-      "chg_pct": 0.84,
-      "day_high": 367.05,
-      "day_low": 359.25,
-      "volume": 3182473,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
     },
     "GNRL": {
       "symbol": "GNRL",
@@ -24158,6 +24194,18 @@
       "bars": [],
       "updated_at": "12:11:40 IST"
     },
+    "DABUR": {
+      "symbol": "DABUR",
+      "ltp": 390.65,
+      "prev_close": 379.25,
+      "chg_pct": 3.01,
+      "day_high": 394.55,
+      "day_low": 379.25,
+      "volume": 3044199,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
     "SHADOWFAX": {
       "symbol": "SHADOWFAX",
       "ltp": 295.0,
@@ -24181,6 +24229,18 @@
       "tier": "LARGE CAP",
       "bars": [],
       "updated_at": "10:15:55 IST"
+    },
+    "BLUESTARCO": {
+      "symbol": "BLUESTARCO",
+      "ltp": 1764.0,
+      "prev_close": 1621.8,
+      "chg_pct": 8.77,
+      "day_high": 1775.0,
+      "day_low": 1616.3,
+      "volume": 2970262,
+      "tier": "LARGE CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "AXITA": {
       "symbol": "AXITA",
@@ -24961,7 +25021,7 @@
           "v": 0
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "PACEDIGITK": {
       "symbol": "PACEDIGITK",
@@ -24999,18 +25059,6 @@
       "bars": [],
       "updated_at": "15:23:57 IST"
     },
-    "CGPOWER": {
-      "symbol": "CGPOWER",
-      "ltp": 804.75,
-      "prev_close": 791.0,
-      "chg_pct": 1.74,
-      "day_high": 804.8,
-      "day_low": 784.1,
-      "volume": 2683327,
-      "tier": "LARGE CAP",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
-    },
     "LTF": {
       "symbol": "LTF",
       "ltp": 274.37,
@@ -25023,18 +25071,6 @@
       "bars": [],
       "updated_at": "14:26:48 IST"
     },
-    "CUB": {
-      "symbol": "CUB",
-      "ltp": 232.2,
-      "prev_close": 232.4,
-      "chg_pct": -0.09,
-      "day_high": 235.15,
-      "day_low": 228.99,
-      "volume": 2631356,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "17:10:29 IST"
-    },
     "MVELECTRO": {
       "symbol": "MVELECTRO",
       "ltp": 783.0,
@@ -25046,6 +25082,18 @@
       "tier": "LARGE CAP",
       "bars": [],
       "updated_at": "15:18:25 IST"
+    },
+    "DAVANGERE": {
+      "symbol": "DAVANGERE",
+      "ltp": 1.97,
+      "prev_close": 1.98,
+      "chg_pct": -0.51,
+      "day_high": 2.0,
+      "day_low": 1.94,
+      "volume": 2602448,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "OIL": {
       "symbol": "OIL",
@@ -25070,18 +25118,6 @@
       "tier": "MID CAP",
       "bars": [],
       "updated_at": "14:13:29 IST"
-    },
-    "CONFIPET": {
-      "symbol": "CONFIPET",
-      "ltp": 68.03,
-      "prev_close": 65.15,
-      "chg_pct": 4.42,
-      "day_high": 69.0,
-      "day_low": 65.04,
-      "volume": 2590555,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "17:10:29 IST"
     },
     "JAINREC": {
       "symbol": "JAINREC",
@@ -25718,31 +25754,7 @@
           "v": 105609
         }
       ],
-      "updated_at": "16:16:44 IST"
-    },
-    "BHARATCOAL": {
-      "symbol": "BHARATCOAL",
-      "ltp": 30.74,
-      "prev_close": 30.66,
-      "chg_pct": 0.26,
-      "day_high": 30.99,
-      "day_low": 30.54,
-      "volume": 2529719,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
-    },
-    "BSE": {
-      "symbol": "BSE",
-      "ltp": 3747.0,
-      "prev_close": 3755.7,
-      "chg_pct": -0.23,
-      "day_high": 3810.0,
-      "day_low": 3716.0,
-      "volume": 2500435,
-      "tier": "LARGE CAP",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
+      "updated_at": "17:10:09 IST"
     },
     "LEMONTREE": {
       "symbol": "LEMONTREE",
@@ -25792,17 +25804,29 @@
       "bars": [],
       "updated_at": "11:07:32 IST"
     },
-    "COFORGE": {
-      "symbol": "COFORGE",
-      "ltp": 2049.0,
-      "prev_close": 2041.0,
-      "chg_pct": 0.39,
-      "day_high": 2059.9,
-      "day_low": 2024.1,
-      "volume": 2473891,
-      "tier": "LARGE CAP",
+    "CUB": {
+      "symbol": "CUB",
+      "ltp": 234.16,
+      "prev_close": 232.2,
+      "chg_pct": 0.84,
+      "day_high": 234.18,
+      "day_low": 229.9,
+      "volume": 2462533,
+      "tier": "MID CAP",
       "bars": [],
-      "updated_at": "17:10:29 IST"
+      "updated_at": "17:10:09 IST"
+    },
+    "BIOCON": {
+      "symbol": "BIOCON",
+      "ltp": 363.65,
+      "prev_close": 361.95,
+      "chg_pct": 0.47,
+      "day_high": 365.6,
+      "day_low": 359.25,
+      "volume": 2458348,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "ABCAPITAL": {
       "symbol": "ABCAPITAL",
@@ -26439,7 +26463,7 @@
           "v": 139035
         }
       ],
-      "updated_at": "16:16:44 IST"
+      "updated_at": "17:10:09 IST"
     },
     "UGROCAP": {
       "symbol": "UGROCAP",
@@ -26501,6 +26525,18 @@
       "bars": [],
       "updated_at": "11:13:49 IST"
     },
+    "BHARATCOAL": {
+      "symbol": "BHARATCOAL",
+      "ltp": 30.67,
+      "prev_close": 30.66,
+      "chg_pct": 0.03,
+      "day_high": 30.84,
+      "day_low": 30.54,
+      "volume": 2392456,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
     "ALLCARGO": {
       "symbol": "ALLCARGO",
       "ltp": 9.62,
@@ -26536,6 +26572,42 @@
       "tier": "LARGE CAP",
       "bars": [],
       "updated_at": "11:13:49 IST"
+    },
+    "BSE": {
+      "symbol": "BSE",
+      "ltp": 3765.0,
+      "prev_close": 3755.7,
+      "chg_pct": 0.25,
+      "day_high": 3810.0,
+      "day_low": 3716.0,
+      "volume": 2336940,
+      "tier": "LARGE CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
+    "CESC": {
+      "symbol": "CESC",
+      "ltp": 126.93,
+      "prev_close": 124.28,
+      "chg_pct": 2.13,
+      "day_high": 127.5,
+      "day_low": 123.55,
+      "volume": 2296091,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
+    },
+    "BHARATFORG": {
+      "symbol": "BHARATFORG",
+      "ltp": 1729.2,
+      "prev_close": 1684.5,
+      "chg_pct": 2.65,
+      "day_high": 1734.5,
+      "day_low": 1684.5,
+      "volume": 2276996,
+      "tier": "LARGE CAP",
+      "bars": [],
+      "updated_at": "17:10:09 IST"
     },
     "PAYTM": {
       "symbol": "PAYTM",
@@ -26573,18 +26645,6 @@
       "bars": [],
       "updated_at": "14:24:55 IST"
     },
-    "DELTACORP": {
-      "symbol": "DELTACORP",
-      "ltp": 81.62,
-      "prev_close": 84.98,
-      "chg_pct": -3.95,
-      "day_high": 85.84,
-      "day_low": 81.09,
-      "volume": 2208700,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "17:10:29 IST"
-    },
     "JISLJALEQS": {
       "symbol": "JISLJALEQS",
       "ltp": 25.73,
@@ -26621,18 +26681,6 @@
       "bars": [],
       "updated_at": "14:24:55 IST"
     },
-    "BLUESTARCO": {
-      "symbol": "BLUESTARCO",
-      "ltp": 1746.4,
-      "prev_close": 1621.8,
-      "chg_pct": 7.68,
-      "day_high": 1751.3,
-      "day_low": 1603.9,
-      "volume": 2148890,
-      "tier": "LARGE CAP",
-      "bars": [],
-      "updated_at": "13:29:24 IST"
-    },
     "JAMNAAUTO": {
       "symbol": "JAMNAAUTO",
       "ltp": 139.79,
@@ -26667,655 +26715,6 @@
       "volume": 2130495,
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
-      "updated_at": "16:16:44 IST"
-    },
-    "KEC": {
-      "symbol": "KEC",
-      "ltp": 306.95,
-      "prev_close": 313.7,
-      "chg_pct": -2.15,
-      "day_high": 315.7,
-      "day_low": 306.1,
-      "volume": 2110676,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "14:26:48 IST"
-    },
-    "VGUARD": {
-      "symbol": "VGUARD",
-      "ltp": 303.95,
-      "prev_close": 295.25,
-      "chg_pct": 2.95,
-      "day_high": 308.15,
-      "day_low": 294.4,
-      "volume": 2098124,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "16:16:44 IST"
-    },
-    "MAHSEAMLES": {
-      "symbol": "MAHSEAMLES",
-      "ltp": 500.2,
-      "prev_close": 507.25,
-      "chg_pct": -1.39,
-      "day_high": 509.1,
-      "day_low": 498.0,
-      "volume": 2085235,
-      "tier": "LARGE CAP",
-      "bars": [],
-      "updated_at": "14:26:48 IST"
-    },
-    "LT": {
-      "symbol": "LT",
-      "ltp": 4211.0,
-      "prev_close": 4159.0,
-      "chg_pct": 1.25,
-      "day_high": 4211.8,
-      "day_low": 4112.0,
-      "volume": 2075915,
-      "tier": "LARGE CAP",
-      "bars": [
-        {
-          "t": 1794995700,
-          "o": 4159.0,
-          "h": 4159.0,
-          "l": 4159.0,
-          "c": 4159.0,
-          "v": 62080
-        },
-        {
-          "t": 1795059900,
-          "o": 4156.0,
-          "h": 4156.0,
-          "l": 4128.1,
-          "c": 4140.5,
-          "v": 0
-        },
-        {
-          "t": 1795060200,
-          "o": 4135.2,
-          "h": 4136.7,
-          "l": 4112.0,
-          "c": 4119.5,
-          "v": 47935
-        },
-        {
-          "t": 1795060500,
-          "o": 4120.0,
-          "h": 4120.0,
-          "l": 4113.0,
-          "c": 4113.0,
-          "v": 29987
-        },
-        {
-          "t": 1795060800,
-          "o": 4113.0,
-          "h": 4125.3,
-          "l": 4112.3,
-          "c": 4123.2,
-          "v": 22587
-        },
-        {
-          "t": 1795061100,
-          "o": 4124.5,
-          "h": 4137.5,
-          "l": 4121.2,
-          "c": 4126.1,
-          "v": 25928
-        },
-        {
-          "t": 1795061400,
-          "o": 4128.0,
-          "h": 4137.5,
-          "l": 4127.7,
-          "c": 4133.3,
-          "v": 11981
-        },
-        {
-          "t": 1795061700,
-          "o": 4134.9,
-          "h": 4138.0,
-          "l": 4133.5,
-          "c": 4137.6,
-          "v": 15527
-        },
-        {
-          "t": 1795062000,
-          "o": 4137.4,
-          "h": 4141.9,
-          "l": 4128.0,
-          "c": 4134.6,
-          "v": 22808
-        },
-        {
-          "t": 1795062300,
-          "o": 4137.9,
-          "h": 4140.2,
-          "l": 4132.4,
-          "c": 4140.2,
-          "v": 11181
-        },
-        {
-          "t": 1795062600,
-          "o": 4141.9,
-          "h": 4146.1,
-          "l": 4139.0,
-          "c": 4140.0,
-          "v": 12945
-        },
-        {
-          "t": 1795062900,
-          "o": 4139.1,
-          "h": 4141.8,
-          "l": 4135.0,
-          "c": 4137.3,
-          "v": 23464
-        },
-        {
-          "t": 1795063200,
-          "o": 4137.1,
-          "h": 4139.7,
-          "l": 4135.0,
-          "c": 4135.1,
-          "v": 13721
-        },
-        {
-          "t": 1795063500,
-          "o": 4136.0,
-          "h": 4143.7,
-          "l": 4135.0,
-          "c": 4143.7,
-          "v": 15400
-        },
-        {
-          "t": 1795063800,
-          "o": 4142.6,
-          "h": 4148.0,
-          "l": 4138.9,
-          "c": 4143.8,
-          "v": 18798
-        },
-        {
-          "t": 1795064100,
-          "o": 4144.7,
-          "h": 4149.0,
-          "l": 4142.2,
-          "c": 4145.9,
-          "v": 25559
-        },
-        {
-          "t": 1795064400,
-          "o": 4146.7,
-          "h": 4147.0,
-          "l": 4138.1,
-          "c": 4146.7,
-          "v": 16888
-        },
-        {
-          "t": 1795064700,
-          "o": 4146.7,
-          "h": 4150.5,
-          "l": 4144.5,
-          "c": 4149.0,
-          "v": 16529
-        },
-        {
-          "t": 1795065000,
-          "o": 4148.7,
-          "h": 4153.0,
-          "l": 4148.7,
-          "c": 4150.6,
-          "v": 17542
-        },
-        {
-          "t": 1795065300,
-          "o": 4152.0,
-          "h": 4161.4,
-          "l": 4151.4,
-          "c": 4161.4,
-          "v": 30018
-        },
-        {
-          "t": 1795065600,
-          "o": 4161.4,
-          "h": 4167.0,
-          "l": 4159.9,
-          "c": 4166.6,
-          "v": 28570
-        },
-        {
-          "t": 1795065900,
-          "o": 4165.9,
-          "h": 4166.2,
-          "l": 4163.2,
-          "c": 4165.0,
-          "v": 18366
-        },
-        {
-          "t": 1795066200,
-          "o": 4165.0,
-          "h": 4167.6,
-          "l": 4161.5,
-          "c": 4162.3,
-          "v": 22423
-        },
-        {
-          "t": 1795066500,
-          "o": 4162.4,
-          "h": 4165.0,
-          "l": 4158.7,
-          "c": 4159.0,
-          "v": 17636
-        },
-        {
-          "t": 1795066800,
-          "o": 4159.0,
-          "h": 4163.3,
-          "l": 4156.4,
-          "c": 4162.9,
-          "v": 20319
-        },
-        {
-          "t": 1795067100,
-          "o": 4163.0,
-          "h": 4165.0,
-          "l": 4161.0,
-          "c": 4161.0,
-          "v": 13515
-        },
-        {
-          "t": 1795067400,
-          "o": 4162.0,
-          "h": 4168.6,
-          "l": 4160.3,
-          "c": 4168.2,
-          "v": 7779
-        },
-        {
-          "t": 1795067700,
-          "o": 4167.8,
-          "h": 4168.2,
-          "l": 4164.9,
-          "c": 4165.4,
-          "v": 14119
-        },
-        {
-          "t": 1795068000,
-          "o": 4165.4,
-          "h": 4170.5,
-          "l": 4165.4,
-          "c": 4166.5,
-          "v": 29835
-        },
-        {
-          "t": 1795068300,
-          "o": 4166.3,
-          "h": 4168.8,
-          "l": 4166.1,
-          "c": 4167.4,
-          "v": 9747
-        },
-        {
-          "t": 1795068600,
-          "o": 4168.9,
-          "h": 4169.7,
-          "l": 4163.4,
-          "c": 4164.3,
-          "v": 23705
-        },
-        {
-          "t": 1795068900,
-          "o": 4164.1,
-          "h": 4169.7,
-          "l": 4164.1,
-          "c": 4167.6,
-          "v": 19812
-        },
-        {
-          "t": 1795069200,
-          "o": 4167.5,
-          "h": 4174.0,
-          "l": 4167.4,
-          "c": 4173.0,
-          "v": 15358
-        },
-        {
-          "t": 1795069500,
-          "o": 4173.9,
-          "h": 4177.0,
-          "l": 4172.8,
-          "c": 4177.0,
-          "v": 23419
-        },
-        {
-          "t": 1795069800,
-          "o": 4177.8,
-          "h": 4180.4,
-          "l": 4177.2,
-          "c": 4178.4,
-          "v": 27139
-        },
-        {
-          "t": 1795070100,
-          "o": 4178.4,
-          "h": 4179.0,
-          "l": 4174.0,
-          "c": 4174.9,
-          "v": 22820
-        },
-        {
-          "t": 1795070400,
-          "o": 4175.7,
-          "h": 4178.4,
-          "l": 4174.6,
-          "c": 4175.0,
-          "v": 24890
-        },
-        {
-          "t": 1795070700,
-          "o": 4175.0,
-          "h": 4178.9,
-          "l": 4171.0,
-          "c": 4171.0,
-          "v": 22394
-        },
-        {
-          "t": 1795071000,
-          "o": 4171.3,
-          "h": 4175.4,
-          "l": 4167.7,
-          "c": 4169.3,
-          "v": 21239
-        },
-        {
-          "t": 1795071300,
-          "o": 4169.6,
-          "h": 4175.1,
-          "l": 4168.5,
-          "c": 4174.7,
-          "v": 15355
-        },
-        {
-          "t": 1795071600,
-          "o": 4175.3,
-          "h": 4175.3,
-          "l": 4171.4,
-          "c": 4174.2,
-          "v": 29691
-        },
-        {
-          "t": 1795071900,
-          "o": 4174.2,
-          "h": 4177.1,
-          "l": 4173.3,
-          "c": 4175.7,
-          "v": 11052
-        },
-        {
-          "t": 1795072200,
-          "o": 4175.8,
-          "h": 4178.2,
-          "l": 4175.0,
-          "c": 4177.0,
-          "v": 19691
-        },
-        {
-          "t": 1795072500,
-          "o": 4177.0,
-          "h": 4180.9,
-          "l": 4176.9,
-          "c": 4176.9,
-          "v": 28233
-        },
-        {
-          "t": 1795072800,
-          "o": 4178.0,
-          "h": 4184.4,
-          "l": 4177.3,
-          "c": 4184.4,
-          "v": 25956
-        },
-        {
-          "t": 1795073100,
-          "o": 4184.5,
-          "h": 4187.9,
-          "l": 4184.1,
-          "c": 4186.7,
-          "v": 24425
-        },
-        {
-          "t": 1795073400,
-          "o": 4185.5,
-          "h": 4187.0,
-          "l": 4178.1,
-          "c": 4178.1,
-          "v": 28660
-        },
-        {
-          "t": 1795073700,
-          "o": 4179.3,
-          "h": 4182.7,
-          "l": 4178.0,
-          "c": 4180.5,
-          "v": 23948
-        },
-        {
-          "t": 1795074000,
-          "o": 4180.5,
-          "h": 4181.8,
-          "l": 4176.9,
-          "c": 4178.6,
-          "v": 20398
-        },
-        {
-          "t": 1795074300,
-          "o": 4177.7,
-          "h": 4177.7,
-          "l": 4172.2,
-          "c": 4175.7,
-          "v": 20646
-        },
-        {
-          "t": 1795074600,
-          "o": 4176.0,
-          "h": 4179.5,
-          "l": 4170.9,
-          "c": 4171.8,
-          "v": 29064
-        },
-        {
-          "t": 1795074900,
-          "o": 4171.6,
-          "h": 4175.0,
-          "l": 4171.4,
-          "c": 4175.0,
-          "v": 10626
-        },
-        {
-          "t": 1795075200,
-          "o": 4175.0,
-          "h": 4176.2,
-          "l": 4172.5,
-          "c": 4176.1,
-          "v": 22070
-        },
-        {
-          "t": 1795075500,
-          "o": 4177.0,
-          "h": 4178.9,
-          "l": 4174.0,
-          "c": 4178.4,
-          "v": 17358
-        },
-        {
-          "t": 1795075800,
-          "o": 4178.5,
-          "h": 4182.7,
-          "l": 4178.5,
-          "c": 4181.3,
-          "v": 10558
-        },
-        {
-          "t": 1795076100,
-          "o": 4181.3,
-          "h": 4183.5,
-          "l": 4177.7,
-          "c": 4177.8,
-          "v": 26317
-        },
-        {
-          "t": 1795076400,
-          "o": 4178.9,
-          "h": 4179.5,
-          "l": 4177.5,
-          "c": 4179.0,
-          "v": 12226
-        },
-        {
-          "t": 1795076700,
-          "o": 4179.0,
-          "h": 4182.2,
-          "l": 4178.7,
-          "c": 4181.0,
-          "v": 20919
-        },
-        {
-          "t": 1795077000,
-          "o": 4181.8,
-          "h": 4187.5,
-          "l": 4178.1,
-          "c": 4183.1,
-          "v": 47680
-        },
-        {
-          "t": 1795077300,
-          "o": 4184.7,
-          "h": 4186.0,
-          "l": 4182.3,
-          "c": 4185.4,
-          "v": 9890
-        },
-        {
-          "t": 1795077600,
-          "o": 4185.5,
-          "h": 4188.9,
-          "l": 4184.1,
-          "c": 4187.0,
-          "v": 39389
-        },
-        {
-          "t": 1795077900,
-          "o": 4186.2,
-          "h": 4188.9,
-          "l": 4185.0,
-          "c": 4186.7,
-          "v": 32492
-        },
-        {
-          "t": 1795078200,
-          "o": 4186.6,
-          "h": 4188.0,
-          "l": 4183.4,
-          "c": 4184.9,
-          "v": 28506
-        },
-        {
-          "t": 1795078500,
-          "o": 4184.9,
-          "h": 4190.0,
-          "l": 4184.9,
-          "c": 4186.5,
-          "v": 26757
-        },
-        {
-          "t": 1795078800,
-          "o": 4186.5,
-          "h": 4197.7,
-          "l": 4183.8,
-          "c": 4196.2,
-          "v": 36714
-        },
-        {
-          "t": 1795079100,
-          "o": 4196.3,
-          "h": 4197.5,
-          "l": 4192.3,
-          "c": 4193.9,
-          "v": 33207
-        },
-        {
-          "t": 1795079400,
-          "o": 4193.9,
-          "h": 4194.8,
-          "l": 4190.1,
-          "c": 4191.0,
-          "v": 35337
-        },
-        {
-          "t": 1795079700,
-          "o": 4191.0,
-          "h": 4193.0,
-          "l": 4190.0,
-          "c": 4191.2,
-          "v": 29818
-        },
-        {
-          "t": 1795080000,
-          "o": 4191.3,
-          "h": 4194.6,
-          "l": 4189.8,
-          "c": 4190.6,
-          "v": 31159
-        },
-        {
-          "t": 1795080300,
-          "o": 4190.6,
-          "h": 4194.6,
-          "l": 4190.0,
-          "c": 4191.1,
-          "v": 29344
-        },
-        {
-          "t": 1795080600,
-          "o": 4192.5,
-          "h": 4194.0,
-          "l": 4192.1,
-          "c": 4193.9,
-          "v": 40983
-        },
-        {
-          "t": 1795080900,
-          "o": 4194.6,
-          "h": 4198.8,
-          "l": 4192.0,
-          "c": 4198.8,
-          "v": 105663
-        },
-        {
-          "t": 1795081200,
-          "o": 4199.0,
-          "h": 4211.8,
-          "l": 4195.8,
-          "c": 4205.7,
-          "v": 226632
-        },
-        {
-          "t": 1795081500,
-          "o": 4205.7,
-          "h": 4205.7,
-          "l": 4205.7,
-          "c": 4205.7,
-          "v": 97
-        },
-        {
-          "t": 1795082100,
-          "o": 4211.0,
-          "h": 4211.0,
-          "l": 4211.0,
-          "c": 4211.0,
-          "v": 101091
-        }
-      ],
       "updated_at": "16:16:44 IST"
     }
   },
