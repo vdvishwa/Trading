@@ -6,7 +6,7 @@
   "logs": [
     "[2026-11-13 00:30:29 IST] Heartbeat check: NSE is currently closed. Standing by for 09:15 IST."
   ],
-  "last_heartbeat": "2026-11-24 15:41:31 IST",
+  "last_heartbeat": "2026-11-24 16:30:28 IST",
   "market_status": "CLOSED",
   "indices": {
     "NIFTY": {
@@ -753,7 +753,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "AAPL": {
       "symbol": "AAPL",
@@ -1365,7 +1365,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "AMZN": {
       "symbol": "AMZN",
@@ -1977,7 +1977,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "MSFT": {
       "symbol": "MSFT",
@@ -2589,7 +2589,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "AVGO": {
       "symbol": "AVGO",
@@ -3201,7 +3201,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "NFLX": {
       "symbol": "NFLX",
@@ -3813,7 +3813,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "NVDA": {
       "symbol": "NVDA",
@@ -4425,7 +4425,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "SOFI": {
       "symbol": "SOFI",
@@ -5037,7 +5037,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "TSLA": {
       "symbol": "TSLA",
@@ -5649,7 +5649,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "PLTR": {
       "symbol": "PLTR",
@@ -6261,7 +6261,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "AMD": {
       "symbol": "AMD",
@@ -6873,7 +6873,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "META": {
       "symbol": "META",
@@ -7485,7 +7485,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     }
   },
   "nse_eq_master_count": 2419,
@@ -8101,7 +8101,7 @@
           "v": 4421344
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "PCJEWELLER": {
       "symbol": "PCJEWELLER",
@@ -8750,7 +8750,7 @@
           "v": 2778440
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "HMAAGRO": {
       "symbol": "HMAAGRO",
@@ -9375,7 +9375,7 @@
           "v": 2787617
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "ITI": {
       "symbol": "ITI",
@@ -10000,7 +10000,7 @@
           "v": 1970554
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "OLAELEC": {
       "symbol": "OLAELEC",
@@ -10649,7 +10649,7 @@
           "v": 756577
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "SYNCOMF": {
       "symbol": "SYNCOMF",
@@ -11274,7 +11274,7 @@
           "v": 434519
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "GROWW": {
       "symbol": "GROWW",
@@ -11947,7 +11947,7 @@
           "v": 244763
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "GTLINFRA": {
       "symbol": "GTLINFRA",
@@ -12584,7 +12584,7 @@
           "v": 530277
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "EMPOWER": {
       "symbol": "EMPOWER",
@@ -13293,7 +13293,7 @@
           "v": 1463110
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "KOTAKBANK": {
       "symbol": "KOTAKBANK",
@@ -13494,10 +13494,10 @@
       "chg_pct": -3.45,
       "day_high": 166.77,
       "day_low": 158.26,
-      "volume": 15389917,
+      "volume": 15392411,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "HCC": {
       "symbol": "HCC",
@@ -13533,7 +13533,7 @@
       "volume": 14540445,
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "RELIANCE": {
       "symbol": "RELIANCE",
@@ -14146,7 +14146,7 @@
           "v": 1463807
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "BANKBARODA": {
       "symbol": "BANKBARODA",
@@ -14759,7 +14759,7 @@
           "v": 319448
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "SBIN": {
       "symbol": "SBIN",
@@ -15372,7 +15372,7 @@
           "v": 414414
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "ASHOKA": {
       "symbol": "ASHOKA",
@@ -15997,7 +15997,7 @@
           "v": 151608
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "VMM": {
       "symbol": "VMM",
@@ -16670,7 +16670,7 @@
           "v": 833910
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "GNRL": {
       "symbol": "GNRL",
@@ -17367,7 +17367,7 @@
           "v": 388958
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "NMDC": {
       "symbol": "NMDC",
@@ -18064,7 +18064,7 @@
           "v": 165313
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "WIPRO": {
       "symbol": "WIPRO",
@@ -18725,7 +18725,7 @@
           "v": 88012
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "GATECH": {
       "symbol": "GATECH",
@@ -18770,10 +18770,10 @@
       "chg_pct": -2.36,
       "day_high": 1130.4,
       "day_low": 1093.1,
-      "volume": 9441039,
+      "volume": 9441247,
       "tier": "LARGE CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "TMPV": {
       "symbol": "TMPV",
@@ -19410,7 +19410,7 @@
           "v": 204901
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "BANDHANBNK": {
       "symbol": "BANDHANBNK",
@@ -19422,7 +19422,7 @@
       "volume": 9108258,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "RATNAVEER": {
       "symbol": "RATNAVEER",
@@ -19527,10 +19527,10 @@
       "chg_pct": -2.05,
       "day_high": 391.95,
       "day_low": 381.5,
-      "volume": 8089940,
+      "volume": 8095843,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "DHANBANK": {
       "symbol": "DHANBANK",
@@ -19604,17 +19604,17 @@
       "bars": [],
       "updated_at": "09:17:43 IST"
     },
-    "CROMPTON": {
-      "symbol": "CROMPTON",
-      "ltp": 220.0,
-      "prev_close": 207.3,
-      "chg_pct": 6.13,
-      "day_high": 220.0,
-      "day_low": 207.3,
-      "volume": 7402939,
+    "CUB": {
+      "symbol": "CUB",
+      "ltp": 245.54,
+      "prev_close": 248.8,
+      "chg_pct": -1.31,
+      "day_high": 253.99,
+      "day_low": 241.0,
+      "volume": 7532220,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "17:10:09 IST"
+      "updated_at": "16:30:28 IST"
     },
     "TATAPOWER": {
       "symbol": "TATAPOWER",
@@ -19627,6 +19627,18 @@
       "tier": "MID CAP",
       "bars": [],
       "updated_at": "10:20:23 IST"
+    },
+    "AXITA": {
+      "symbol": "AXITA",
+      "ltp": 7.16,
+      "prev_close": 7.18,
+      "chg_pct": -0.28,
+      "day_high": 7.3,
+      "day_low": 7.16,
+      "volume": 7264537,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "16:30:28 IST"
     },
     "TCS": {
       "symbol": "TCS",
@@ -20239,31 +20251,7 @@
           "v": 226951
         }
       ],
-      "updated_at": "15:41:31 IST"
-    },
-    "AXITA": {
-      "symbol": "AXITA",
-      "ltp": 7.16,
-      "prev_close": 7.18,
-      "chg_pct": -0.28,
-      "day_high": 7.3,
-      "day_low": 7.16,
-      "volume": 7203566,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "13:34:06 IST"
-    },
-    "CUPID": {
-      "symbol": "CUPID",
-      "ltp": 365.95,
-      "prev_close": 363.2,
-      "chg_pct": 0.76,
-      "day_high": 369.9,
-      "day_low": 356.7,
-      "volume": 7129956,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "17:10:09 IST"
+      "updated_at": "16:30:28 IST"
     },
     "DELHIVERY": {
       "symbol": "DELHIVERY",
@@ -20888,7 +20876,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "PAISALO": {
       "symbol": "PAISALO",
@@ -20924,7 +20912,7 @@
       "volume": 6814648,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "SHADOWFAX": {
       "symbol": "SHADOWFAX",
@@ -20948,7 +20936,7 @@
       "volume": 6708084,
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "NHPC": {
       "symbol": "NHPC",
@@ -21561,7 +21549,19 @@
           "v": 591810
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
+    },
+    "CUPID": {
+      "symbol": "CUPID",
+      "ltp": 362.15,
+      "prev_close": 365.65,
+      "chg_pct": -0.96,
+      "day_high": 367.95,
+      "day_low": 357.85,
+      "volume": 6663082,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "16:30:28 IST"
     },
     "NBCC": {
       "symbol": "NBCC",
@@ -22174,7 +22174,19 @@
           "v": 44577
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
+    },
+    "DABUR": {
+      "symbol": "DABUR",
+      "ltp": 399.0,
+      "prev_close": 393.1,
+      "chg_pct": 1.5,
+      "day_high": 402.95,
+      "day_low": 393.1,
+      "volume": 6494180,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "16:30:28 IST"
     },
     "BEL": {
       "symbol": "BEL",
@@ -22787,7 +22799,7 @@
           "v": 804111
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "VAML": {
       "symbol": "VAML",
@@ -23484,7 +23496,7 @@
           "v": 893459
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "EPACK": {
       "symbol": "EPACK",
@@ -23508,7 +23520,7 @@
       "volume": 5925004,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "RBLBANK": {
       "symbol": "RBLBANK",
@@ -23784,7 +23796,7 @@
       "volume": 4405893,
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "LEMONTREE": {
       "symbol": "LEMONTREE",
@@ -23808,7 +23820,7 @@
       "volume": 4301978,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "ALOKINDS": {
       "symbol": "ALOKINDS",
@@ -23832,7 +23844,7 @@
       "volume": 4232994,
       "tier": "LARGE CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "PAYTM": {
       "symbol": "PAYTM",
@@ -23952,7 +23964,7 @@
       "volume": 3790254,
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "LICHSGFIN": {
       "symbol": "LICHSGFIN",
@@ -24021,10 +24033,10 @@
       "chg_pct": -2.79,
       "day_high": 315.65,
       "day_low": 305.2,
-      "volume": 3600992,
+      "volume": 3602332,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "LLOYDSENGG": {
       "symbol": "LLOYDSENGG",
@@ -24132,7 +24144,7 @@
       "volume": 3264886,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "FIRSTCRY": {
       "symbol": "FIRSTCRY",
@@ -24242,18 +24254,6 @@
       "bars": [],
       "updated_at": "12:10:40 IST"
     },
-    "DABUR": {
-      "symbol": "DABUR",
-      "ltp": 390.65,
-      "prev_close": 379.25,
-      "chg_pct": 3.01,
-      "day_high": 394.55,
-      "day_low": 379.25,
-      "volume": 3044199,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "17:10:09 IST"
-    },
     "FSL": {
       "symbol": "FSL",
       "ltp": 281.15,
@@ -24312,7 +24312,7 @@
       "volume": 2928214,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "APTUS": {
       "symbol": "APTUS",
@@ -25117,7 +25117,7 @@
           "v": 137532
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "HINDCOPPER": {
       "symbol": "HINDCOPPER",
@@ -25174,10 +25174,10 @@
       "chg_pct": -0.18,
       "day_high": 794.45,
       "day_low": 783.7,
-      "volume": 2651872,
+      "volume": 2652347,
       "tier": "LARGE CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "ABLBL": {
       "symbol": "ABLBL",
@@ -25227,18 +25227,6 @@
       "bars": [],
       "updated_at": "12:09:39 IST"
     },
-    "DAVANGERE": {
-      "symbol": "DAVANGERE",
-      "ltp": 1.97,
-      "prev_close": 1.98,
-      "chg_pct": -0.51,
-      "day_high": 2.0,
-      "day_low": 1.94,
-      "volume": 2602448,
-      "tier": "PENNY (<\u20b9100)",
-      "bars": [],
-      "updated_at": "17:10:09 IST"
-    },
     "OIL": {
       "symbol": "OIL",
       "ltp": 434.05,
@@ -25273,7 +25261,7 @@
       "volume": 2567122,
       "tier": "MID CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "VBL": {
       "symbol": "VBL",
@@ -25309,7 +25297,7 @@
       "volume": 2539598,
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "IDBI": {
       "symbol": "IDBI",
@@ -25346,18 +25334,6 @@
       "tier": "MID CAP",
       "bars": [],
       "updated_at": "15:41:31 IST"
-    },
-    "CUB": {
-      "symbol": "CUB",
-      "ltp": 234.16,
-      "prev_close": 232.2,
-      "chg_pct": 0.84,
-      "day_high": 234.18,
-      "day_low": 229.9,
-      "volume": 2462533,
-      "tier": "MID CAP",
-      "bars": [],
-      "updated_at": "17:10:09 IST"
     },
     "NCC": {
       "symbol": "NCC",
@@ -25982,7 +25958,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "JPL": {
       "symbol": "JPL",
@@ -26030,7 +26006,7 @@
       "volume": 2375546,
       "tier": "PENNY (<\u20b9100)",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "ABCAPITAL": {
       "symbol": "ABCAPITAL",
@@ -26051,10 +26027,10 @@
       "chg_pct": -0.63,
       "day_high": 3816.1,
       "day_low": 3726.4,
-      "volume": 2275918,
+      "volume": 2277082,
       "tier": "LARGE CAP",
       "bars": [],
-      "updated_at": "13:34:06 IST"
+      "updated_at": "16:30:28 IST"
     },
     "GSPLTRANS": {
       "symbol": "GSPLTRANS",
@@ -26703,7 +26679,7 @@
           "v": 0
         }
       ],
-      "updated_at": "15:41:31 IST"
+      "updated_at": "16:30:28 IST"
     },
     "TATACHEM": {
       "symbol": "TATACHEM",
@@ -26716,6 +26692,30 @@
       "tier": "LARGE CAP",
       "bars": [],
       "updated_at": "10:20:23 IST"
+    },
+    "BLKASHYAP": {
+      "symbol": "BLKASHYAP",
+      "ltp": 54.97,
+      "prev_close": 55.71,
+      "chg_pct": -1.33,
+      "day_high": 55.84,
+      "day_low": 54.35,
+      "volume": 2192269,
+      "tier": "PENNY (<\u20b9100)",
+      "bars": [],
+      "updated_at": "16:30:28 IST"
+    },
+    "CROMPTON": {
+      "symbol": "CROMPTON",
+      "ltp": 219.0,
+      "prev_close": 223.4,
+      "chg_pct": -1.97,
+      "day_high": 226.0,
+      "day_low": 218.85,
+      "volume": 2168520,
+      "tier": "MID CAP",
+      "bars": [],
+      "updated_at": "16:30:28 IST"
     }
   },
   "calibrated_params": {
